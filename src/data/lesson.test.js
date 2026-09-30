@@ -82,6 +82,40 @@ const correctAnswers = [
     'function getDiscount(price) {\n  if (price >= 100) return 20;\n  return 0;\n}',
   ],
   ['functions-05', 'const multiply = (x, y) => x * y'],
+  [
+    'map-01',
+    'const numbers = [1, 2, 3];\nconst doubled = numbers.map((n) => {\n  return n * 2;\n});',
+  ],
+  [
+    'filter-02',
+    "const todos = [{ text: 'Handla', done: true }, { text: 'Träna', done: false }, { text: 'Plugga React', done: true }];\nconst doneTodos = todos.filter(todo => todo.done === true);",
+  ],
+  [
+    'find-01',
+    'const todos = [{ id: 1 }, { id: 2 }, { id: 3 }];\nconst todo = todos.find(({ id }) => id === 2);',
+  ],
+  [
+    'reduce-01',
+    'const numbers = [5, 10, 15];\nconst total = numbers.reduce((acc, n) => {\n  return acc + n;\n}, 0);',
+  ],
+  ['template-01', "const name = 'Ada';\nconst greeting = `Hej ${ name }!`;"],
+  [
+    'destructuring-01',
+    "const user = { name: 'Ada', age: 36 };\nconst { age, name } = user;",
+  ],
+  ['destructuring-03', 'const greet = ({ name }) => `Hej ${name}!`;'],
+  [
+    'spread-02',
+    "const user = { name: 'Ada', age: 36 };\nconst olderUser = {\n  ...user,\n  age: user.age + 1,\n};",
+  ],
+  [
+    'rest-03',
+    'const sum = (...numbers) => numbers.reduce((a, b) => a + b, 0);',
+  ],
+  [
+    'ternary-01',
+    "function getLabel(isLoggedIn) {\n  return isLoggedIn ? 'Logga ut' : 'Logga in';\n}",
+  ],
 ];
 
 // Vanliga fel och genvägar som ska underkännas.
@@ -133,6 +167,92 @@ const wrongAnswers = [
     'function getDiscount(price) { if (price >= 100) { return 20; } else { return 0; } }',
   ],
   ['functions-05', 'const multiply = (a, b) => { return a * b; };'],
+  ['map-01', 'const numbers = [1, 2, 3];\nconst doubled = [2, 4, 6];'],
+  [
+    'map-01',
+    'const numbers = [1, 2, 3];\nconst doubled = [];\nfor (const n of numbers) doubled.push(n * 2);\nnumbers.map(n => n);',
+  ],
+  [
+    'map-01',
+    'const numbers = [1, 2, 3];\nnumbers.forEach((n, i) => { numbers[i] = n * 2; });\nconst doubled = numbers.map(n => n);',
+  ],
+  [
+    'map-02',
+    "const users = [{ name: 'Ada' }];\nconst names = users.map(user => user);",
+  ],
+  [
+    'filter-01',
+    'const numbers = [5, 12, 8, 20, 3];\nconst bigNumbers = numbers.filter(number => number >= 8);',
+  ],
+  [
+    'filter-02',
+    "const todos = [{ text: 'Handla', done: true }, { text: 'Plugga React', done: true }];\nconst doneTodos = todos.filter(todo => todo.done);",
+  ],
+  [
+    'find-01',
+    "const todos = [{ id: 1 }, { id: 2, text: 'Träna', done: false }];\nconst todo = { id: 2, text: 'Träna', done: false };\ntodos.find(t => t);",
+  ],
+  ['reduce-01', 'const numbers = [5, 10, 15];\nconst total = 30;'],
+  [
+    'reduce-01',
+    'const numbers = [5, 10, 15];\nconst total = numbers.reduce((sum, n) => sum + n);\nnumbers.push(0);',
+  ],
+  ['template-01', "const name = 'Ada';\nconst greeting = 'Hej ' + name + '!';"],
+  ['template-01', "const name = 'Ada';\nconst greeting = `Hej Ada!`;"],
+  [
+    'destructuring-01',
+    "const user = { name: 'Ada', age: 36 };\nconst name = user.name;\nconst age = user.age;",
+  ],
+  [
+    'destructuring-02',
+    'const scores = [90, 75, 60];\nconst first = scores[0];\nconst second = scores[1];',
+  ],
+  [
+    'destructuring-03',
+    'function greet(user) {\n  return `Hej ${user.name}!`;\n}',
+  ],
+  [
+    'spread-01',
+    "const todos = ['Handla', 'Träna'];\nconst newTodos = todos;\nnewTodos.push('Plugga React');",
+  ],
+  [
+    'spread-01',
+    "const todos = ['Handla', 'Träna'];\nconst newTodos = ['Handla', 'Träna', 'Plugga React'];",
+  ],
+  [
+    'spread-02',
+    "const user = { name: 'Ada', age: 36 };\nconst olderUser = user;\nolderUser.age = 37;",
+  ],
+  [
+    'spread-02',
+    "const user = { name: 'Ada', age: 36 };\nconst olderUser = { age: 37, ...user };",
+  ],
+  [
+    'rest-01',
+    'const numbers = [1, 2, 3, 4];\nconst first = numbers[0];\nconst others = numbers.slice(1);',
+  ],
+  [
+    'rest-02',
+    "const user = { id: 1, name: 'Ada', age: 36 };\nconst id = user.id;\ndelete user.id;\nconst details = user;",
+  ],
+  [
+    'rest-03',
+    'function sum(a, b, c) {\n  return [a, b, c].reduce((t, n) => t + (n ?? 0), 0);\n}',
+  ],
+  [
+    'ternary-01',
+    "const getLabel = isLoggedIn => {\n  if (isLoggedIn) return 'Logga ut';\n  return 'Logga in';\n};",
+  ],
+  ['and-01', 'const getBadge = count => (count > 0 ? `${count} nya` : false);'],
+  ['and-01', 'const getBadge = count => count && `${count} nya`;'],
+  [
+    'modern-js-boss-01',
+    "const user = { id: 1, name: 'Ada', age: 36 };\nconst todos = ['Handla', 'Träna'];\nconst { id, ...profile } = user;\nconst updatedProfile = { ...profile, age: 37 };\nconst allTodos = [...todos, 'Plugga React'];\nconst [firstTodo, ...otherTodos] = allTodos;\nconst message = 'Ada har 3 uppgifter';",
+  ],
+  [
+    'modern-js-boss-01',
+    "const user = { id: 1, name: 'Ada', age: 36 };\nconst todos = ['Handla', 'Träna'];\nconst { id, ...profile } = user;\nprofile.age = 37;\nconst updatedProfile = profile;\nconst allTodos = [...todos, 'Plugga React'];\nconst [firstTodo, ...otherTodos] = allTodos;\nconst message = `${updatedProfile.name} har ${allTodos.length} uppgifter`;",
+  ],
 ];
 
 describe('alternativa svar', () => {
