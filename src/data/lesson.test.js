@@ -67,6 +67,12 @@ const correctAnswers = [
     'let total = 0;\nfor (let i = 1; i <= 4; i += 1) { total += i }',
   ],
   ['arrays-01', 'const numbers = [1,2,3]'],
+  ['arrays-04', "const fruits = ['äpple', 'banan']\nfruits.push(\"päron\")"],
+  ['objects-01', 'const user = {\n  age: 36,\n  name: "Ada",\n};'],
+  [
+    'objects-03',
+    "const users = [{ name: 'Ada' }, { name: 'Linus' }];\nconst secondName = users[1].name",
+  ],
   [
     'functions-03',
     'const multiply = (x, y) => x * y\nconst result = multiply(3, 4)',
@@ -89,6 +95,25 @@ const wrongAnswers = [
   [
     'arrays-boss-01',
     'const numbers = [10, 20, 30];\nconst count = 3;\nconst first = numbers[0];',
+  ],
+  [
+    'arrays-04',
+    "const fruits = ['äpple', 'banan', 'päron'];\nfruits.push('päron');",
+  ],
+  ['arrays-04', "const fruits = ['äpple', 'banan', 'päron'];"],
+  ['objects-01', 'const user = ["Ada", 36];'],
+  ['objects-01', 'const user = { name: "Ada", age: "36" };'],
+  [
+    'objects-02',
+    "const user = { name: 'Ada', age: 36 };\nconst userName = 'Ada';",
+  ],
+  [
+    'objects-03',
+    "const users = [{ name: 'Ada' }, { name: 'Linus' }];\nconst secondName = users[0].name;",
+  ],
+  [
+    'objects-boss-01',
+    "const users = [{ name: 'Ada', age: 36 }, { name: 'Linus', age: 28 }];\nconst count = users.length;\nconst firstName = 'Ada';\nconst secondAge = users[1].age;",
   ],
   ['functions-01', 'const addBonus = p => p + 5;'],
   [

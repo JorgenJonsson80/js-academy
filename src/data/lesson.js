@@ -358,6 +358,40 @@ for (let i = 1; i <= 4; i++) {
     ],
   },
   {
+    id: 'arrays-04',
+    xp: 10,
+    title: 'Lägg till ett värde',
+    track: 'arrays',
+    isBoss: false,
+    description:
+      'Metoden push lägger till ett värde sist i en array. Det fungerar även med const, eftersom push ändrar innehållet och inte vilken array variabeln pekar på.',
+    task: 'Uppgift: Lägg till "päron" sist i arrayen fruits med push.',
+    starterCode: `const fruits = ['äpple', 'banan'];
+
+`,
+    solution: `const fruits = ['äpple', 'banan'];
+fruits.push('päron');`,
+    hints: [
+      'Skriv arrayens namn följt av en punkt.',
+      'Metoden heter push och anropas med parenteser.',
+      'Skicka in texten "päron" som argument till push.',
+    ],
+    tests: [
+      {
+        description: 'fruits är ["äpple", "banan", "päron"]',
+        code: 'fruits',
+        expected: ['äpple', 'banan', 'päron'],
+      },
+      isConst('fruits'),
+    ],
+    sourceChecks: [
+      {
+        description: 'Värdet läggs till med fruits.push',
+        pattern: /fruits\s*\.\s*push\s*\(/,
+      },
+    ],
+  },
+  {
     id: 'arrays-boss-01',
     xp: 30,
     title: 'Boss: Undersök en array',
@@ -393,6 +427,174 @@ for (let i = 1; i <= 4; i++) {
       {
         description: 'first hämtas med numbers[0]',
         pattern: /numbers\s*\[\s*0\s*\]/,
+      },
+    ],
+  },
+  {
+    id: 'objects-01',
+    xp: 10,
+    title: 'Skapa ett objekt',
+    track: 'arrays',
+    isBoss: false,
+    description:
+      'Ett objekt samlar värden under namn, så kallade egenskaper. Det skrivs inuti { } med namn: värde, separerade med kommatecken.',
+    task: 'Uppgift: Skapa konstanten user som ett objekt med egenskapen name som har värdet "Ada" och egenskapen age som har värdet 36.',
+    starterCode: '// Skriv din kod här',
+    solution: `const user = { name: 'Ada', age: 36 };`,
+    hints: [
+      'Börja med const user = följt av { }.',
+      'Skriv varje egenskap som namn: värde.',
+      'Separera name och age med ett kommatecken.',
+    ],
+    tests: [
+      {
+        description: 'user är ett objekt',
+        code: 'typeof user === "object" && user !== null && !Array.isArray(user)',
+        expected: true,
+      },
+      { description: 'user.name är "Ada"', code: 'user.name', expected: 'Ada' },
+      { description: 'user.age är 36', code: 'user.age', expected: 36 },
+      isConst('user'),
+    ],
+  },
+  {
+    id: 'objects-02',
+    xp: 10,
+    title: 'Läs en egenskap',
+    track: 'arrays',
+    isBoss: false,
+    description:
+      'Med punktnotation, objekt.egenskap, läser du värdet av en egenskap.',
+    task: 'Uppgift: Skapa konstanten userName och hämta värdet av name ur user med punktnotation.',
+    starterCode: `const user = { name: 'Ada', age: 36 };
+
+`,
+    solution: `const user = { name: 'Ada', age: 36 };
+const userName = user.name;`,
+    hints: [
+      'Börja med const userName =.',
+      'Skriv objektets namn user följt av en punkt.',
+      'Avsluta med egenskapens namn, name.',
+    ],
+    tests: [
+      {
+        description: 'userName har värdet "Ada"',
+        code: 'userName',
+        expected: 'Ada',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Värdet hämtas med user.name',
+        pattern: /user\s*\.\s*name\b/,
+      },
+    ],
+  },
+  {
+    id: 'objects-03',
+    xp: 10,
+    title: 'En array av objekt',
+    track: 'arrays',
+    isBoss: false,
+    description:
+      'I React får du ofta data som en array av objekt, till exempel en lista med användare. Kombinera index och punktnotation för att nå ett värde.',
+    task: 'Uppgift: Skapa konstanten secondName och hämta name från andra användaren i users.',
+    starterCode: `const users = [
+  { name: 'Ada', age: 36 },
+  { name: 'Linus', age: 28 },
+];
+
+`,
+    solution: `const users = [
+  { name: 'Ada', age: 36 },
+  { name: 'Linus', age: 28 },
+];
+const secondName = users[1].name;`,
+    hints: [
+      'Börja med const secondName =.',
+      'Andra värdet i en array har index 1.',
+      'Skriv .name direkt efter users[1].',
+    ],
+    tests: [
+      {
+        description: 'secondName har värdet "Linus"',
+        code: 'secondName',
+        expected: 'Linus',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Värdet hämtas med users[1].name',
+        pattern: /users\s*\[\s*1\s*\]\s*\.\s*name\b/,
+      },
+    ],
+  },
+  {
+    id: 'objects-boss-01',
+    xp: 30,
+    title: 'Boss: En lista med användare',
+    track: 'arrays',
+    isBoss: true,
+    description: 'Kombinera arrayer, objekt, index och egenskaper.',
+    task: `Uppgift: Skapa konstanten users med två objekt:
+  { name: "Ada", age: 36 } och { name: "Linus", age: 28 }.
+  Skapa count med users.length.
+  Skapa firstName med name från första användaren.
+  Skapa secondAge med age från andra användaren.
+  Använd const i alla fyra deklarationer.`,
+    starterCode: '// Skriv din kod här',
+    solution: `const users = [
+  { name: 'Ada', age: 36 },
+  { name: 'Linus', age: 28 },
+];
+const count = users.length;
+const firstName = users[0].name;
+const secondAge = users[1].age;`,
+    hints: [],
+    tests: [
+      {
+        description: 'users har två objekt',
+        code: 'users.length',
+        expected: 2,
+      },
+      {
+        description: 'Första användaren heter "Ada" och är 36',
+        code: '[users[0].name, users[0].age]',
+        expected: ['Ada', 36],
+      },
+      {
+        description: 'Andra användaren heter "Linus" och är 28',
+        code: '[users[1].name, users[1].age]',
+        expected: ['Linus', 28],
+      },
+      { description: 'count har värdet 2', code: 'count', expected: 2 },
+      {
+        description: 'firstName har värdet "Ada"',
+        code: 'firstName',
+        expected: 'Ada',
+      },
+      {
+        description: 'secondAge har värdet 28',
+        code: 'secondAge',
+        expected: 28,
+      },
+      isConst('users'),
+      isConst('count'),
+      isConst('firstName'),
+      isConst('secondAge'),
+    ],
+    sourceChecks: [
+      {
+        description: 'count hämtas med users.length',
+        pattern: /users\s*\.\s*length\b/,
+      },
+      {
+        description: 'firstName hämtas med users[0].name',
+        pattern: /users\s*\[\s*0\s*\]\s*\.\s*name\b/,
+      },
+      {
+        description: 'secondAge hämtas med users[1].age',
+        pattern: /users\s*\[\s*1\s*\]\s*\.\s*age\b/,
       },
     ],
   },
