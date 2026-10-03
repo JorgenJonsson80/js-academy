@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { evaluate } from './evaluate';
 
-function passes(code, tests, sourceChecks) {
-  const { error, results } = evaluate(code, tests, sourceChecks);
+function passes(code, tests, sourceChecks, modules) {
+  const { error, results } = evaluate(code, tests, sourceChecks, modules);
   return !error && results.every(result => result.passed);
 }
 
@@ -60,5 +60,36 @@ describe('evaluate', () => {
     ];
     expect(passes('if (true) {}', [], checks)).toBe(true);
     expect(passes('if (true) {} else {}', [], checks)).toBe(false);
+  });
+
+  it('renderar en komponent skriven med JSX', () => {
+    const tests = [
+      {
+        description: 'Greeting renderar en rubrik',
+        code: '__render(<Greeting name="Ada" />)',
+        expected: '<h1 class="title">Hej Ada!</h1>',
+      },
+    ];
+    const code =
+      'function Greeting({ name }) {\n  return <h1 className="title">Hej {name}!</h1>;\n}';
+    expect(passes(code, tests)).toBe(true);
+  });
+
+  it('låter eleven importera från react', () => {
+    const tests = [
+      {
+        description: 'Fragment fungerar',
+        code: '__render(<App />)',
+        expected: '<p>a</p><p>b</p>',
+      },
+    ];
+    const code =
+      "import { Fragment } from 'react';\nexport default function App() {\n  return <Fragment><p>a</p><>{<p>b</p>}</></Fragment>;\n}";
+    expect(passes(code, tests, [], { fileName: 'App.jsx' })).toBe(true);
+  });
+
+  it('rapporterar fel i JSX som syntaxfel', () => {
+    const { error } = evaluate('const a = <h1>Hej</h2>;', []);
+    expect(error).toContain('Koden går inte att tolka');
   });
 });

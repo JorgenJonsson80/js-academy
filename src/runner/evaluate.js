@@ -1,6 +1,16 @@
 // Rättar elevens kod. Ren logik utan koppling till workern,
 // så att den kan testas direkt med Vitest.
-import { createModuleSystem, transformModule } from './modules';
+import * as React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { checkSyntax, transformJsx } from './jsx';
+import { createModuleSystem } from './modules';
+
+// Det som all kod i övningarna når. Testerna kan rendera en
+// komponent till HTML med __render(<Greeting />).
+const runtime = {
+  packages: { react: { ...React, default: React } },
+  globals: { __React: React, __render: renderToStaticMarkup },
+};
 
 function format(value) {
   if (typeof value === 'function') return 'en funktion';
@@ -32,8 +42,12 @@ function runTest(code, test, { fileName = 'main.js', files = {} }) {
     // Elevens kod och testuttrycket körs i samma scope,
     // så testet kan läsa variabler och anropa funktioner eleven skapat.
     // Testet når de andra filerna med __require('./app.js').
-    const modules = createModuleSystem({ ...files, [fileName]: code });
-    const actual = modules.runFile(fileName, code, `return (${test.code});`);
+    const modules = createModuleSystem({ ...files, [fileName]: code }, runtime);
+    const actual = modules.runFile(
+      fileName,
+      code,
+      `return ${transformJsx(`(${test.code})`)};`,
+    );
 
     return {
       description: test.description,
@@ -64,7 +78,7 @@ function runSourceCheck(code, check) {
 // modules: { fileName, files } för övningar med import och export.
 export function evaluate(code, tests, sourceChecks = [], modules = {}) {
   try {
-    new Function(transformModule(code));
+    checkSyntax(code);
   } catch (error) {
     return {
       error: `Koden går inte att tolka. Kontrollera stavningen och att alla ( ) och { } är parade.\n${error.name}: ${error.message}`,

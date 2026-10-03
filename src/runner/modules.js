@@ -6,6 +6,8 @@
 // Exporterna läses via getters, så som i riktiga moduler ser den som
 // importerar alltid det aktuella värdet.
 
+import { transformJsx } from './jsx';
+
 const NAME = '[A-Za-z_$][\\w$]*';
 
 function normalizePath(path) {
@@ -92,8 +94,18 @@ export function transformModule(source) {
   return `${exportLines.join(' ')}\n${code}`;
 }
 
+// Översätter både JSX och import/export.
+export function compile(source) {
+  return transformModule(transformJsx(source));
+}
+
 // Skapar ett modulsystem för filerna { 'math.js': '…' }.
-export function createModuleSystem(files) {
+// packages: paket som kan importeras utan ./, t.ex. { react: React }.
+// globals: namn som all kod når, t.ex. { __React: React }.
+export function createModuleSystem(
+  files,
+  { packages = {}, globals = {} } = {},
+) {
   const sources = Object.fromEntries(
     Object.entries(files).map(([path, source]) => [
       normalizePath(path),
@@ -110,18 +122,19 @@ export function createModuleSystem(files) {
   }
 
   function require(path) {
-    const key = normalizePath(path);
-    if (cache[key]) return cache[key];
     if (!path.startsWith('.')) {
+      if (path in packages) return packages[path];
       throw new Error(`Paketet '${path}' finns inte i den här övningen.`);
     }
+    const key = normalizePath(path);
+    if (cache[key]) return cache[key];
     if (!(key in sources)) {
       throw new Error(`Hittar ingen fil som heter '${path}'.`);
     }
 
     const { exports, exportBinding } = createExports();
     cache[key] = exports;
-    run(transformModule(sources[key]), exports, exportBinding);
+    run(compile(sources[key]), exports, exportBinding);
     return exports;
   }
 
@@ -149,15 +162,23 @@ export function createModuleSystem(files) {
       '__import',
       '__export',
       '__exports',
+      ...Object.keys(globals),
       `${code}\n${extraCode}`,
-    )(require, importBinding, exportBinding, exports);
+    )(
+      require,
+      importBinding,
+      exportBinding,
+      exports,
+      ...Object.values(globals),
+    );
   }
 
   // Kör en fil med extra kod i samma scope, t.ex. ett testuttryck.
+  // extraCode ska redan vara översatt med compile.
   function runFile(path, code, extraCode) {
     const { exports, exportBinding } = createExports();
     cache[normalizePath(path)] = exports;
-    return run(transformModule(code), exports, exportBinding, extraCode);
+    return run(compile(code), exports, exportBinding, extraCode);
   }
 
   return { require, runFile };
