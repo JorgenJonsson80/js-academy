@@ -93,6 +93,7 @@ function App() {
       code,
       lesson.tests,
       lesson.sourceChecks,
+      { fileName: lesson.fileName, files: lesson.files },
     );
     const isCorrect =
       !error && results.length > 0 && results.every(result => result.passed);

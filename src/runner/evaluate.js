@@ -1,5 +1,6 @@
 // Rättar elevens kod. Ren logik utan koppling till workern,
 // så att den kan testas direkt med Vitest.
+import { createModuleSystem, transformModule } from './modules';
 
 function format(value) {
   if (typeof value === 'function') return 'en funktion';
@@ -26,11 +27,13 @@ function isEqual(actual, expected) {
   return JSON.stringify(actual) === JSON.stringify(expected);
 }
 
-function runTest(code, test) {
+function runTest(code, test, { fileName = 'main.js', files = {} }) {
   try {
     // Elevens kod och testuttrycket körs i samma scope,
     // så testet kan läsa variabler och anropa funktioner eleven skapat.
-    const actual = new Function(`${code}\nreturn (${test.code});`)();
+    // Testet når de andra filerna med __require('./app.js').
+    const modules = createModuleSystem({ ...files, [fileName]: code });
+    const actual = modules.runFile(fileName, code, `return (${test.code});`);
 
     return {
       description: test.description,
@@ -58,9 +61,10 @@ function runSourceCheck(code, check) {
   };
 }
 
-export function evaluate(code, tests, sourceChecks = []) {
+// modules: { fileName, files } för övningar med import och export.
+export function evaluate(code, tests, sourceChecks = [], modules = {}) {
   try {
-    new Function(code);
+    new Function(transformModule(code));
   } catch (error) {
     return {
       error: `Koden går inte att tolka. Kontrollera stavningen och att alla ( ) och { } är parade.\n${error.name}: ${error.message}`,
@@ -71,7 +75,7 @@ export function evaluate(code, tests, sourceChecks = []) {
   return {
     error: null,
     results: [
-      ...tests.map(test => runTest(code, test)),
+      ...tests.map(test => runTest(code, test, modules)),
       ...sourceChecks.map(check => runSourceCheck(code, check)),
     ],
   };

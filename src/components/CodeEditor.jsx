@@ -1,7 +1,7 @@
-export default function CodeEditor({ code, onCodeChange }) {
+export default function CodeEditor({ code, onCodeChange, fileName }) {
   return (
     <>
-      <label htmlFor="code">Din kod</label>
+      <label htmlFor="code">Din kod{fileName && ` (${fileName})`}</label>
       <textarea
         id="code"
         rows={8}

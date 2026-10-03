@@ -1664,4 +1664,336 @@ const todos = ['Handla', 'Träna'];
       },
     ],
   },
+  {
+    id: 'modules-01',
+    title: 'Exportera en funktion',
+    xp: 10,
+    track: 'modules',
+    isBoss: false,
+    description:
+      "I React delas koden upp i många filer, så kallade moduler. Allt i en fil är privat tills du exporterar det. Skriver du export framför en funktion kan andra filer importera den med import { add } from './math.js'. Det kallas named export.",
+    task: 'Uppgift: app.js försöker importera add från din fil math.js. Exportera add så att app.js fungerar.',
+    fileName: 'math.js',
+    files: {
+      'app.js': `import { add } from './math.js';
+
+export const result = add(2, 3);`,
+    },
+    starterCode: `function add(a, b) {
+  return a + b;
+}`,
+    solution: `export function add(a, b) {
+  return a + b;
+}`,
+    hints: [
+      'Funktionen är redan klar, den behöver bara exporteras.',
+      'Ordet export skrivs först på raden.',
+      'Skriv export function add(a, b) {',
+    ],
+    tests: [
+      {
+        description: 'math.js exporterar add',
+        code: "typeof __require('./math.js').add",
+        expected: 'function',
+      },
+      {
+        description: 'result i app.js är 5',
+        code: "__require('./app.js').result",
+        expected: 5,
+      },
+    ],
+  },
+  {
+    id: 'modules-02',
+    title: 'Exportera flera saker',
+    xp: 10,
+    track: 'modules',
+    isBoss: false,
+    description:
+      'En fil kan ha hur många named exports som helst. export fungerar framför const också, så både vanliga värden och arrow functions kan exporteras.',
+    task: 'Uppgift: Exportera konstanten PI med värdet 3.14 och arrow functionen double, som returnerar talet gånger 2. app.js importerar båda.',
+    fileName: 'math.js',
+    files: {
+      'app.js': `import { PI, double } from './math.js';
+
+export const result = double(PI);`,
+    },
+    starterCode: '// Skriv din kod här',
+    solution: `export const PI = 3.14;
+export const double = number => number * 2;`,
+    hints: [
+      'Du behöver två rader, en för PI och en för double.',
+      'Börja varje rad med export const.',
+      'Skriv export const double = number => number * 2;',
+    ],
+    tests: [
+      {
+        description: 'math.js exporterar PI med värdet 3.14',
+        code: "__require('./math.js').PI",
+        expected: 3.14,
+      },
+      {
+        description: 'double(5) returnerar 10',
+        code: "__require('./math.js').double(5)",
+        expected: 10,
+      },
+      {
+        description: 'result i app.js är 6.28',
+        code: "__require('./app.js').result",
+        expected: 6.28,
+      },
+    ],
+  },
+  {
+    id: 'modules-03',
+    title: 'Importera named exports',
+    xp: 10,
+    track: 'modules',
+    isBoss: false,
+    description:
+      "För att använda något från en annan fil importerar du det: import { add, multiply } from './math.js'. Namnen inom { } måste vara exakt samma som i exporten. ./ betyder att filen ligger i samma mapp.",
+    task: 'Uppgift: Importera add och multiply från ./math.js med en import. Skapa sedan total = add(2, 3) och product = multiply(4, 5).',
+    fileName: 'app.js',
+    files: {
+      'math.js': `export function add(a, b) {
+  return a + b;
+}
+
+export function multiply(a, b) {
+  return a * b;
+}`,
+    },
+    starterCode: '// Skriv din kod här',
+    solution: `import { add, multiply } from './math.js';
+
+const total = add(2, 3);
+const product = multiply(4, 5);`,
+    hints: [
+      'Importer skrivs överst i filen.',
+      "Börja med import { } from './math.js';",
+      'Skriv add, multiply inom { } och skapa sedan total och product.',
+    ],
+    tests: [
+      { description: 'total är 5', code: 'total', expected: 5 },
+      { description: 'product är 20', code: 'product', expected: 20 },
+      {
+        description: 'add och multiply är importerade från math.js',
+        code: "add === __require('./math.js').add && multiply === __require('./math.js').multiply",
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Båda importeras i samma import',
+        pattern:
+          /import\s*\{\s*(add\s*,\s*multiply|multiply\s*,\s*add)\s*,?\s*\}/,
+      },
+    ],
+  },
+  {
+    id: 'modules-04',
+    title: 'Default export',
+    xp: 10,
+    track: 'modules',
+    isBoss: false,
+    description:
+      "En fil kan också ha en default export, filens huvudsak. Den importeras utan { }: import greet from './greet.js'. React-komponenter brukar exporteras så: export default function App() { … }.",
+    task: 'Uppgift: Skriv funktionen greet med parametern name. Den ska returnera "Hej Ada!" (med name i stället för Ada). Gör greet till filens default export.',
+    fileName: 'greet.js',
+    files: {
+      'app.js': `import greet from './greet.js';
+
+export const message = greet('Ada');`,
+    },
+    starterCode: '// Skriv din kod här',
+    solution: `export default function greet(name) {
+  return \`Hej \${name}!\`;
+}`,
+    hints: [
+      'Börja med function greet(name) och returnera en template literal.',
+      'Skriv export default framför function.',
+      'Det blir export default function greet(name) {',
+    ],
+    tests: [
+      {
+        description: 'greet.js har en default export',
+        code: "typeof __require('./greet.js').default",
+        expected: 'function',
+      },
+      {
+        description: 'message i app.js är "Hej Ada!"',
+        code: "__require('./app.js').message",
+        expected: 'Hej Ada!',
+      },
+      {
+        description: 'greet("Linus") returnerar "Hej Linus!"',
+        code: "__require('./greet.js').default('Linus')",
+        expected: 'Hej Linus!',
+      },
+    ],
+  },
+  {
+    id: 'modules-05',
+    title: 'Importera default',
+    xp: 10,
+    track: 'modules',
+    isBoss: false,
+    description:
+      "En default export har inget fast namn när den importeras. Du väljer namnet själv: import format from './formatPrice.js' fungerar lika bra som import formatPrice from ….",
+    task: 'Uppgift: Importera default exporten från ./formatPrice.js och döp den till format. Skapa sedan price = format(99).',
+    fileName: 'app.js',
+    files: {
+      'formatPrice.js': `export default function formatPrice(amount) {
+  return \`\${amount} kr\`;
+}`,
+    },
+    starterCode: '// Skriv din kod här',
+    solution: `import format from './formatPrice.js';
+
+const price = format(99);`,
+    hints: [
+      'En default export importeras utan { }.',
+      'Namnet efter import bestämmer du själv.',
+      "Skriv import format from './formatPrice.js';",
+    ],
+    tests: [
+      { description: 'price är "99 kr"', code: 'price', expected: '99 kr' },
+      {
+        description: 'format är default exporten från formatPrice.js',
+        code: "format === __require('./formatPrice.js').default",
+        expected: true,
+      },
+    ],
+  },
+  {
+    id: 'modules-06',
+    title: 'Default och named i samma import',
+    xp: 10,
+    track: 'modules',
+    isBoss: false,
+    description:
+      "En fil kan ha både en default export och named exports. Då importerar du dem tillsammans, default först: import addTodo, { MAX_TODOS } from './todos.js'. Du kommer att se samma mönster i React: import React, { useState } from 'react'. Paket skrivs utan ./.",
+    task: "Uppgift: Importera addTodo och MAX_TODOS från ./todos.js på en rad. Skapa todos = addTodo(['Handla'], 'Träna') och isFull, som är true om todos.length är minst MAX_TODOS.",
+    fileName: 'app.js',
+    files: {
+      'todos.js': `export const MAX_TODOS = 3;
+
+export default function addTodo(todos, text) {
+  return [...todos, text];
+}`,
+    },
+    starterCode: '// Skriv din kod här',
+    solution: `import addTodo, { MAX_TODOS } from './todos.js';
+
+const todos = addTodo(['Handla'], 'Träna');
+const isFull = todos.length >= MAX_TODOS;`,
+    hints: [
+      'addTodo är default exporten och MAX_TODOS en named export.',
+      'Default kommer först, sedan ett komma och { } för named exports.',
+      "Skriv import addTodo, { MAX_TODOS } from './todos.js';",
+    ],
+    tests: [
+      {
+        description: 'todos är ["Handla", "Träna"]',
+        code: 'todos',
+        expected: ['Handla', 'Träna'],
+      },
+      { description: 'isFull är false', code: 'isFull', expected: false },
+      {
+        description: 'addTodo och MAX_TODOS är importerade från todos.js',
+        code: "addTodo === __require('./todos.js').default && MAX_TODOS === 3",
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Båda importeras på en rad: import addTodo, { MAX_TODOS }',
+        pattern: /import\s+addTodo\s*,\s*\{\s*MAX_TODOS\s*,?\s*\}\s*from/,
+      },
+      {
+        description: 'isFull använder MAX_TODOS i stället för siffran 3',
+        pattern: /\b3\b/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'modules-boss-01',
+    title: 'Boss: Bygg en modul',
+    xp: 30,
+    track: 'modules',
+    isBoss: true,
+    description:
+      'Nu skriver du en fil som både importerar och exporterar. Läs app.js och config.js noga. De visar vad din fil måste exportera och vad den kan importera.',
+    task: `Uppgift: Skriv todoUtils.js.
+  Importera MAX_TODOS från ./config.js.
+  Default export: funktionen addTodo(todos, text).
+  Är todos.length minst MAX_TODOS returneras todos oförändrad.
+  Annars returneras en ny array med spread: todos följt av text.
+  Named export: arrow functionen countTodos(todos).
+  Den returnerar en template literal som "2 av 3", med MAX_TODOS som sista tal.`,
+    fileName: 'todoUtils.js',
+    files: {
+      'config.js': 'export const MAX_TODOS = 3;',
+      'app.js': `import addTodo, { countTodos } from './todoUtils.js';
+
+const one = addTodo([], 'Handla');
+const two = addTodo(one, 'Träna');
+const three = addTodo(two, 'Plugga React');
+const four = addTodo(three, 'Städa');
+
+export const todos = four;
+export const status = countTodos(four);
+export const firstList = one;`,
+    },
+    starterCode: '// Skriv din kod här',
+    solution: `import { MAX_TODOS } from './config.js';
+
+export default function addTodo(todos, text) {
+  if (todos.length >= MAX_TODOS) return todos;
+  return [...todos, text];
+}
+
+export const countTodos = todos => \`\${todos.length} av \${MAX_TODOS}\`;`,
+    hints: [],
+    tests: [
+      {
+        description: 'todos i app.js är ["Handla", "Träna", "Plugga React"]',
+        code: "__require('./app.js').todos",
+        expected: ['Handla', 'Träna', 'Plugga React'],
+      },
+      {
+        description: 'status i app.js är "3 av 3"',
+        code: "__require('./app.js').status",
+        expected: '3 av 3',
+      },
+      {
+        description: 'addTodo ändrar inte arrayen den får',
+        code: "__require('./app.js').firstList",
+        expected: ['Handla'],
+      },
+      {
+        description: 'countTodos(["Handla"]) returnerar "1 av 3"',
+        code: "__require('./todoUtils.js').countTodos(['Handla'])",
+        expected: '1 av 3',
+      },
+    ],
+    sourceChecks: [
+      {
+        description:
+          "MAX_TODOS importeras: import { MAX_TODOS } from './config.js'",
+        pattern:
+          /import\s*\{\s*MAX_TODOS\s*,?\s*\}\s*from\s*['"]\.\/config(\.js)?['"]/,
+      },
+      {
+        description: 'Koden använder MAX_TODOS i stället för siffran 3',
+        pattern: /\b3\b/,
+        forbidden: true,
+      },
+      {
+        description: 'Den nya arrayen skapas med spread: [...todos, text]',
+        pattern: /\[\s*\.\.\.\s*todos\s*,/,
+      },
+    ],
+  },
 ];

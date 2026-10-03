@@ -41,7 +41,19 @@ export default function LessonPanel({
 
       <p>{lesson.description}</p>
       <p>{lesson.task}</p>
-      <CodeEditor code={code} onCodeChange={onCodeChange} />
+      {Object.entries(lesson.files ?? {}).map(([fileName, source]) => (
+        <figure className="lesson-file" key={fileName}>
+          <figcaption>{fileName}</figcaption>
+          <pre>
+            <code>{source}</code>
+          </pre>
+        </figure>
+      ))}
+      <CodeEditor
+        code={code}
+        onCodeChange={onCodeChange}
+        fileName={lesson.fileName}
+      />
       <button
         className="primary-button"
         type="button"

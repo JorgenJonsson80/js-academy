@@ -85,6 +85,24 @@ button:disabled {
   overflow-x: auto;
 }
 
+.lesson-file {
+  margin: 0 0 16px;
+  padding: 8px 12px;
+  background: #0f172a;
+  border: 1px solid #475569;
+  border-radius: 8px;
+}
+
+.lesson-file figcaption {
+  color: #94a3b8;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.lesson-file pre {
+  margin: 8px 0 0;
+}
+
 @media (min-width: 900px) {
   .academy-layout {
     grid-template-columns: 280px minmax(0, 1fr);

@@ -2,6 +2,6 @@
 import { evaluate } from './evaluate';
 
 self.onmessage = event => {
-  const { code, tests, sourceChecks } = event.data;
-  self.postMessage(evaluate(code, tests, sourceChecks));
+  const { code, tests, sourceChecks, modules } = event.data;
+  self.postMessage(evaluate(code, tests, sourceChecks, modules));
 };

@@ -4,7 +4,10 @@ import { lessons } from './lesson';
 import { tracks } from './tracks';
 
 function check(lesson, code) {
-  const { error, results } = evaluate(code, lesson.tests, lesson.sourceChecks);
+  const { error, results } = evaluate(code, lesson.tests, lesson.sourceChecks, {
+    fileName: lesson.fileName,
+    files: lesson.files,
+  });
   const failed = results.filter(result => !result.passed);
   return {
     passed: !error && failed.length === 0,
@@ -115,6 +118,27 @@ const correctAnswers = [
   [
     'ternary-01',
     "function getLabel(isLoggedIn) {\n  return isLoggedIn ? 'Logga ut' : 'Logga in';\n}",
+  ],
+  ['modules-01', 'const add = (a, b) => a + b;\nexport { add };'],
+  [
+    'modules-02',
+    'const PI = 3.14;\nfunction double(n) { return n * 2; }\nexport { PI, double };',
+  ],
+  [
+    'modules-03',
+    'import {\n  multiply,\n  add,\n} from "./math";\nconst total = add(2, 3);\nconst product = multiply(4, 5);',
+  ],
+  [
+    'modules-04',
+    'const greet = name => `Hej ${name}!`;\nexport default greet;',
+  ],
+  [
+    'modules-05',
+    "import format from './formatPrice';\nconst price = format(99);",
+  ],
+  [
+    'modules-boss-01',
+    "import { MAX_TODOS } from './config.js';\n\nconst addTodo = (todos, text) =>\n  todos.length >= MAX_TODOS ? todos : [...todos, text];\n\nfunction countTodos(todos) {\n  return `${todos.length} av ${MAX_TODOS}`;\n}\n\nexport { countTodos };\nexport default addTodo;",
   ],
 ];
 
@@ -252,6 +276,40 @@ const wrongAnswers = [
   [
     'modern-js-boss-01',
     "const user = { id: 1, name: 'Ada', age: 36 };\nconst todos = ['Handla', 'Träna'];\nconst { id, ...profile } = user;\nprofile.age = 37;\nconst updatedProfile = profile;\nconst allTodos = [...todos, 'Plugga React'];\nconst [firstTodo, ...otherTodos] = allTodos;\nconst message = `${updatedProfile.name} har ${allTodos.length} uppgifter`;",
+  ],
+  [
+    'modules-01',
+    'function add(a, b) {\n  return a + b;\n}\nexport default add;',
+  ],
+  ['modules-02', 'const PI = 3.14;\nexport const double = n => n * 2;'],
+  [
+    'modules-03',
+    'function add(a, b) { return a + b; }\nfunction multiply(a, b) { return a * b; }\nconst total = add(2, 3);\nconst product = multiply(4, 5);',
+  ],
+  [
+    'modules-03',
+    "import { add } from './math.js';\nimport { multiply } from './math.js';\nconst total = add(2, 3);\nconst product = multiply(4, 5);",
+  ],
+  ['modules-04', 'export function greet(name) {\n  return `Hej ${name}!`;\n}'],
+  [
+    'modules-05',
+    "import { format } from './formatPrice.js';\nconst price = format(99);",
+  ],
+  [
+    'modules-05',
+    "import { formatPrice } from './formatPrice.js';\nconst format = formatPrice;\nconst price = format(99);",
+  ],
+  [
+    'modules-06',
+    "import { addTodo, MAX_TODOS } from './todos.js';\nconst todos = addTodo(['Handla'], 'Träna');\nconst isFull = todos.length >= MAX_TODOS;",
+  ],
+  [
+    'modules-boss-01',
+    "import { MAX_TODOS } from './config.js';\nexport default function addTodo(todos, text) {\n  if (todos.length >= MAX_TODOS) return todos;\n  todos.push(text);\n  return [...todos, text].slice(0, -1);\n}\nexport const countTodos = todos => `${todos.length} av ${MAX_TODOS}`;",
+  ],
+  [
+    'modules-boss-01',
+    "import { MAX_TODOS } from './config.js';\nexport function addTodo(todos, text) {\n  if (todos.length >= MAX_TODOS) return todos;\n  return [...todos, text];\n}\nexport const countTodos = todos => `${todos.length} av ${MAX_TODOS}`;",
   ],
 ];
 
