@@ -35,4 +35,9 @@ export const tracks = [
     title: 'React: JSX',
     reward: { emoji: '💻', name: 'Laptop' },
   },
+  {
+    id: 'props',
+    title: 'React: Komponenter & props',
+    reward: { emoji: '🧩', name: 'Pusselbit' },
+  },
 ];

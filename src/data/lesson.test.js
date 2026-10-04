@@ -170,6 +170,31 @@ const correctAnswers = [
     'jsx-boss-01',
     "const user = { name: 'Ada Lovelace', title: 'Programmerare', avatar: '/favicon.svg' };\nconst App = () => {\n  const { name, title, avatar } = user;\n  return (\n    <div className=\"card\">\n      <img alt={name} src={avatar} />\n      <h2>{name}</h2>\n      <p>{title.toUpperCase()}</p>\n    </div>\n  );\n};",
   ],
+  [
+    'props-01',
+    'const Logo = () => <span>⚛️ Academy</span>;\nconst App = () => <header><Logo/></header>;',
+  ],
+  ['props-03', 'const Greeting = ({ name }) => <h1>Hej {name}!</h1>;'],
+  [
+    'props-04',
+    'function Badge({ count, label }) {\n  return <span>{`${label}: ${count}`}</span>;\n}',
+  ],
+  [
+    'props-05',
+    "function Price({ amount, onSale }) {\n  if (typeof amount !== 'number') {\n    return <p>amount ska vara ett tal, inte text</p>;\n  }\n  return <p>{onSale ? 'REA ' : ''}{amount} kr</p>;\n}\nfunction App() {\n  return <Price onSale amount={99} />;\n}",
+  ],
+  [
+    'props-06',
+    'const Button = ({ variant = "primary", label }) => (\n  <button className={variant}>{label}</button>\n);',
+  ],
+  [
+    'props-07',
+    'function Card(props) {\n  return <section className="card"><h2>{props.title}</h2>{props.children}</section>;\n}',
+  ],
+  [
+    'props-boss-01',
+    "const Avatar = ({ name, src }) => <img alt={name} src={src} />;\nconst Card = ({ children }) => <div className=\"card\">{children}</div>;\nfunction ProfileCard({ user, isOnline = false }) {\n  const { name, avatar } = user;\n  return (\n    <Card>\n      <Avatar name={name} src={avatar} />\n      <h2>{name}</h2>\n      <p>{isOnline ? 'Online' : 'Offline'}</p>\n    </Card>\n  );\n}",
+  ],
 ];
 
 // Vanliga fel och genvägar som ska underkännas.
@@ -375,6 +400,44 @@ const wrongAnswers = [
   [
     'jsx-boss-01',
     "const user = { name: 'Ada Lovelace', title: 'Programmerare', avatar: '/favicon.svg' };\nfunction App() {\n  return (\n    <div className=\"card\">\n      <img src={user.avatar} alt={user.name} />\n      <h2>Ada Lovelace</h2>\n      <p>{'PROGRAMMERARE'.toUpperCase()}</p>\n    </div>\n  );\n}",
+  ],
+  [
+    'props-01',
+    'function Logo() {\n  return <span>⚛️ Academy</span>;\n}\nfunction App() {\n  return <header><span>⚛️ Academy</span></header>;\n}',
+  ],
+  [
+    'props-01',
+    'function Logo() {\n  return <span>⚛️ Academy</span>;\n}\nfunction App() {\n  return <header><logo /></header>;\n}',
+  ],
+  [
+    'props-02',
+    'function Greeting(props) {\n  return <h1>Hej {props.name}!</h1>;\n}\nfunction App() {\n  return <Greeting props="Ada" />;\n}',
+  ],
+  [
+    'props-02',
+    'function Greeting(props) {\n  return <h1>Hej {props.name}!</h1>;\n}\nfunction App() {\n  return <Greeting name={name} />;\n}',
+  ],
+  ['props-03', 'function Greeting(props) {\n  return <h1>Hej Ada!</h1>;\n}'],
+  ['props-03', 'function Greeting(name) {\n  return <h1>Hej {name}!</h1>;\n}'],
+  [
+    'props-04',
+    'function Badge(props) {\n  return <span>{props.label}: {props.count}</span>;\n}',
+  ],
+  [
+    'props-05',
+    "function Price({ amount, onSale }) {\n  if (typeof amount !== 'number') {\n    return <p>amount ska vara ett tal, inte text</p>;\n  }\n  return <p>{onSale ? 'REA ' : ''}{amount} kr</p>;\n}\nfunction App() {\n  return <Price amount=\"99\" onSale=\"true\" />;\n}",
+  ],
+  [
+    'props-06',
+    'function Button({ label, variant }) {\n  return <button className={variant}>{label}</button>;\n}',
+  ],
+  [
+    'props-07',
+    'function Card({ title }) {\n  return <section className="card"><h2>{title}</h2></section>;\n}',
+  ],
+  [
+    'props-boss-01',
+    'function Avatar({ src, name }) {\n  return <img src={src} alt={name} />;\n}\nfunction Card({ children }) {\n  return <div className="card">{children}</div>;\n}\nfunction ProfileCard({ user, isOnline = false }) {\n  return (\n    <div className="card">\n      <img src={user.avatar} alt={user.name} />\n      <h2>{user.name}</h2>\n      <p>{isOnline ? \'Online\' : \'Offline\'}</p>\n    </div>\n  );\n}',
   ],
 ];
 

@@ -2296,4 +2296,358 @@ function App() {
       },
     ],
   },
+  {
+    id: 'props-01',
+    title: 'Komponent i komponent',
+    xp: 10,
+    track: 'props',
+    isBoss: false,
+    description:
+      'En React-app byggs av komponenter i komponenter. En komponent du skrivit används som en egen tagg: <Logo />. Taggen måste börja med stor bokstav, för <logo /> tror React är en HTML-tagg.',
+    task: 'Uppgift: Låt App returnera en header med komponenten Logo inuti.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `function Logo() {
+  return <span>⚛️ Academy</span>;
+}
+
+function App() {
+  return <header></header>;
+}`,
+    solution: `function Logo() {
+  return <span>⚛️ Academy</span>;
+}
+
+function App() {
+  return (
+    <header>
+      <Logo />
+    </header>
+  );
+}`,
+    hints: [
+      'Logo är redan klar, den ska bara användas.',
+      'En komponent används som en tagg med sitt namn.',
+      'Skriv <Logo /> mellan <header> och </header>.',
+    ],
+    tests: [
+      {
+        description: 'App renderar <header><span>⚛️ Academy</span></header>',
+        code: '__render(<App />)',
+        expected: '<header><span>⚛️ Academy</span></header>',
+      },
+    ],
+    sourceChecks: [
+      { description: 'App använder <Logo />', pattern: /<Logo\s*\/>/ },
+    ],
+  },
+  {
+    id: 'props-02',
+    title: 'Skicka en prop',
+    xp: 10,
+    track: 'props',
+    isBoss: false,
+    description:
+      'Props är det som skickas in i en komponent, som attribut på taggen: <Greeting name="Ada" />. Till vänster om = står propens namn, det som komponenten tar emot. Till höger står värdet. Komponenten nedan läser props.name.',
+    task: 'Uppgift: Låt App returnera Greeting med propen name satt till "Ada".',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `function Greeting(props) {
+  return <h1>Hej {props.name}!</h1>;
+}
+
+function App() {
+  return <Greeting />;
+}`,
+    solution: `function Greeting(props) {
+  return <h1>Hej {props.name}!</h1>;
+}
+
+function App() {
+  return <Greeting name="Ada" />;
+}`,
+    hints: [
+      'Greeting läser props.name, så propen måste heta name.',
+      'Props skrivs som attribut: namn="värde".',
+      'Skriv <Greeting name="Ada" />',
+    ],
+    tests: [
+      {
+        description: 'App renderar <h1>Hej Ada!</h1>',
+        code: '__render(<App />)',
+        expected: '<h1>Hej Ada!</h1>',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'App skickar name till Greeting',
+        pattern: /<Greeting\s+name=/,
+      },
+    ],
+  },
+  {
+    id: 'props-03',
+    title: 'Ta emot props',
+    xp: 10,
+    track: 'props',
+    isBoss: false,
+    description:
+      'En komponent får alla props i ett objekt, sitt första argument. <Greeting name="Ada" /> anropar Greeting med { name: "Ada" }. Därför läser man värdet med props.name.',
+    task: 'Uppgift: Skriv komponenten Greeting med parametern props. Den ska returnera en h1 med "Hej Ada!", där namnet hämtas från props.name.',
+    fileName: 'App.jsx',
+    preview: '<Greeting name="Ada" />',
+    starterCode: '// Skriv din kod här',
+    solution: `function Greeting(props) {
+  return <h1>Hej {props.name}!</h1>;
+}`,
+    hints: [
+      'Börja med function Greeting(props) { }.',
+      'Namnet finns i props.name.',
+      'Returnera <h1>Hej {props.name}!</h1>',
+    ],
+    tests: [
+      {
+        description: '<Greeting name="Ada" /> renderar <h1>Hej Ada!</h1>',
+        code: '__render(<Greeting name="Ada" />)',
+        expected: '<h1>Hej Ada!</h1>',
+      },
+      {
+        description: '<Greeting name="Linus" /> renderar <h1>Hej Linus!</h1>',
+        code: '__render(<Greeting name="Linus" />)',
+        expected: '<h1>Hej Linus!</h1>',
+      },
+    ],
+  },
+  {
+    id: 'props-04',
+    title: 'Destructuring av props',
+    xp: 10,
+    track: 'props',
+    isBoss: false,
+    description:
+      'Oftast plockar man ut props direkt i parameterlistan med destructuring: function Badge({ label, count }). Då slipper man skriva props. framför varje namn. Det är samma destructuring som i Modern JS-banan.',
+    task: 'Uppgift: Skriv komponenten Badge som tar emot label och count med destructuring. Den ska returnera en span med texten "Nya: 3" (label, kolon, count).',
+    fileName: 'App.jsx',
+    preview: '<Badge label="Nya" count={3} />',
+    starterCode: '// Skriv din kod här',
+    solution: `function Badge({ label, count }) {
+  return (
+    <span>
+      {label}: {count}
+    </span>
+  );
+}`,
+    hints: [
+      'Börja med function Badge({ label, count }) { }.',
+      'label och count är vanliga variabler inuti funktionen.',
+      'Returnera <span>{label}: {count}</span>',
+    ],
+    tests: [
+      {
+        description:
+          '<Badge label="Nya" count={3} /> renderar <span>Nya: 3</span>',
+        code: '__render(<Badge label="Nya" count={3} />)',
+        expected: '<span>Nya: 3</span>',
+      },
+      {
+        description:
+          '<Badge label="Olästa" count={12} /> renderar <span>Olästa: 12</span>',
+        code: '__render(<Badge label="Olästa" count={12} />)',
+        expected: '<span>Olästa: 12</span>',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Props plockas ut med ({ label, count })',
+        pattern:
+          /\(\s*\{\s*(label\s*,\s*count|count\s*,\s*label)\s*,?\s*\}\s*\)/,
+      },
+    ],
+  },
+  {
+    id: 'props-05',
+    title: 'Tal och booleans som props',
+    xp: 10,
+    track: 'props',
+    isBoss: false,
+    description:
+      'Med citattecken blir en prop alltid text: amount="99" är strängen "99". Allt annat skickas inom { }: amount={99} är talet 99 och onSale={true} är en boolean. Skriver du bara onSale utan värde blir den också true.',
+    task: 'Uppgift: Låt App returnera Price med amount satt till talet 99 och onSale satt till true.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `function Price({ amount, onSale }) {
+  if (typeof amount !== 'number') {
+    return <p>amount ska vara ett tal, inte text</p>;
+  }
+  return <p>{onSale ? 'REA ' : ''}{amount} kr</p>;
+}
+
+function App() {
+  return <Price />;
+}`,
+    solution: `function Price({ amount, onSale }) {
+  if (typeof amount !== 'number') {
+    return <p>amount ska vara ett tal, inte text</p>;
+  }
+  return <p>{onSale ? 'REA ' : ''}{amount} kr</p>;
+}
+
+function App() {
+  return <Price amount={99} onSale={true} />;
+}`,
+    hints: [
+      'Talet 99 ska skickas utan citattecken.',
+      'Värden som inte är text skrivs inom { }.',
+      'Skriv <Price amount={99} onSale={true} />',
+    ],
+    tests: [
+      {
+        description: 'App renderar <p>REA 99 kr</p>',
+        code: '__render(<App />)',
+        expected: '<p>REA 99 kr</p>',
+      },
+    ],
+  },
+  {
+    id: 'props-06',
+    title: 'Standardvärden',
+    xp: 10,
+    track: 'props',
+    isBoss: false,
+    description:
+      'Skickas inte en prop blir den undefined. Med ett standardvärde i destructuringen, { variant = "primary" }, får den ett värde ändå. Det är vanligt för props som oftast har samma värde.',
+    task: 'Uppgift: Skriv komponenten Button med props label och variant, där variant har standardvärdet "primary". Returnera en button med label som text och variant som className.',
+    fileName: 'App.jsx',
+    preview:
+      '<><Button label="Spara" /> <Button label="Ta bort" variant="danger" /></>',
+    starterCode: '// Skriv din kod här',
+    solution: `function Button({ label, variant = 'primary' }) {
+  return <button className={variant}>{label}</button>;
+}`,
+    hints: [
+      'Börja med function Button({ label, variant }) och lägg till standardvärdet.',
+      "Standardvärdet skrivs variant = 'primary' i destructuringen.",
+      'Returnera <button className={variant}>{label}</button>',
+    ],
+    tests: [
+      {
+        description: '<Button label="Spara" /> får klassen "primary"',
+        code: '__render(<Button label="Spara" />)',
+        expected: '<button class="primary">Spara</button>',
+      },
+      {
+        description:
+          '<Button label="Ta bort" variant="danger" /> får klassen "danger"',
+        code: '__render(<Button label="Ta bort" variant="danger" />)',
+        expected: '<button class="danger">Ta bort</button>',
+      },
+    ],
+  },
+  {
+    id: 'props-07',
+    title: 'children',
+    xp: 10,
+    track: 'props',
+    isBoss: false,
+    description:
+      'Det du skriver mellan start- och sluttaggen skickas med som propen children: <Card title="Hej"><p>Text</p></Card>. På så sätt kan en komponent vara en ram runt vilket innehåll som helst.',
+    task: 'Uppgift: Skriv komponenten Card med props title och children. Returnera en section med klassen "card", med en h2 med title och sedan children.',
+    fileName: 'App.jsx',
+    preview: '<Card title="Dagens tips"><p>Props flödar nedåt.</p></Card>',
+    starterCode: '// Skriv din kod här',
+    solution: `function Card({ title, children }) {
+  return (
+    <section className="card">
+      <h2>{title}</h2>
+      {children}
+    </section>
+  );
+}`,
+    hints: [
+      'Börja med function Card({ title, children }) { }.',
+      'children används som vilket värde som helst: {children}.',
+      'Lägg {children} efter h2:n inuti section.',
+    ],
+    tests: [
+      {
+        description: 'Card renderar title och children',
+        code: '__render(<Card title="Hej"><p>Text</p></Card>)',
+        expected: '<section class="card"><h2>Hej</h2><p>Text</p></section>',
+      },
+      {
+        description: 'Card fungerar med annat innehåll',
+        code: '__render(<Card title="Lista"><ul><li>A</li></ul></Card>)',
+        expected:
+          '<section class="card"><h2>Lista</h2><ul><li>A</li></ul></section>',
+      },
+    ],
+  },
+  {
+    id: 'props-boss-01',
+    title: 'Boss: Profilkort i delar',
+    xp: 30,
+    track: 'props',
+    isBoss: true,
+    description:
+      'Dela upp ett profilkort i små komponenter som får allt de behöver via props.',
+    task: `Uppgift: Skriv tre komponenter.
+  Avatar({ src, name }): en img med src och alt satt till name.
+  Card({ children }): en div med klassen "card" runt children.
+  ProfileCard({ user, isOnline = false }):
+    ett Card med Avatar (src från user.avatar, name från user.name),
+    en h2 med user.name och en p med "Online" eller "Offline".
+  ProfileCard ska använda Card och Avatar.`,
+    fileName: 'App.jsx',
+    preview:
+      "<ProfileCard user={{ name: 'Ada', avatar: '/favicon.svg' }} isOnline />",
+    starterCode: '// Skriv din kod här',
+    solution: `function Avatar({ src, name }) {
+  return <img src={src} alt={name} />;
+}
+
+function Card({ children }) {
+  return <div className="card">{children}</div>;
+}
+
+function ProfileCard({ user, isOnline = false }) {
+  return (
+    <Card>
+      <Avatar src={user.avatar} name={user.name} />
+      <h2>{user.name}</h2>
+      <p>{isOnline ? 'Online' : 'Offline'}</p>
+    </Card>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Avatar renderar en img med src och alt',
+        code: '/^<img(?=[^>]*\\bsrc="\\/a\\.png")(?=[^>]*\\balt="Ada")[^>]*>$/.test(__render(<Avatar src="/a.png" name="Ada" />))',
+        expected: true,
+      },
+      {
+        description: 'Card lägger children i <div class="card">',
+        code: '__render(<Card><b>Hej</b></Card>)',
+        expected: '<div class="card"><b>Hej</b></div>',
+      },
+      {
+        description: 'ProfileCard visar bild, namn och "Online"',
+        code: '/^<div class="card"><img(?=[^>]*\\bsrc="\\/l\\.png")(?=[^>]*\\balt="Linus")[^>]*><h2>Linus<\\/h2><p>Online<\\/p><\\/div>$/.test(__render(<ProfileCard user={{ name: \'Linus\', avatar: \'/l.png\' }} isOnline />))',
+        expected: true,
+      },
+      {
+        description: 'ProfileCard visar "Offline" när isOnline saknas',
+        code: "__render(<ProfileCard user={{ name: 'Linus', avatar: '/l.png' }} />).endsWith('<h2>Linus</h2><p>Offline</p></div>')",
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      { description: 'ProfileCard använder <Card>', pattern: /<Card\s*>/ },
+      { description: 'ProfileCard använder <Avatar', pattern: /<Avatar\b/ },
+      {
+        description: 'isOnline har standardvärdet false',
+        pattern: /isOnline\s*=\s*false/,
+      },
+    ],
+  },
 ];
