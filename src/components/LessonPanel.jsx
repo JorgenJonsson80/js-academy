@@ -2,6 +2,7 @@ import CodeEditor from './CodeEditor';
 import FeedbackPanel from './FeedbackPanel';
 import FileView from './FileView';
 import HintPanel from './HintPanel';
+import Preview from './Preview';
 
 export default function LessonPanel({
   lesson,
@@ -50,6 +51,7 @@ export default function LessonPanel({
         onCodeChange={onCodeChange}
         fileName={lesson.fileName}
       />
+      {feedback?.preview && <Preview html={feedback?.preview} />}
       <button
         className="primary-button"
         type="button"
