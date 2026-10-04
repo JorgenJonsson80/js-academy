@@ -47,9 +47,14 @@ function createKeyChecker() {
 // Med __mount(<Counter />) kan de klicka och skriva, se mount.js.
 // Skapas på nytt för varje körning, så att keyProblems börjar tomt.
 // localStorage, document.title och timers är låtsasversioner, se fakes.js.
-function createRuntime() {
+// console samlar det eleven skriver ut i logs, så att det kan visas i
+// appen och testerna kan läsa det med __logs.
+function createRuntime(logs = []) {
   const keyChecker = createKeyChecker();
   const clock = createClock();
+  const log = (...values) => {
+    if (logs.length < MAX_LOGS) logs.push(values.map(formatLogValue).join(' '));
+  };
   return {
     packages: { react: { ...React, default: React } },
     globals: {
@@ -65,8 +70,17 @@ function createRuntime() {
       clearTimeout: clock.clearTimeout,
       clearInterval: clock.clearInterval,
       fetch: createFetch(),
+      console: { log, info: log, warn: log, error: log },
+      __logs: logs,
     },
   };
+}
+
+const MAX_LOGS = 50;
+
+// Som i webbläsarens konsol: text visas som den är, allt annat som kod.
+function formatLogValue(value) {
+  return typeof value === 'string' ? value : format(value);
 }
 
 function format(value) {
@@ -107,6 +121,23 @@ function runExpression(code, expression, { fileName = 'main.js', files = {} }) {
     code,
     `return ${transformJsx(`(${expression})`)};`,
   );
+}
+
+// Kör elevens kod en gång och samlar det som skrivs ut med console.log.
+async function collectOutput(code, { fileName = 'main.js', files = {} }) {
+  const logs = [];
+  try {
+    const modules = createModuleSystem(
+      { ...files, [fileName]: code },
+      createRuntime(logs),
+    );
+    modules.runFile(fileName, code, '');
+    // Vänta in det som loggas efter en await.
+    await new Promise(resolve => setTimeout(resolve, 0));
+  } catch (error) {
+    logs.push(`${error.name}: ${error.message}`);
+  }
+  return logs;
 }
 
 // Testet kan returnera ett Promise, t.ex. från en async-funktion.
@@ -176,6 +207,7 @@ export async function evaluate(code, tests, sourceChecks = [], options = {}) {
 
   return {
     error: null,
+    output: await collectOutput(code, options),
     notes: styleNotes(code),
     ...renderPreview(code, options),
     results: [

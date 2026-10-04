@@ -81,6 +81,15 @@ function App() {
     if (index === -1) return false;
     if (index === 0) return true;
 
+    // En bana man redan nått låses inte igen, även om en tidigare bana
+    // fått nya lektioner.
+    const hasReached = lessons.some(
+      item =>
+        completedIds.includes(item.id) &&
+        tracks.findIndex(track => track.id === item.track) >= index,
+    );
+    if (hasReached) return true;
+
     const previousTrack = tracks[index - 1];
     const previousLessons = lessons.filter(
       item => item.track === previousTrack.id,
@@ -106,6 +115,7 @@ function App() {
       error,
       results,
       notes = [],
+      output = [],
     } = await runTests(code, lesson.tests, lesson.sourceChecks, {
       fileName: lesson.fileName,
       files: lesson.files,
@@ -123,13 +133,13 @@ function App() {
             preview: lesson.preview,
           }
         : null;
-    return { isCorrect, error, results, notes, previewSource };
+    return { isCorrect, error, results, notes, output, previewSource };
   }
 
   async function handleCheck() {
     const checkId = ++checkIdRef.current;
     setIsChecking(true);
-    const { isCorrect, error, results, notes, previewSource } =
+    const { isCorrect, error, results, notes, output, previewSource } =
       await checkCode();
     if (checkId !== checkIdRef.current) return;
     setIsChecking(false);
@@ -143,6 +153,7 @@ function App() {
       error,
       results,
       notes,
+      output,
       previewSource,
     });
     if (!isCorrect) {

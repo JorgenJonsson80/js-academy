@@ -15,6 +15,12 @@ function FeedbackPanel({ feedback }) {
               <span className="xp-pop"> +{feedback.xpGained} XP</span>
             )}
           </p>
+          {feedback.output?.length > 0 && (
+            <figure className="console-output">
+              <figcaption>Konsol</figcaption>
+              <pre>{feedback.output.join('\n')}</pre>
+            </figure>
+          )}
           {feedback.notes?.map(note => (
             <p key={note} className="style-note">
               <span aria-hidden="true">💡</span> Tips: {note}

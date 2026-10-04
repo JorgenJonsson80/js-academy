@@ -428,6 +428,26 @@
   }
 }
 
+.console-output {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: #020617;
+}
+
+.console-output figcaption {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.console-output pre {
+  margin: 6px 0 0;
+  color: #e2e8f0;
+  white-space: pre-wrap;
+}
+
 .style-note {
   padding: 10px 12px;
   border-left: 3px solid #38bdf8;

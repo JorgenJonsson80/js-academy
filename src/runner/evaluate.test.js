@@ -177,4 +177,16 @@ describe('evaluate', () => {
       "import { useEffect, useState } from 'react';\nfunction Users() {\n  const [users, setUsers] = useState(null);\n  useEffect(() => {\n    fetch('/api/users').then(r => r.json()).then(setUsers);\n  }, []);\n  if (!users) return <p>Laddar…</p>;\n  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;\n}";
     expect(await passes(code, tests)).toBe(true);
   });
+
+  it('samlar det som skrivs ut med console.log', async () => {
+    const { output } = await evaluate(
+      "const user = { name: 'Ada' };\nconsole.log('Hej', user, [1, 2], 5);\nconsole.log(undefined);\nnotDefined();",
+      [],
+    );
+    expect(output).toEqual([
+      'Hej {"name":"Ada"} [1,2] 5',
+      'undefined',
+      'ReferenceError: notDefined is not defined',
+    ]);
+  });
 });

@@ -17,6 +17,71 @@ function isLet(name) {
 
 export const lessons = [
   {
+    id: 'js-log-01',
+    title: 'Hej världen!',
+    xp: 10,
+    track: 'js-basics',
+    isBoss: false,
+    description:
+      'console.log skriver ut ett värde i konsolen. Det är programmerarens viktigaste verktyg för att se vad koden gör. Text skrivs inom citattecken. Det du skriver ut visas under Konsol när du klickar på Kolla lösning.',
+    task: 'Uppgift: Skriv ut texten "Hej världen!" med console.log.',
+    starterCode: '// Skriv din kod här',
+    solution: "console.log('Hej världen!');",
+    hints: [
+      'Skriv console.log( ); och lägg texten mellan parenteserna.',
+      'Text skrivs inom citattecken: "Hej världen!".',
+      "Skriv console.log('Hej världen!');",
+    ],
+    tests: [
+      {
+        description: 'Konsolen visar "Hej världen!"',
+        code: '__logs',
+        expected: ['Hej världen!'],
+      },
+    ],
+  },
+  {
+    id: 'js-log-02',
+    title: 'Skriv ut variabler',
+    xp: 10,
+    track: 'js-basics',
+    isBoss: false,
+    description:
+      'console.log kan skriva ut variabler, och flera värden på en gång med komma emellan: console.log("Poäng:", score) visar Poäng: 42. Lägg in console.log när du undrar vad en variabel innehåller. Det är det snabbaste sättet att hitta fel.',
+    task: 'Uppgift: Skriv först ut name. Skriv sedan ut texten "Ålder:" och age i samma console.log, med komma emellan.',
+    starterCode: `const name = 'Ada';
+const age = 36;
+
+`,
+    solution: `const name = 'Ada';
+const age = 36;
+
+console.log(name);
+console.log('Ålder:', age);`,
+    hints: [
+      'Du behöver två console.log, en per rad.',
+      'Variabler skrivs utan citattecken: console.log(name);',
+      "Andra raden: console.log('Ålder:', age);",
+    ],
+    tests: [
+      {
+        description: 'Konsolen visar "Ada" och sedan "Ålder: 36"',
+        code: '__logs',
+        expected: ['Ada', 'Ålder: 36'],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Namnet hämtas från variabeln name',
+        pattern: /console\s*\.\s*log\s*\(\s*name\s*\)/,
+      },
+      {
+        description: 'Åldern hämtas från variabeln age',
+        pattern: /console\s*\.\s*log\s*\([^)]*,\s*age\s*\)/,
+      },
+    ],
+  },
+  {
     id: 'js-const-01',
     title: 'Din första variabel',
     xp: 10,

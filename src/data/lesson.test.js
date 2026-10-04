@@ -316,6 +316,11 @@ const correctAnswers = [
     'functions-boss-01',
     'const lineTotal = (price, quantity = 1) => price * quantity;\nconst applyDiscount = (total, percent) => total * (1 - percent / 100);\nfunction checkout(price, quantity, isMember) {\n  const total = lineTotal(price, quantity);\n  return isMember ? applyDiscount(total, 10) : total;\n}\nconst receipt = checkout(200, 3, true);',
   ],
+  ['js-log-01', 'console.log("Hej världen!")'],
+  [
+    'js-log-02',
+    'const name = \'Ada\';\nconst age = 36;\nconsole.log(name);\nconsole.log("Ålder:", age);',
+  ],
 ];
 
 // Vanliga fel och genvägar som ska underkännas.
@@ -788,6 +793,16 @@ const wrongAnswers = [
   [
     'functions-boss-01',
     'function lineTotal(price, quantity = 1) {\n  return price * quantity;\n}\nconst applyDiscount = (total, percent) => total - (total * percent) / 100;\nfunction checkout(price, quantity, isMember) {\n  return isMember ? price * quantity * 0.9 : price * quantity;\n}\nconst receipt = checkout(200, 3, true);',
+  ],
+  ['js-log-01', "console.log('Hej världen');"],
+  ['js-log-01', "'Hej världen!';"],
+  [
+    'js-log-02',
+    "const name = 'Ada';\nconst age = 36;\nconsole.log('Ada');\nconsole.log('Ålder: 36');",
+  ],
+  [
+    'js-log-02',
+    "const name = 'Ada';\nconst age = 36;\nconsole.log('name');\nconsole.log('Ålder:', 'age');",
   ],
 ];
 
