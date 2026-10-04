@@ -111,4 +111,18 @@ describe('evaluate', () => {
       passes(list("['a', 'a']").replace('ITEM', 'key={item}'), tests),
     ).toBe(false);
   });
+
+  it('kör komponenter med state via __mount', () => {
+    const tests = [
+      {
+        description: 'räknaren ökar',
+        code: "__mount(<Counter />).click('+1').click('+1').text('p')",
+        expected: '2',
+      },
+    ];
+    const code =
+      "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return <div><p>{count}</p><button onClick={() => setCount(count + 1)}>+1</button></div>;\n}";
+    expect(passes(code, tests)).toBe(true);
+    expect(passes(code.replace('count + 1', 'count'), tests)).toBe(false);
+  });
 });

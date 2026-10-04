@@ -50,4 +50,9 @@ export const tracks = [
     title: 'React: Villkor',
     reward: { emoji: '🚦', name: 'Trafikljus' },
   },
+  {
+    id: 'state',
+    title: 'React: State & händelser',
+    reward: { emoji: '🎮', name: 'Handkontroll' },
+  },
 ];

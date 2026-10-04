@@ -3477,4 +3477,707 @@ function Page({ user }) {
       },
     ],
   },
+  {
+    id: 'state-01',
+    title: 'Händelser: onClick',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'Med onClick talar du om vilken funktion som ska köras när någon klickar. Skicka funktionen, anropa den inte: onClick={onLike} är rätt. onClick={onLike()} anropar funktionen direkt när komponenten ritas, och sedan händer ingenting vid klick.',
+    task: 'Uppgift: Skriv komponenten LikeButton({ onLike }) som returnerar en button med texten "Gilla". onLike ska anropas när man klickar.',
+    fileName: 'App.jsx',
+    preview: '<LikeButton onLike={() => {}} />',
+    starterCode: '// Skriv din kod här',
+    solution: `function LikeButton({ onLike }) {
+  return <button onClick={onLike}>Gilla</button>;
+}`,
+    hints: [
+      'Returnera <button>Gilla</button>.',
+      'Lägg till onClick på knappen.',
+      'Skriv onClick={onLike} utan parenteser efter onLike.',
+    ],
+    tests: [
+      {
+        description: 'onLike anropas inte förrän man klickar',
+        code: '(() => { let clicks = 0; __mount(<LikeButton onLike={() => clicks++} />); return clicks; })()',
+        expected: 0,
+      },
+      {
+        description: 'Ett klick anropar onLike en gång',
+        code: "(() => { let clicks = 0; __mount(<LikeButton onLike={() => clicks++} />).click('Gilla'); return clicks; })()",
+        expected: 1,
+      },
+      {
+        description: 'Tre klick anropar onLike tre gånger',
+        code: "(() => { let clicks = 0; __mount(<LikeButton onLike={() => clicks++} />).click('Gilla').click('Gilla').click('Gilla'); return clicks; })()",
+        expected: 3,
+      },
+    ],
+  },
+  {
+    id: 'state-02',
+    title: 'useState',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'En vanlig variabel glöms bort varje gång komponenten ritas om, och React vet inte att den ändrats. För värden som ändras använder du state: const [count, setCount] = useState(0). count är värdet just nu och setCount(…) sparar ett nytt värde och ritar om komponenten. useState importeras från react.',
+    task: 'Uppgift: Skriv komponenten Counter. Den har state count som börjar på 0, visar count i en p och har en button "+1" som ökar count med 1.',
+    fileName: 'App.jsx',
+    preview: '<Counter />',
+    starterCode: `import { useState } from 'react';
+
+`,
+    solution: `import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+    </div>
+  );
+}`,
+    hints: [
+      'Första raden i Counter: const [count, setCount] = useState(0);',
+      'Visa värdet med <p>{count}</p>.',
+      'Knappen: <button onClick={() => setCount(count + 1)}>+1</button>',
+    ],
+    tests: [
+      {
+        description: 'count börjar på 0',
+        code: "__mount(<Counter />).text('p')",
+        expected: '0',
+      },
+      {
+        description: 'Ett klick på "+1" ger 1',
+        code: "__mount(<Counter />).click('+1').text('p')",
+        expected: '1',
+      },
+      {
+        description: 'Tre klick ger 3',
+        code: "__mount(<Counter />).click('+1').click('+1').click('+1').text('p')",
+        expected: '3',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Counter använder useState',
+        pattern: /useState\s*\(\s*0\s*\)/,
+      },
+    ],
+  },
+  {
+    id: 'state-03',
+    title: 'Flera knappar, samma state',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'Flera knappar kan ändra samma state på olika sätt. Varje knapp får en egen liten funktion: onClick={() => setCount(count - 1)}. Pilfunktionen behövs eftersom setCount ska anropas med ett värde först när man klickar.',
+    task: 'Uppgift: Bygg ut Counter med tre knappar: "-1" minskar count, "+1" ökar count och "Nollställ" sätter count till 0.',
+    fileName: 'App.jsx',
+    preview: '<Counter />',
+    starterCode: `import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+    </div>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count - 1)}>-1</button>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+      <button onClick={() => setCount(0)}>Nollställ</button>
+    </div>
+  );
+}`,
+    hints: [
+      'Kopiera knappen "+1" och ändra den till "-1".',
+      '"-1" anropar setCount(count - 1).',
+      '"Nollställ" anropar setCount(0).',
+    ],
+    tests: [
+      {
+        description: '"-1" minskar count',
+        code: "__mount(<Counter />).click('-1').click('-1').text('p')",
+        expected: '-2',
+      },
+      {
+        description: '"+1" ökar fortfarande count',
+        code: "__mount(<Counter />).click('+1').text('p')",
+        expected: '1',
+      },
+      {
+        description: '"Nollställ" sätter count till 0',
+        code: "__mount(<Counter />).click('+1').click('+1').click('Nollställ').text('p')",
+        expected: '0',
+      },
+    ],
+  },
+  {
+    id: 'state-04',
+    title: 'Växla en boolean',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'State kan vara vilken typ av värde som helst. En boolean passar för saker som är på eller av. setIsOn(!isOn) byter till motsatt värde.',
+    task: 'Uppgift: Skriv komponenten Lamp med state isOn som börjar på false. En p visar "Lampan är tänd" eller "Lampan är släckt", och en button "Växla" byter isOn.',
+    fileName: 'App.jsx',
+    preview: '<Lamp />',
+    starterCode: `import { useState } from 'react';
+
+`,
+    solution: `import { useState } from 'react';
+
+function Lamp() {
+  const [isOn, setIsOn] = useState(false);
+
+  return (
+    <div>
+      <p>{isOn ? 'Lampan är tänd' : 'Lampan är släckt'}</p>
+      <button onClick={() => setIsOn(!isOn)}>Växla</button>
+    </div>
+  );
+}`,
+    hints: [
+      'Börja med const [isOn, setIsOn] = useState(false);',
+      "Texten väljs med isOn ? 'Lampan är tänd' : 'Lampan är släckt'.",
+      'Knappen anropar setIsOn(!isOn).',
+    ],
+    tests: [
+      {
+        description: 'Lampan börjar släckt',
+        code: "__mount(<Lamp />).text('p')",
+        expected: 'Lampan är släckt',
+      },
+      {
+        description: 'Ett klick tänder lampan',
+        code: "__mount(<Lamp />).click('Växla').text('p')",
+        expected: 'Lampan är tänd',
+      },
+      {
+        description: 'Två klick släcker den igen',
+        code: "__mount(<Lamp />).click('Växla').click('Växla').text('p')",
+        expected: 'Lampan är släckt',
+      },
+    ],
+  },
+  {
+    id: 'state-05',
+    title: 'Kontrollerat textfält',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'Ett textfält kopplas till state på två sätt: value={name} visar värdet från state och onChange={event => setName(event.target.value)} sparar det man skriver. Då är state alltid det som står i fältet. Det kallas ett kontrollerat fält.',
+    task: 'Uppgift: Skriv komponenten NameForm med state name som börjar som "". Den har ett kontrollerat input och en p med texten "Hej Ada!" (med name i stället för Ada).',
+    fileName: 'App.jsx',
+    preview: '<NameForm />',
+    starterCode: `import { useState } from 'react';
+
+`,
+    solution: `import { useState } from 'react';
+
+function NameForm() {
+  const [name, setName] = useState('');
+
+  return (
+    <div>
+      <input value={name} onChange={event => setName(event.target.value)} />
+      <p>Hej {name}!</p>
+    </div>
+  );
+}`,
+    hints: [
+      "Börja med const [name, setName] = useState('');",
+      'input behöver både value={name} och onChange.',
+      'onChange={event => setName(event.target.value)}',
+    ],
+    tests: [
+      {
+        description: 'Det man skriver visas i p',
+        code: "__mount(<NameForm />).type('Ada').text('p')",
+        expected: 'Hej Ada!',
+      },
+      {
+        description: 'input visar värdet från state',
+        code: "__mount(<NameForm />).type('Linus').html().includes('value=\"Linus\"')",
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'input har value={name}',
+        pattern: /value=\{\s*name\s*\}/,
+      },
+      {
+        description: 'Värdet läses från event.target.value',
+        pattern: /\.\s*target\s*\.\s*value/,
+      },
+    ],
+  },
+  {
+    id: 'state-06',
+    title: 'Lägg till i en lista',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'State får aldrig ändras direkt. todos.push(…) ändrar arrayen men React märker inget. Skapa i stället en ny array med spread: setTodos([...todos, newTodo]). Det är därför spread var så viktigt i Modern JS-banan.',
+    task: `Uppgift: Bygg klart TodoApp.
+  "Lägg till" lägger till { id: crypto.randomUUID(), text } sist i todos
+  och tömmer sedan fältet. Använd spread, inte push.`,
+    fileName: 'App.jsx',
+    preview: '<TodoApp />',
+    starterCode: `import { useState } from 'react';
+
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState('');
+
+  function handleAdd() {
+    // Din kod här
+  }
+
+  return (
+    <div>
+      <input value={text} onChange={event => setText(event.target.value)} />
+      <button onClick={handleAdd}>Lägg till</button>
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState('');
+
+  function handleAdd() {
+    setTodos([...todos, { id: crypto.randomUUID(), text }]);
+    setText('');
+  }
+
+  return (
+    <div>
+      <input value={text} onChange={event => setText(event.target.value)} />
+      <button onClick={handleAdd}>Lägg till</button>
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}`,
+    hints: [
+      'Allt sker i handleAdd.',
+      'Skapa den nya arrayen med [...todos, { id: crypto.randomUUID(), text }].',
+      "Anropa setTodos med den nya arrayen och sedan setText('').",
+    ],
+    tests: [
+      {
+        description: 'En uppgift läggs till',
+        code: "__mount(<TodoApp />).type('Handla').click('Lägg till').text('ul')",
+        expected: 'Handla',
+      },
+      {
+        description: 'Två uppgifter hamnar i rätt ordning',
+        code: "__mount(<TodoApp />).type('Handla').click('Lägg till').type('Träna').click('Lägg till').html().includes('<ul><li>Handla</li><li>Träna</li></ul>')",
+        expected: true,
+      },
+      {
+        description: 'Fältet töms efter "Lägg till"',
+        code: "__mount(<TodoApp />).type('Handla').click('Lägg till').html().includes('<input value=\"\"/>')",
+        expected: true,
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: "(__mount(<TodoApp />).type('A').click('Lägg till').type('B').click('Lägg till'), __keyProblems)",
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Den nya arrayen skapas med spread',
+        pattern: /\[\s*\.\.\.\s*\w+/,
+      },
+      {
+        description: 'Koden använder inte push',
+        pattern: /\.\s*push\s*\(/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'state-07',
+    title: 'Ta bort ur en lista',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'Att ta bort görs också med en ny array, oftast med filter: setTodos(todos.filter(todo => todo.id !== id)). Alla utom den med rätt id blir kvar.',
+    task: 'Uppgift: Varje uppgift har en knapp "Ta bort". Skriv klart handleRemove(id) så att uppgiften med det id:t försvinner.',
+    fileName: 'App.jsx',
+    preview: '<TodoList />',
+    starterCode: `import { useState } from 'react';
+
+function TodoList() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Handla' },
+    { id: 2, text: 'Träna' },
+    { id: 3, text: 'Plugga React' },
+  ]);
+
+  function handleRemove(id) {
+    // Din kod här
+  }
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>
+          {todo.text} <button onClick={() => handleRemove(todo.id)}>Ta bort</button>
+        </li>
+      ))}
+    </ul>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function TodoList() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Handla' },
+    { id: 2, text: 'Träna' },
+    { id: 3, text: 'Plugga React' },
+  ]);
+
+  function handleRemove(id) {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>
+          {todo.text} <button onClick={() => handleRemove(todo.id)}>Ta bort</button>
+        </li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Använd filter för att skapa en ny array.',
+      'Behåll alla todos där todo.id !== id.',
+      'Skriv setTodos(todos.filter(todo => todo.id !== id));',
+    ],
+    tests: [
+      {
+        description: 'Första uppgiften tas bort',
+        code: "__mount(<TodoList />).click('Ta bort').count('li')",
+        expected: 2,
+      },
+      {
+        description: 'Rätt uppgift försvinner',
+        code: "__mount(<TodoList />).click('Ta bort').text('li').startsWith('Träna')",
+        expected: true,
+      },
+      {
+        description: 'Alla kan tas bort',
+        code: "__mount(<TodoList />).click('Ta bort').click('Ta bort').click('Ta bort').count('li')",
+        expected: 0,
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder filter', pattern: /\.\s*filter\s*\(/ },
+      {
+        description: 'Koden använder inte splice',
+        pattern: /\.\s*splice\s*\(/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'state-08',
+    title: 'Uppdatera ett objekt',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'Samma regel gäller objekt: ändra aldrig user.age direkt. Skapa en kopia med spread och skriv över det som ändras: setUser({ ...user, age: user.age + 1 }).',
+    task: 'Uppgift: Knappen "Fyll år" ska öka user.age med 1. Skriv klart handleBirthday med spread.',
+    fileName: 'App.jsx',
+    preview: '<Profile />',
+    starterCode: `import { useState } from 'react';
+
+function Profile() {
+  const [user, setUser] = useState({ name: 'Ada', age: 36 });
+
+  function handleBirthday() {
+    // Din kod här
+  }
+
+  return (
+    <div>
+      <p>
+        {user.name}, {user.age} år
+      </p>
+      <button onClick={handleBirthday}>Fyll år</button>
+    </div>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function Profile() {
+  const [user, setUser] = useState({ name: 'Ada', age: 36 });
+
+  function handleBirthday() {
+    setUser({ ...user, age: user.age + 1 });
+  }
+
+  return (
+    <div>
+      <p>
+        {user.name}, {user.age} år
+      </p>
+      <button onClick={handleBirthday}>Fyll år</button>
+    </div>
+  );
+}`,
+    hints: [
+      'Skapa ett nytt objekt med { ...user }.',
+      'Skriv över age efter spread: age: user.age + 1.',
+      'Skriv setUser({ ...user, age: user.age + 1 });',
+    ],
+    tests: [
+      {
+        description: 'Ett klick ger 37 år',
+        code: "__mount(<Profile />).click('Fyll år').text('p')",
+        expected: 'Ada, 37 år',
+      },
+      {
+        description: 'Två klick ger 38 år',
+        code: "__mount(<Profile />).click('Fyll år').click('Fyll år').text('p')",
+        expected: 'Ada, 38 år',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Det nya objektet skapas med { ...user }',
+        pattern: /\{\s*\.\.\.\s*user\b/,
+      },
+      {
+        description: 'user ändras inte direkt',
+        pattern: /user\s*\.\s*age\s*(\+\+|\+=|=[^=])/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'state-09',
+    title: 'Formulär med onSubmit',
+    xp: 10,
+    track: 'state',
+    isBoss: false,
+    description:
+      'Ett formulär skickas när man trycker Enter eller på en submit-knapp. Lyssna med onSubmit på form. Webbläsaren laddar annars om sidan, så börja alltid med event.preventDefault().',
+    task: 'Uppgift: Skriv klart handleSubmit. Det ska stoppa omladdningen och spara name i submitted, så att texten "Tack, Ada!" visas.',
+    fileName: 'App.jsx',
+    preview: '<SignupForm />',
+    starterCode: `import { useState } from 'react';
+
+function SignupForm() {
+  const [name, setName] = useState('');
+  const [submitted, setSubmitted] = useState('');
+
+  function handleSubmit(event) {
+    // Din kod här
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={name} onChange={event => setName(event.target.value)} />
+      <button type="submit">Skicka</button>
+      {submitted && <p>Tack, {submitted}!</p>}
+    </form>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function SignupForm() {
+  const [name, setName] = useState('');
+  const [submitted, setSubmitted] = useState('');
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setSubmitted(name);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={name} onChange={event => setName(event.target.value)} />
+      <button type="submit">Skicka</button>
+      {submitted && <p>Tack, {submitted}!</p>}
+    </form>
+  );
+}`,
+    hints: [
+      'Första raden i handleSubmit: event.preventDefault();',
+      'Spara sedan det som står i fältet.',
+      'Skriv setSubmitted(name);',
+    ],
+    tests: [
+      {
+        description: 'Formuläret stoppar omladdningen',
+        code: "__mount(<SignupForm />).type('Ada').submit()",
+        expected: true,
+      },
+      {
+        description: 'Efter skickat visas "Tack, Ada!"',
+        code: "(() => { const app = __mount(<SignupForm />); app.type('Ada'); app.submit(); return app.text('p'); })()",
+        expected: 'Tack, Ada!',
+      },
+      {
+        description: 'Inget tack visas innan formuläret skickats',
+        code: "__mount(<SignupForm />).type('Ada').count('p')",
+        expected: 0,
+      },
+    ],
+  },
+  {
+    id: 'state-boss-01',
+    title: 'Boss: Todo-appen',
+    xp: 30,
+    track: 'state',
+    isBoss: true,
+    description:
+      'Bygg en hel todo-app med state, formulär, kontrollerade fält, listor och villkor. Ändra aldrig state direkt.',
+    task: `Uppgift: Skriv komponenten TodoApp.
+  Ett form med ett input och en button "Lägg till".
+    Vid submit: stoppa omladdningen, lägg till { id, text, done: false }
+    och töm fältet. Tom text (efter trim) läggs inte till.
+  En ul med ett li per todo (key todo.id) som innehåller:
+    en checkbox (input type="checkbox") som växlar done,
+    texten i en span, och en button "Ta bort".
+  En p med "2 kvar": antalet todos som inte är klara.`,
+    fileName: 'App.jsx',
+    preview: '<TodoApp />',
+    starterCode: `import { useState } from 'react';
+
+`,
+    solution: `import { useState } from 'react';
+
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState('');
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (text.trim() === '') return;
+    setTodos([...todos, { id: crypto.randomUUID(), text, done: false }]);
+    setText('');
+  }
+
+  function toggle(id) {
+    setTodos(
+      todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo)),
+    );
+  }
+
+  function remove(id) {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  const left = todos.filter(todo => !todo.done).length;
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input value={text} onChange={event => setText(event.target.value)} />
+        <button type="submit">Lägg till</button>
+      </form>
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>
+            <input
+              type="checkbox"
+              checked={todo.done}
+              onChange={() => toggle(todo.id)}
+            />
+            <span>{todo.text}</span>
+            <button onClick={() => remove(todo.id)}>Ta bort</button>
+          </li>
+        ))}
+      </ul>
+      <p>{left} kvar</p>
+    </div>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Två uppgifter läggs till och fältet töms',
+        code: "(() => { const app = __mount(<TodoApp />); app.type('Handla'); app.submit(); app.type('Träna'); app.submit(); return [app.count('li'), app.text('p'), app.html().includes('<input value=\"\"/>')]; })()",
+        expected: [2, '2 kvar', true],
+      },
+      {
+        description: 'submit stoppar omladdningen',
+        code: "__mount(<TodoApp />).type('Handla').submit()",
+        expected: true,
+      },
+      {
+        description: 'Tom text läggs inte till',
+        code: "(() => { const app = __mount(<TodoApp />); app.type('   '); app.submit(); return app.count('li'); })()",
+        expected: 0,
+      },
+      {
+        description: 'Checkboxen markerar en uppgift som klar',
+        code: "(() => { const app = __mount(<TodoApp />); app.type('Handla'); app.submit(); app.type('Träna'); app.submit(); app.check(1); return app.text('p'); })()",
+        expected: '1 kvar',
+      },
+      {
+        description: '"Ta bort" tar bort den första uppgiften',
+        code: "(() => { const app = __mount(<TodoApp />); app.type('Handla'); app.submit(); app.type('Träna'); app.submit(); app.click('Ta bort'); return [app.count('li'), app.text('span')]; })()",
+        expected: [1, 'Träna'],
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: "(() => { const app = __mount(<TodoApp />); app.type('A'); app.submit(); app.type('B'); app.submit(); return __keyProblems; })()",
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden använder inte push',
+        pattern: /\.\s*push\s*\(/,
+        forbidden: true,
+      },
+      {
+        description: 'Koden använder inte splice',
+        pattern: /\.\s*splice\s*\(/,
+        forbidden: true,
+      },
+    ],
+  },
 ];

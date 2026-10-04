@@ -235,6 +235,22 @@ const correctAnswers = [
     'cond-08',
     "const TodoItem = ({ text, done }) => <li className={`todo${done ? ' done' : ''}`}>{text}</li>;",
   ],
+  [
+    'state-01',
+    'const LikeButton = ({ onLike }) => <button onClick={() => onLike()}>Gilla</button>;',
+  ],
+  [
+    'state-02',
+    "import { useState } from 'react';\nexport default function Counter() {\n  const [count, setCount] = useState(0);\n  return <><p>{count}</p><button onClick={() => setCount(c => c + 1)}>+1</button></>;\n}",
+  ],
+  [
+    'state-04',
+    "import { useState } from 'react';\nfunction Lamp() {\n  const [isOn, setIsOn] = useState(false);\n  const toggle = () => setIsOn(previous => !previous);\n  return <div><p>Lampan är {isOn ? 'tänd' : 'släckt'}</p><button onClick={toggle}>Växla</button></div>;\n}",
+  ],
+  [
+    'state-06',
+    "import { useState } from 'react';\nfunction TodoApp() {\n  const [todos, setTodos] = useState([]);\n  const [text, setText] = useState('');\n  function handleAdd() {\n    const newTodo = { id: crypto.randomUUID(), text: text };\n    setTodos(previous => [...previous, newTodo]);\n    setText('');\n  }\n  return <div><input value={text} onChange={e => setText(e.target.value)} /><button onClick={handleAdd}>Lägg till</button><ul>{todos.map(todo => <li key={todo.id}>{todo.text}</li>)}</ul></div>;\n}",
+  ],
 ];
 
 // Vanliga fel och genvägar som ska underkännas.
@@ -550,6 +566,46 @@ const wrongAnswers = [
   [
     'cond-boss-01',
     'function OrderSummary({ order }) {\n  if (!order) return <p>Ingen order vald</p>;\n  return (\n    <section>\n      <h2>Order {order.id}</h2>\n      {order.isPaid ? <p>Betald</p> : <p>Ej betald</p>}\n      {order.items.length === 0 ? <p>Ordern är tom</p> : <ul>{order.items.map(item => <li key={item.id}>{item.name}</li>)}</ul>}\n      {order.discount && <p>Rabatt: {order.discount} kr</p>}\n    </section>\n  );\n}',
+  ],
+  [
+    'state-01',
+    'function LikeButton({ onLike }) {\n  return <button onClick={onLike()}>Gilla</button>;\n}',
+  ],
+  [
+    'state-01',
+    'function LikeButton({ onLike }) {\n  return <button>Gilla</button>;\n}',
+  ],
+  [
+    'state-02',
+    "import { useState } from 'react';\nfunction Counter() {\n  let count = 0;\n  return <div><p>{count}</p><button onClick={() => count++}>+1</button></div>;\n}",
+  ],
+  [
+    'state-02',
+    "import { useState } from 'react';\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return <div><p>{count}</p><button onClick={setCount(count + 1)}>+1</button></div>;\n}",
+  ],
+  [
+    'state-04',
+    "import { useState } from 'react';\nfunction Lamp() {\n  const [isOn, setIsOn] = useState(false);\n  return <div><p>{isOn ? 'Lampan är tänd' : 'Lampan är släckt'}</p><button onClick={() => setIsOn(true)}>Växla</button></div>;\n}",
+  ],
+  [
+    'state-05',
+    "import { useState } from 'react';\nfunction NameForm() {\n  const [name, setName] = useState('');\n  return <div><input value={name} /><p>Hej {name}!</p></div>;\n}",
+  ],
+  [
+    'state-06',
+    "import { useState } from 'react';\nfunction TodoApp() {\n  const [todos, setTodos] = useState([]);\n  const [text, setText] = useState('');\n  function handleAdd() {\n    todos.push({ id: crypto.randomUUID(), text });\n    setTodos(todos);\n  }\n  return <div><input value={text} onChange={e => setText(e.target.value)} /><button onClick={handleAdd}>Lägg till</button><ul>{todos.map(todo => <li key={todo.id}>{todo.text}</li>)}</ul></div>;\n}",
+  ],
+  [
+    'state-06',
+    "import { useState } from 'react';\nfunction TodoApp() {\n  const [todos, setTodos] = useState([]);\n  const [text, setText] = useState('');\n  function handleAdd() {\n    setTodos([...todos, { id: crypto.randomUUID(), text }]);\n  }\n  return <div><input value={text} onChange={e => setText(e.target.value)} /><button onClick={handleAdd}>Lägg till</button><ul>{todos.map(todo => <li key={todo.id}>{todo.text}</li>)}</ul></div>;\n}",
+  ],
+  [
+    'state-08',
+    "import { useState } from 'react';\nfunction Profile() {\n  const [user, setUser] = useState({ name: 'Ada', age: 36 });\n  function handleBirthday() {\n    user.age = user.age + 1;\n    setUser({ ...user });\n  }\n  return <div><p>{user.name}, {user.age} år</p><button onClick={handleBirthday}>Fyll år</button></div>;\n}",
+  ],
+  [
+    'state-09',
+    "import { useState } from 'react';\nfunction SignupForm() {\n  const [name, setName] = useState('');\n  const [submitted, setSubmitted] = useState('');\n  function handleSubmit(event) {\n    setSubmitted(name);\n  }\n  return <form onSubmit={handleSubmit}><input value={name} onChange={e => setName(e.target.value)} /><button type=\"submit\">Skicka</button>{submitted && <p>Tack, {submitted}!</p>}</form>;\n}",
   ],
 ];
 

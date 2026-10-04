@@ -4,6 +4,7 @@ import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { checkSyntax, transformJsx } from './jsx';
 import { createModuleSystem } from './modules';
+import { mount } from './mount';
 
 // React 19 lägger till <link rel="preload"> för bilder när den
 // renderar till HTML. Det har inget med elevens kod att göra.
@@ -41,6 +42,7 @@ function createKeyChecker() {
 
 // Det som all kod i övningarna når. Testerna kan rendera en komponent
 // till HTML med __render(<Greeting />) och läsa __keyProblems efteråt.
+// Med __mount(<Counter />) kan de klicka och skriva, se mount.js.
 // Skapas på nytt för varje körning, så att keyProblems börjar tomt.
 function createRuntime() {
   const keyChecker = createKeyChecker();
@@ -49,6 +51,7 @@ function createRuntime() {
     globals: {
       __React: keyChecker.React,
       __render: render,
+      __mount: mount,
       __keyProblems: keyChecker.keyProblems,
     },
   };
