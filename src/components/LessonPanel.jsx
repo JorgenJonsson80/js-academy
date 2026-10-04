@@ -53,7 +53,7 @@ export default function LessonPanel({
         onCodeChange={onCodeChange}
         fileName={lesson.fileName}
       />
-      {feedback?.preview && <Preview html={feedback?.preview} />}
+      {feedback?.previewSource && <Preview source={feedback.previewSource} />}
       <div className="editor-actions">
         <button
           className="primary-button"

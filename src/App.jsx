@@ -102,26 +102,32 @@ function App() {
   }
 
   async function checkCode() {
-    const { error, results, preview, previewError } = await runTests(
+    const { error, results } = await runTests(
       code,
       lesson.tests,
       lesson.sourceChecks,
-      {
-        fileName: lesson.fileName,
-        files: lesson.files,
-        preview: lesson.preview,
-      },
+      { fileName: lesson.fileName, files: lesson.files },
     );
     const isCorrect =
       !error && results.length > 0 && results.every(result => result.passed);
-    return { isCorrect, error, results, preview, previewError };
+    // Förhandsvisningen kör koden på riktigt, men bara om den gick att
+    // köra i workern. Annars kan en oändlig loop frysa sidan.
+    const previewSource =
+      lesson.preview && !error
+        ? {
+            code,
+            fileName: lesson.fileName,
+            files: lesson.files,
+            preview: lesson.preview,
+          }
+        : null;
+    return { isCorrect, error, results, previewSource };
   }
 
   async function handleCheck() {
     const checkId = ++checkIdRef.current;
     setIsChecking(true);
-    const { isCorrect, error, results, preview, previewError } =
-      await checkCode();
+    const { isCorrect, error, results, previewSource } = await checkCode();
     if (checkId !== checkIdRef.current) return;
     setIsChecking(false);
 
@@ -133,8 +139,7 @@ function App() {
       isCorrect,
       error,
       results,
-      preview,
-      previewError,
+      previewSource,
     });
     if (!isCorrect) {
       setFailedAttempts(previous => previous + 1);

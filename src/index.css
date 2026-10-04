@@ -53,6 +53,8 @@ code,
 pre,
 textarea {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
+  /* Visa => och !== precis som de skrivs, inte som ihopslagna tecken. */
+  font-variant-ligatures: none;
 }
 
 textarea {

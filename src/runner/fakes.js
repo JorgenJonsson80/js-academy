@@ -59,3 +59,63 @@ export function createClock() {
     active: () => timers.size,
   };
 }
+
+const users = [
+  { id: 1, name: 'Ada Lovelace', email: 'ada@example.com' },
+  { id: 2, name: 'Linus Torvalds', email: 'linus@example.com' },
+  { id: 3, name: 'Grace Hopper', email: 'grace@example.com' },
+];
+
+const todos = [
+  { id: 1, userId: 1, title: 'Skriv första programmet', done: true },
+  { id: 2, userId: 1, title: 'Beskriv maskinen', done: false },
+  { id: 3, userId: 3, title: 'Hitta buggen', done: false },
+];
+
+// Svarar på adresser som /api/users eller /api/users/1/todos.
+// Adresser som innehåller "broken" ger serverfel, okända ger 404.
+function route(url) {
+  const { pathname, searchParams } = new URL(url, 'http://academy.test');
+  if (pathname.includes('broken')) return [500, { error: 'Serverfel' }];
+
+  const parts = pathname.split('/').filter(Boolean);
+  if (parts[0] !== 'api') return [404, { error: 'Finns inte' }];
+
+  if (parts[1] === 'todos' && parts.length === 2) return [200, todos];
+  if (parts[1] === 'users') {
+    if (parts.length === 2) {
+      const query = (searchParams.get('q') ?? '').toLowerCase();
+      return [
+        200,
+        users.filter(user => user.name.toLowerCase().includes(query)),
+      ];
+    }
+    const user = users.find(item => item.id === Number(parts[2]));
+    if (!user) return [404, { error: 'Användaren finns inte' }];
+    if (parts.length === 3) return [200, user];
+    if (parts[3] === 'todos') {
+      return [200, todos.filter(todo => todo.userId === user.id)];
+    }
+  }
+  return [404, { error: 'Finns inte' }];
+}
+
+// Ett låtsas-fetch med samma svar varje gång. delay används i
+// förhandsvisningen så att man hinner se "Laddar…".
+export function createFetch({ delay = 0, wait = setTimeout } = {}) {
+  function fakeFetch(url) {
+    fakeFetch.calls.push(String(url));
+    const [status, data] = route(String(url));
+    const response = {
+      ok: status >= 200 && status < 300,
+      status,
+      json: async () => structuredClone(data),
+      text: async () => JSON.stringify(data),
+    };
+    return delay > 0
+      ? new Promise(resolve => wait(() => resolve(response), delay))
+      : Promise.resolve(response);
+  }
+  fakeFetch.calls = [];
+  return fakeFetch;
+}

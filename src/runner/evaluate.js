@@ -4,7 +4,7 @@ import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { checkSyntax, transformJsx } from './jsx';
 import { createModuleSystem } from './modules';
-import { createClock, createStorage } from './fakes';
+import { createClock, createFetch, createStorage } from './fakes';
 import { createMount } from './mount';
 
 // React 19 lägger till <link rel="preload"> för bilder när den
@@ -63,6 +63,7 @@ function createRuntime() {
       setInterval: clock.setInterval,
       clearTimeout: clock.clearTimeout,
       clearInterval: clock.clearInterval,
+      fetch: createFetch(),
     },
   };
 }
@@ -107,9 +108,11 @@ function runExpression(code, expression, { fileName = 'main.js', files = {} }) {
   );
 }
 
-function runTest(code, test, options) {
+// Testet kan returnera ett Promise, t.ex. från en async-funktion.
+// Då väntar vi in värdet innan det jämförs.
+async function runTest(code, test, options) {
   try {
-    const actual = runExpression(code, test.code, options);
+    const actual = await runExpression(code, test.code, options);
 
     return {
       description: test.description,
@@ -153,7 +156,7 @@ function renderPreview(code, options) {
 // options:
 //   fileName, files – för övningar med import och export
 //   preview – JSX som renderas och visas för eleven
-export function evaluate(code, tests, sourceChecks = [], options = {}) {
+export async function evaluate(code, tests, sourceChecks = [], options = {}) {
   try {
     checkSyntax(code);
   } catch (error) {
@@ -163,11 +166,18 @@ export function evaluate(code, tests, sourceChecks = [], options = {}) {
     };
   }
 
+  // Testerna körs ett i taget, så att ett långsamt test inte blandas
+  // ihop med nästa.
+  const results = [];
+  for (const test of tests) {
+    results.push(await runTest(code, test, options));
+  }
+
   return {
     error: null,
     ...renderPreview(code, options),
     results: [
-      ...tests.map(test => runTest(code, test, options)),
+      ...results,
       ...sourceChecks.map(check => runSourceCheck(code, check)),
     ],
   };

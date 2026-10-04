@@ -3,12 +3,17 @@ import { evaluate } from '../runner/evaluate';
 import { lessons } from './lesson';
 import { tracks } from './tracks';
 
-function check(lesson, code) {
-  const { error, results } = evaluate(code, lesson.tests, lesson.sourceChecks, {
-    fileName: lesson.fileName,
-    files: lesson.files,
-    preview: lesson.preview,
-  });
+async function check(lesson, code) {
+  const { error, results } = await evaluate(
+    code,
+    lesson.tests,
+    lesson.sourceChecks,
+    {
+      fileName: lesson.fileName,
+      files: lesson.files,
+      preview: lesson.preview,
+    },
+  );
   const failed = results.filter(result => !result.passed);
   return {
     passed: !error && failed.length === 0,
@@ -28,7 +33,7 @@ describe('lektionsdata', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it.each(lessons)('$id tillhör en bana som finns', lesson => {
+  it.each(lessons)('$id tillhör en bana som finns', async lesson => {
     expect(tracks.map(track => track.id)).toContain(lesson.track);
   });
 
@@ -39,21 +44,21 @@ describe('lektionsdata', () => {
     expect(order).toEqual(tracks.map(track => track.id));
   });
 
-  it.each(lessons)('$id har tester', lesson => {
+  it.each(lessons)('$id har tester', async lesson => {
     expect(lesson.tests.length).toBeGreaterThan(0);
   });
 
   it.each(lessons.filter(lesson => !lesson.isBoss))(
     '$id har tre ledtrådar',
-    lesson => {
+    async lesson => {
       expect(lesson.hints).toHaveLength(3);
     },
   );
 });
 
 describe('rättning av lektionerna', () => {
-  it.each(lessons)('$id godkänner sin egen lösning', lesson => {
-    expect(check(lesson, lesson.solution)).toEqual({
+  it.each(lessons)('$id godkänner sin egen lösning', async lesson => {
+    expect(await check(lesson, lesson.solution)).toEqual({
       passed: true,
       reason: '',
     });
@@ -61,8 +66,8 @@ describe('rättning av lektionerna', () => {
 
   it.each(lessons.filter(lesson => lesson.preview))(
     '$id kan förhandsvisa sin lösning',
-    lesson => {
-      const { preview, previewError } = evaluate(
+    async lesson => {
+      const { preview, previewError } = await evaluate(
         lesson.solution,
         [],
         [],
@@ -73,8 +78,8 @@ describe('rättning av lektionerna', () => {
     },
   );
 
-  it.each(lessons)('$id underkänner startkoden', lesson => {
-    expect(check(lesson, lesson.starterCode).passed).toBe(false);
+  it.each(lessons)('$id underkänner startkoden', async lesson => {
+    expect((await check(lesson, lesson.starterCode)).passed).toBe(false);
   });
 });
 
@@ -696,11 +701,14 @@ const wrongAnswers = [
 ];
 
 describe('alternativa svar', () => {
-  it.each(correctAnswers)('%s godkänner %j', (id, code) => {
-    expect(check(findLesson(id), code)).toEqual({ passed: true, reason: '' });
+  it.each(correctAnswers)('%s godkänner %j', async (id, code) => {
+    expect(await check(findLesson(id), code)).toEqual({
+      passed: true,
+      reason: '',
+    });
   });
 
-  it.each(wrongAnswers)('%s underkänner %j', (id, code) => {
-    expect(check(findLesson(id), code).passed).toBe(false);
+  it.each(wrongAnswers)('%s underkänner %j', async (id, code) => {
+    expect((await check(findLesson(id), code)).passed).toBe(false);
   });
 });
