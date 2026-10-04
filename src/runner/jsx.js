@@ -12,6 +12,9 @@ export function transformJsx(code) {
     jsxPragma: '__React.createElement',
     jsxFragmentPragma: '__React.Fragment',
     production: true,
+    // Behåll ?? och ?. som de är. Annars lägger sucrase till
+    // hjälpfunktioner först i filen, före elevens import-rader.
+    disableESTransforms: true,
   }).code;
 }
 

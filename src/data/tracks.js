@@ -55,4 +55,9 @@ export const tracks = [
     title: 'React: State & händelser',
     reward: { emoji: '🎮', name: 'Handkontroll' },
   },
+  {
+    id: 'effects',
+    title: 'React: Effekter',
+    reward: { emoji: '⏰', name: 'Väckarklocka' },
+  },
 ];

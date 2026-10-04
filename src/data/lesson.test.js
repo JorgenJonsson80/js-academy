@@ -251,6 +251,18 @@ const correctAnswers = [
     'state-06',
     "import { useState } from 'react';\nfunction TodoApp() {\n  const [todos, setTodos] = useState([]);\n  const [text, setText] = useState('');\n  function handleAdd() {\n    const newTodo = { id: crypto.randomUUID(), text: text };\n    setTodos(previous => [...previous, newTodo]);\n    setText('');\n  }\n  return <div><input value={text} onChange={e => setText(e.target.value)} /><button onClick={handleAdd}>Lägg till</button><ul>{todos.map(todo => <li key={todo.id}>{todo.text}</li>)}</ul></div>;\n}",
   ],
+  [
+    'effects-01',
+    "import { useEffect, useState } from 'react';\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  useEffect(() => {\n    document.title = 'Klick: ' + count;\n  }, [count]);\n  return <button onClick={() => setCount(count + 1)}>+1</button>;\n}",
+  ],
+  [
+    'effects-03',
+    "import { useEffect, useState } from 'react';\nfunction NoteApp() {\n  const [note, setNote] = useState(() => {\n    const saved = localStorage.getItem('note');\n    return saved === null ? '' : saved;\n  });\n  useEffect(() => localStorage.setItem('note', note), [note]);\n  return <textarea value={note} onChange={e => setNote(e.target.value)} />;\n}",
+  ],
+  [
+    'effects-05',
+    "import { useEffect, useState } from 'react';\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n  useEffect(() => {\n    const tick = () => setSeconds(previous => previous + 1);\n    const intervalId = setInterval(tick, 1000);\n    return () => {\n      clearInterval(intervalId);\n    };\n  }, []);\n  return <p>{seconds} sekunder</p>;\n}",
+  ],
 ];
 
 // Vanliga fel och genvägar som ska underkännas.
@@ -606,6 +618,42 @@ const wrongAnswers = [
   [
     'state-09',
     "import { useState } from 'react';\nfunction SignupForm() {\n  const [name, setName] = useState('');\n  const [submitted, setSubmitted] = useState('');\n  function handleSubmit(event) {\n    setSubmitted(name);\n  }\n  return <form onSubmit={handleSubmit}><input value={name} onChange={e => setName(e.target.value)} /><button type=\"submit\">Skicka</button>{submitted && <p>Tack, {submitted}!</p>}</form>;\n}",
+  ],
+  [
+    'effects-01',
+    "import { useEffect, useState } from 'react';\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  document.title = `Klick: ${count}`;\n  return <button onClick={() => setCount(count + 1)}>+1</button>;\n}",
+  ],
+  [
+    'effects-01',
+    "import { useEffect, useState } from 'react';\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  useEffect(() => {\n    document.title = `Klick: ${count}`;\n  }, []);\n  return <button onClick={() => setCount(count + 1)}>+1</button>;\n}",
+  ],
+  [
+    'effects-02',
+    "import { useEffect, useState } from 'react';\nfunction Settings() {\n  const [name, setName] = useState('');\n  const [isDark, setIsDark] = useState(false);\n  useEffect(() => {\n    localStorage.setItem('name', name);\n  }, [name, isDark]);\n  return <div className={isDark ? 'dark' : 'light'}><input value={name} onChange={e => setName(e.target.value)} /><button onClick={() => setIsDark(!isDark)}>Byt tema</button></div>;\n}",
+  ],
+  [
+    'effects-03',
+    "import { useEffect, useState } from 'react';\nfunction NoteApp() {\n  const [note, setNote] = useState('');\n  useEffect(() => {\n    localStorage.setItem('note', note);\n  }, [note]);\n  return <textarea value={note} onChange={e => setNote(e.target.value)} />;\n}",
+  ],
+  [
+    'effects-04',
+    "import { useEffect, useState } from 'react';\nfunction TodoApp() {\n  const [todos, setTodos] = useState(() => localStorage.getItem('todos') ?? []);\n  useEffect(() => {\n    localStorage.setItem('todos', todos);\n  }, [todos]);\n  return <div><button onClick={() => setTodos([...todos, 'Ny uppgift'])}>Lägg till</button><p>{todos.length} uppgifter</p></div>;\n}",
+  ],
+  [
+    'effects-05',
+    "import { useEffect, useState } from 'react';\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n  useEffect(() => {\n    const id = setInterval(() => setSeconds(seconds + 1), 1000);\n    return () => clearInterval(id);\n  }, []);\n  return <p>{seconds} sekunder</p>;\n}",
+  ],
+  [
+    'effects-05',
+    "import { useEffect, useState } from 'react';\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n  useEffect(() => {\n    setInterval(() => setSeconds(s => s + 1), 1000);\n  }, []);\n  return <p>{seconds} sekunder</p>;\n}",
+  ],
+  [
+    'effects-05',
+    "import { useEffect, useState } from 'react';\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n  useEffect(() => {\n    const id = setInterval(() => setSeconds(s => s + 1), 1000);\n    return () => clearInterval(id);\n  });\n  return <p>{seconds} sekunder</p>;\n}",
+  ],
+  [
+    'effects-boss-01',
+    "import { useEffect, useState } from 'react';\nfunction Stopwatch() {\n  const [seconds, setSeconds] = useState(() => Number(localStorage.getItem('seconds')) || 0);\n  const [isRunning, setIsRunning] = useState(false);\n  useEffect(() => {\n    if (!isRunning) return;\n    setInterval(() => setSeconds(s => s + 1), 1000);\n  }, [isRunning]);\n  useEffect(() => {\n    document.title = `⏱ ${seconds} s`;\n    localStorage.setItem('seconds', String(seconds));\n  }, [seconds]);\n  return <div><p>{seconds} s</p><button onClick={() => setIsRunning(!isRunning)}>{isRunning ? 'Stopp' : 'Start'}</button><button onClick={() => setSeconds(0)}>Nollställ</button></div>;\n}",
   ],
 ];
 

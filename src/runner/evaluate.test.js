@@ -125,4 +125,13 @@ describe('evaluate', () => {
     expect(passes(code, tests)).toBe(true);
     expect(passes(code.replace('count + 1', 'count'), tests)).toBe(false);
   });
+
+  it('klarar ?? och ?. i filer med import och JSX', () => {
+    const tests = [
+      { description: 'värde', code: '__render(<App />)', expected: '<p>x</p>' },
+    ];
+    const code =
+      "import { useState } from 'react';\nfunction App() {\n  const [v] = useState(() => null ?? 'x');\n  return <p>{v?.toString()}</p>;\n}";
+    expect(passes(code, tests)).toBe(true);
+  });
 });

@@ -4,7 +4,8 @@ import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { checkSyntax, transformJsx } from './jsx';
 import { createModuleSystem } from './modules';
-import { mount } from './mount';
+import { createClock, createStorage } from './fakes';
+import { createMount } from './mount';
 
 // React 19 lägger till <link rel="preload"> för bilder när den
 // renderar till HTML. Det har inget med elevens kod att göra.
@@ -44,15 +45,24 @@ function createKeyChecker() {
 // till HTML med __render(<Greeting />) och läsa __keyProblems efteråt.
 // Med __mount(<Counter />) kan de klicka och skriva, se mount.js.
 // Skapas på nytt för varje körning, så att keyProblems börjar tomt.
+// localStorage, document.title och timers är låtsasversioner, se fakes.js.
 function createRuntime() {
   const keyChecker = createKeyChecker();
+  const clock = createClock();
   return {
     packages: { react: { ...React, default: React } },
     globals: {
       __React: keyChecker.React,
       __render: render,
-      __mount: mount,
+      __mount: createMount(clock),
       __keyProblems: keyChecker.keyProblems,
+      __clock: clock,
+      localStorage: createStorage(),
+      document: { title: '' },
+      setTimeout: clock.setTimeout,
+      setInterval: clock.setInterval,
+      clearTimeout: clock.clearTimeout,
+      clearInterval: clock.clearInterval,
     },
   };
 }

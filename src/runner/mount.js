@@ -79,7 +79,13 @@ function quietly(callback) {
   }
 }
 
-export function mount(element) {
+// clock är låtsasklockan från fakes.js, så att app.tick(ms) kan
+// spola fram tiden för timers som komponenten startat.
+export function createMount(clock) {
+  return element => mount(element, clock);
+}
+
+function mount(element, clock) {
   const renderer = quietly(() => create(null));
   const act = callback => renderer.unstable_flushSync(callback);
   act(() => renderer.update(element));
@@ -168,8 +174,20 @@ export function mount(element) {
       return prevented;
     },
 
+    // Ritar om med nya props, som när en förälder skickar nya värden.
+    rerender(newElement) {
+      act(() => renderer.update(newElement));
+      return app;
+    },
+
+    tick(ms) {
+      clock.tick(ms, callback => act(callback));
+      return app;
+    },
+
     unmount() {
       act(() => renderer.unmount());
+      return app;
     },
   };
 

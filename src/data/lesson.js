@@ -4180,4 +4180,461 @@ function TodoApp() {
       },
     ],
   },
+  {
+    id: 'effects-01',
+    title: 'Din första effekt',
+    xp: 10,
+    track: 'effects',
+    isBoss: false,
+    description:
+      'En komponent ska bara räkna ut vad som ska visas. Allt som påverkar något utanför React, som sidans titel, localStorage eller timers, kallas en sidoeffekt och läggs i useEffect. Funktionen du ger useEffect körs efter att komponenten ritats.',
+    task: 'Uppgift: Lägg till en useEffect i Counter som sätter document.title till "Klick: 0" (med count i stället för 0).',
+    fileName: 'App.jsx',
+    preview: '<Counter />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return <button onClick={() => setCount(count + 1)}>+1</button>;
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = \`Klick: \${count}\`;
+  });
+
+  return <button onClick={() => setCount(count + 1)}>+1</button>;
+}`,
+    hints: [
+      'Skriv useEffect(() => { }); före return.',
+      'Inuti effekten sätter du document.title.',
+      'Skriv document.title = `Klick: ${count}`;',
+    ],
+    tests: [
+      {
+        description: 'Titeln är "Klick: 0" från början',
+        code: '(__mount(<Counter />), document.title)',
+        expected: 'Klick: 0',
+      },
+      {
+        description: 'Titeln följer med när man klickar',
+        code: "(__mount(<Counter />).click('+1').click('+1'), document.title)",
+        expected: 'Klick: 2',
+      },
+    ],
+    sourceChecks: [
+      { description: 'Titeln sätts i en useEffect', pattern: /useEffect\s*\(/ },
+    ],
+  },
+  {
+    id: 'effects-02',
+    title: 'Beroendelistan',
+    xp: 10,
+    track: 'effects',
+    isBoss: false,
+    description:
+      'Utan andra argument körs en effekt efter varje rendering. Med en beroendelista körs den bara när något i listan ändrats: useEffect(() => { … }, [name]). Lista alla värden från komponenten som effekten använder.',
+    task: 'Uppgift: Effekten sparar name i localStorage. Ge den beroendelistan [name], så att den inte körs när man bara byter tema.',
+    fileName: 'App.jsx',
+    preview: '<Settings />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function Settings() {
+  const [name, setName] = useState('');
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('name', name);
+  });
+
+  return (
+    <div className={isDark ? 'dark' : 'light'}>
+      <input value={name} onChange={event => setName(event.target.value)} />
+      <button onClick={() => setIsDark(!isDark)}>Byt tema</button>
+    </div>
+  );
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function Settings() {
+  const [name, setName] = useState('');
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('name', name);
+  }, [name]);
+
+  return (
+    <div className={isDark ? 'dark' : 'light'}>
+      <input value={name} onChange={event => setName(event.target.value)} />
+      <button onClick={() => setIsDark(!isDark)}>Byt tema</button>
+    </div>
+  );
+}`,
+    hints: [
+      'Beroendelistan är useEffects andra argument.',
+      'Den skrivs efter funktionens } och ett komma.',
+      'Skriv }, [name]);',
+    ],
+    tests: [
+      {
+        description: 'name sparas när man skriver',
+        code: "(__mount(<Settings />).type('Ada'), localStorage.getItem('name'))",
+        expected: 'Ada',
+      },
+      {
+        description: 'Effekten körs inte när temat byts',
+        code: "(() => { const app = __mount(<Settings />); const before = localStorage.writes; app.click('Byt tema').click('Byt tema'); return localStorage.writes - before; })()",
+        expected: 0,
+      },
+    ],
+  },
+  {
+    id: 'effects-03',
+    title: 'Läs ett sparat värde',
+    xp: 10,
+    track: 'effects',
+    isBoss: false,
+    description:
+      'Att läsa ett sparat värde behöver ingen effekt. Ge useState en funktion så körs den bara första gången: useState(() => localStorage.getItem("note") ?? ""). getItem ger null om inget är sparat, och ?? byter då null mot "".',
+    task: 'Uppgift: Låt note börja med det som finns sparat under "note" i localStorage, eller "" om inget finns. Spara sedan note i en effekt varje gång den ändras.',
+    fileName: 'App.jsx',
+    preview: '<NoteApp />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function NoteApp() {
+  const [note, setNote] = useState('');
+
+  return (
+    <textarea value={note} onChange={event => setNote(event.target.value)} />
+  );
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function NoteApp() {
+  const [note, setNote] = useState(() => localStorage.getItem('note') ?? '');
+
+  useEffect(() => {
+    localStorage.setItem('note', note);
+  }, [note]);
+
+  return (
+    <textarea value={note} onChange={event => setNote(event.target.value)} />
+  );
+}`,
+    hints: [
+      "Ändra useState('') till useState(() => …).",
+      "Funktionen returnerar localStorage.getItem('note') ?? ''.",
+      "Lägg till useEffect(() => { localStorage.setItem('note', note); }, [note]);",
+    ],
+    tests: [
+      {
+        description: 'Ett sparat värde visas från början',
+        code: "(localStorage.setItem('note', 'Köp mjölk'), __mount(<NoteApp />).html())",
+        expected: '<textarea value="Köp mjölk"></textarea>',
+      },
+      {
+        description: 'Utan sparat värde är fältet tomt',
+        code: '__mount(<NoteApp />).html()',
+        expected: '<textarea value=""></textarea>',
+      },
+      {
+        description: 'Det man skriver sparas',
+        code: "(__mount(<NoteApp />).type('Ring mamma'), localStorage.getItem('note'))",
+        expected: 'Ring mamma',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Startvärdet läses med en funktion: useState(() => …)',
+        pattern: /useState\s*\(\s*\(\s*\)\s*=>/,
+      },
+    ],
+  },
+  {
+    id: 'effects-04',
+    title: 'JSON i localStorage',
+    xp: 10,
+    track: 'effects',
+    isBoss: false,
+    description:
+      'localStorage kan bara spara text. Arrayer och objekt görs om till text med JSON.stringify när de sparas och tillbaka med JSON.parse när de läses. Den här appen sparar dina klarade övningar precis så.',
+    task: `Uppgift: Spara todos i localStorage under "todos".
+  Läs startvärdet med JSON.parse, eller [] om inget finns.
+  Spara med JSON.stringify i en effekt när todos ändras.`,
+    fileName: 'App.jsx',
+    preview: '<TodoApp />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+
+  return (
+    <div>
+      <button onClick={() => setTodos([...todos, 'Ny uppgift'])}>Lägg till</button>
+      <p>{todos.length} uppgifter</p>
+    </div>
+  );
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function TodoApp() {
+  const [todos, setTodos] = useState(() => {
+    const saved = localStorage.getItem('todos');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  return (
+    <div>
+      <button onClick={() => setTodos([...todos, 'Ny uppgift'])}>Lägg till</button>
+      <p>{todos.length} uppgifter</p>
+    </div>
+  );
+}`,
+    hints: [
+      'Startvärdet: useState(() => { … }) med getItem och JSON.parse.',
+      'Finns inget sparat ger getItem null. Returnera då [].',
+      "Effekten: localStorage.setItem('todos', JSON.stringify(todos)), med [todos] som beroende.",
+    ],
+    tests: [
+      {
+        description: 'Sparade todos läses in',
+        code: "(localStorage.setItem('todos', JSON.stringify(['A', 'B'])), __mount(<TodoApp />).text('p'))",
+        expected: '2 uppgifter',
+      },
+      {
+        description: 'Utan sparade todos börjar listan tom',
+        code: "__mount(<TodoApp />).text('p')",
+        expected: '0 uppgifter',
+      },
+      {
+        description: 'todos sparas som JSON',
+        code: "(__mount(<TodoApp />).click('Lägg till'), JSON.parse(localStorage.getItem('todos')))",
+        expected: ['Ny uppgift'],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden använder JSON.parse',
+        pattern: /JSON\s*\.\s*parse\s*\(/,
+      },
+      {
+        description: 'Koden använder JSON.stringify',
+        pattern: /JSON\s*\.\s*stringify\s*\(/,
+      },
+    ],
+  },
+  {
+    id: 'effects-05',
+    title: 'Städa upp',
+    xp: 10,
+    track: 'effects',
+    isBoss: false,
+    description:
+      'En effekt som startar något, som en timer, måste också stoppa det. Returnera en städfunktion från effekten: return () => clearInterval(id). React kör den när komponenten tas bort. Inuti intervallet uppdaterar du med en funktion, setSeconds(s => s + 1), eftersom seconds i effekten annars alltid är startvärdet 0.',
+    task: 'Uppgift: Starta ett intervall i en effekt som ökar seconds med 1 varje sekund (1000 ms). Kör effekten bara en gång med [] och returnera en städfunktion som stoppar intervallet.',
+    fileName: 'App.jsx',
+    preview: '<Timer />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  return <p>{seconds} sekunder</p>;
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSeconds(s => s + 1);
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return <p>{seconds} sekunder</p>;
+}`,
+    hints: [
+      'Spara intervallet: const id = setInterval(() => { … }, 1000);',
+      'Inuti intervallet: setSeconds(s => s + 1);',
+      'Sist i effekten: return () => clearInterval(id); och beroendelistan [].',
+    ],
+    tests: [
+      {
+        description: 'Efter tre sekunder visas "3 sekunder"',
+        code: "__mount(<Timer />).tick(3000).text('p')",
+        expected: '3 sekunder',
+      },
+      {
+        description: 'Bara ett intervall startas',
+        code: '(__mount(<Timer />).tick(5000), __clock.active())',
+        expected: 1,
+      },
+      {
+        description: 'Intervallet stoppas när Timer tas bort',
+        code: '(__mount(<Timer />).tick(1000).unmount(), __clock.active())',
+        expected: 0,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Effekten körs bara en gång: beroendelistan är []',
+        pattern: /,\s*\[\s*\]\s*\)/,
+      },
+    ],
+  },
+  {
+    id: 'effects-06',
+    title: 'Ett glömt beroende',
+    xp: 10,
+    track: 'effects',
+    isBoss: false,
+    description:
+      'Ett vanligt fel är att glömma ett värde i beroendelistan. Då körs effekten inte när värdet ändras, och det som visas utanför React blir gammalt. Här använder effekten propen title, men beroendelistan är tom.',
+    task: 'Uppgift: Rätta beroendelistan så att document.title uppdateras när propen title ändras.',
+    fileName: 'App.jsx',
+    preview: '<PageTitle title="Start" />',
+    starterCode: `import { useEffect } from 'react';
+
+function PageTitle({ title }) {
+  useEffect(() => {
+    document.title = \`\${title} | Academy\`;
+  }, []);
+
+  return <h1>{title}</h1>;
+}`,
+    solution: `import { useEffect } from 'react';
+
+function PageTitle({ title }) {
+  useEffect(() => {
+    document.title = \`\${title} | Academy\`;
+  }, [title]);
+
+  return <h1>{title}</h1>;
+}`,
+    hints: [
+      'Vilka värden från komponenten använder effekten?',
+      'Effekten använder title.',
+      'Skriv [title] som beroendelista.',
+    ],
+    tests: [
+      {
+        description: 'Titeln sätts från början',
+        code: '(__mount(<PageTitle title="Start" />), document.title)',
+        expected: 'Start | Academy',
+      },
+      {
+        description: 'Titeln uppdateras när propen ändras',
+        code: '(__mount(<PageTitle title="Start" />).rerender(<PageTitle title="Profil" />), document.title)',
+        expected: 'Profil | Academy',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'title finns i beroendelistan',
+        pattern: /,\s*\[\s*title\s*\]\s*\)/,
+      },
+    ],
+  },
+  {
+    id: 'effects-boss-01',
+    title: 'Boss: Stoppuret',
+    xp: 30,
+    track: 'effects',
+    isBoss: true,
+    description:
+      'Bygg ett stoppur som använder allt om effekter: beroendelistor, timers med städning, document.title och localStorage.',
+    task: `Uppgift: Skriv komponenten Stopwatch.
+  seconds börjar med talet sparat under "seconds" i localStorage, annars 0.
+  isRunning börjar som false.
+  En p visar "3 s" (seconds följt av " s").
+  En button visar "Start" eller "Stopp" och växlar isRunning.
+  En button "Nollställ" sätter seconds till 0.
+  När isRunning är true ökar seconds med 1 varje sekund.
+    Intervallet ska stoppas när man trycker Stopp och när Stopwatch tas bort.
+  När seconds ändras: sätt document.title till "⏱ 3 s"
+    och spara seconds i localStorage under "seconds".`,
+    fileName: 'App.jsx',
+    preview: '<Stopwatch />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+`,
+    solution: `import { useEffect, useState } from 'react';
+
+function Stopwatch() {
+  const [seconds, setSeconds] = useState(
+    () => Number(localStorage.getItem('seconds')) || 0,
+  );
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    if (!isRunning) return;
+    const id = setInterval(() => setSeconds(s => s + 1), 1000);
+    return () => clearInterval(id);
+  }, [isRunning]);
+
+  useEffect(() => {
+    document.title = \`⏱ \${seconds} s\`;
+    localStorage.setItem('seconds', String(seconds));
+  }, [seconds]);
+
+  return (
+    <div>
+      <p>{seconds} s</p>
+      <button onClick={() => setIsRunning(!isRunning)}>
+        {isRunning ? 'Stopp' : 'Start'}
+      </button>
+      <button onClick={() => setSeconds(0)}>Nollställ</button>
+    </div>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Stoppuret börjar på "0 s" och står still',
+        code: "__mount(<Stopwatch />).tick(3000).text('p')",
+        expected: '0 s',
+      },
+      {
+        description: 'Start räknar upp en gång per sekund',
+        code: "__mount(<Stopwatch />).click('Start').tick(3000).text('p')",
+        expected: '3 s',
+      },
+      {
+        description: 'Stopp stoppar intervallet',
+        code: "(() => { const app = __mount(<Stopwatch />).click('Start').tick(2000).click('Stopp').tick(5000); return [app.text('p'), __clock.active()]; })()",
+        expected: ['2 s', 0],
+      },
+      {
+        description: 'Nollställ sätter tiden till 0',
+        code: "__mount(<Stopwatch />).click('Start').tick(4000).click('Nollställ').text('p')",
+        expected: '0 s',
+      },
+      {
+        description: 'Titeln och localStorage följer tiden',
+        code: "(__mount(<Stopwatch />).click('Start').tick(2000), [document.title, localStorage.getItem('seconds')])",
+        expected: ['⏱ 2 s', '2'],
+      },
+      {
+        description: 'En sparad tid läses in',
+        code: "(localStorage.setItem('seconds', '10'), __mount(<Stopwatch />).text('p'))",
+        expected: '10 s',
+      },
+      {
+        description: 'Intervallet stoppas när Stopwatch tas bort',
+        code: "(__mount(<Stopwatch />).click('Start').tick(1000).unmount(), __clock.active())",
+        expected: 0,
+      },
+    ],
+  },
 ];

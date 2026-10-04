@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
-import { mount } from './mount';
+import { createClock } from './fakes';
+import { createMount } from './mount';
+
+const mount = createMount(createClock());
 
 function Counter() {
   const [count, setCount] = useState(0);
