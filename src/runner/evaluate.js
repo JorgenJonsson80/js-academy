@@ -5,11 +5,20 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { checkSyntax, transformJsx } from './jsx';
 import { createModuleSystem } from './modules';
 
+// React 19 lägger till <link rel="preload"> för bilder när den
+// renderar till HTML. Det har inget med elevens kod att göra.
+function render(element) {
+  return renderToStaticMarkup(element).replace(
+    /<link rel="preload"[^>]*\/>/g,
+    '',
+  );
+}
+
 // Det som all kod i övningarna når. Testerna kan rendera en
 // komponent till HTML med __render(<Greeting />).
 const runtime = {
   packages: { react: { ...React, default: React } },
-  globals: { __React: React, __render: renderToStaticMarkup },
+  globals: { __React: React, __render: render },
 };
 
 function format(value) {
@@ -37,17 +46,21 @@ function isEqual(actual, expected) {
   return JSON.stringify(actual) === JSON.stringify(expected);
 }
 
-function runTest(code, test, { fileName = 'main.js', files = {} }) {
+// Elevens kod och uttrycket körs i samma scope, så uttrycket kan läsa
+// variabler och anropa funktioner eleven skapat. De andra filerna nås
+// med __require('./app.js').
+function runExpression(code, expression, { fileName = 'main.js', files = {} }) {
+  const modules = createModuleSystem({ ...files, [fileName]: code }, runtime);
+  return modules.runFile(
+    fileName,
+    code,
+    `return ${transformJsx(`(${expression})`)};`,
+  );
+}
+
+function runTest(code, test, options) {
   try {
-    // Elevens kod och testuttrycket körs i samma scope,
-    // så testet kan läsa variabler och anropa funktioner eleven skapat.
-    // Testet når de andra filerna med __require('./app.js').
-    const modules = createModuleSystem({ ...files, [fileName]: code }, runtime);
-    const actual = modules.runFile(
-      fileName,
-      code,
-      `return ${transformJsx(`(${test.code})`)};`,
-    );
+    const actual = runExpression(code, test.code, options);
 
     return {
       description: test.description,
@@ -75,8 +88,23 @@ function runSourceCheck(code, check) {
   };
 }
 
-// modules: { fileName, files } för övningar med import och export.
-export function evaluate(code, tests, sourceChecks = [], modules = {}) {
+// Renderar det lektionen vill visa, t.ex. <Greeting name="Ada" />,
+// så att eleven ser vad koden ger.
+function renderPreview(code, options) {
+  if (!options.preview) return {};
+  try {
+    return {
+      preview: render(runExpression(code, options.preview, options)),
+    };
+  } catch (error) {
+    return { previewError: `${error.name}: ${error.message}` };
+  }
+}
+
+// options:
+//   fileName, files – för övningar med import och export
+//   preview – JSX som renderas och visas för eleven
+export function evaluate(code, tests, sourceChecks = [], options = {}) {
   try {
     checkSyntax(code);
   } catch (error) {
@@ -88,8 +116,9 @@ export function evaluate(code, tests, sourceChecks = [], modules = {}) {
 
   return {
     error: null,
+    ...renderPreview(code, options),
     results: [
-      ...tests.map(test => runTest(code, test, modules)),
+      ...tests.map(test => runTest(code, test, options)),
       ...sourceChecks.map(check => runSourceCheck(code, check)),
     ],
   };

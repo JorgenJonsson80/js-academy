@@ -1996,4 +1996,304 @@ export const countTodos = todos => \`\${todos.length} av \${MAX_TODOS}\`;`,
       },
     ],
   },
+  {
+    id: 'jsx-01',
+    title: 'Din första komponent',
+    xp: 10,
+    track: 'jsx',
+    isBoss: false,
+    description:
+      'En React-komponent är en funktion som returnerar JSX. JSX ser ut som HTML men är JavaScript. Komponentens namn måste börja med stor bokstav, annars tror React att det är en HTML-tagg.',
+    task: 'Uppgift: Skriv komponenten App som returnerar en h1 med texten "Hej React!".',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: '// Skriv din kod här',
+    solution: `function App() {
+  return <h1>Hej React!</h1>;
+}`,
+    hints: [
+      'Börja med function App() { }.',
+      'Inuti funktionen skriver du return följt av JSX.',
+      'Skriv return <h1>Hej React!</h1>;',
+    ],
+    tests: [
+      {
+        description: 'App renderar <h1>Hej React!</h1>',
+        code: '__render(<App />)',
+        expected: '<h1>Hej React!</h1>',
+      },
+    ],
+  },
+  {
+    id: 'jsx-02',
+    title: 'Värden i JSX med { }',
+    xp: 10,
+    track: 'jsx',
+    isBoss: false,
+    description:
+      'Inom { } i JSX kan du skriva JavaScript. <p>Hej {name}!</p> visar värdet av variabeln name mitt i texten.',
+    task: 'Uppgift: Låt App returnera en p med texten "Hej Ada!". Hämta namnet från variabeln name med { }.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const name = 'Ada';
+
+function App() {
+  return <p>Hej !</p>;
+}`,
+    solution: `const name = 'Ada';
+
+function App() {
+  return <p>Hej {name}!</p>;
+}`,
+    hints: [
+      'Namnet ska stå mellan "Hej " och "!".',
+      'Variabler skrivs inom klamrar i JSX.',
+      'Skriv <p>Hej {name}!</p>',
+    ],
+    tests: [
+      {
+        description: 'App renderar <p>Hej Ada!</p>',
+        code: '__render(<App />)',
+        expected: '<p>Hej Ada!</p>',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Namnet skrivs inte in som text i JSX:en',
+        pattern: /Ada[^]*Ada/,
+        forbidden: true,
+      },
+      { description: 'JSX:en använder {name}', pattern: /\{\s*name\s*\}/ },
+    ],
+  },
+  {
+    id: 'jsx-03',
+    title: 'Uttryck i { }',
+    xp: 10,
+    track: 'jsx',
+    isBoss: false,
+    description:
+      'Allt som ger ett värde fungerar inom { }: uträkningar, funktionsanrop och template literals. {items * price} räknar ut summan direkt i JSX:en.',
+    task: 'Uppgift: Låt App returnera en p med texten "Totalt: 75 kr". Räkna ut summan med items * price inom { }.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const items = 3;
+const price = 25;
+
+function App() {
+  return <p></p>;
+}`,
+    solution: `const items = 3;
+const price = 25;
+
+function App() {
+  return <p>Totalt: {items * price} kr</p>;
+}`,
+    hints: [
+      'Texten "Totalt: " och " kr" skrivs som vanlig text.',
+      'Uträkningen items * price ska stå inom { }.',
+      'Skriv <p>Totalt: {items * price} kr</p>',
+    ],
+    tests: [
+      {
+        description: 'App renderar <p>Totalt: 75 kr</p>',
+        code: '__render(<App />)',
+        expected: '<p>Totalt: 75 kr</p>',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Summan räknas ut med items * price',
+        pattern: /\{\s*items\s*\*\s*price\s*\}|\{\s*price\s*\*\s*items\s*\}/,
+      },
+      {
+        description: 'Summan skrivs inte in som 75',
+        pattern: /\b75\b/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'jsx-04',
+    title: 'Attribut och className',
+    xp: 10,
+    track: 'jsx',
+    isBoss: false,
+    description:
+      'Attribut skrivs nästan som i HTML. Några heter annorlunda: class heter className, eftersom class redan betyder något i JavaScript. Värden från variabler skrivs inom { } utan citattecken: src={logoUrl}. Taggar utan innehåll, som img, måste stängas med />.',
+    task: 'Uppgift: Låt App returnera en img med src från variabeln logoUrl, alt "Logga" och klassen "logo".',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const logoUrl = '/favicon.svg';
+
+function App() {
+  return null;
+}`,
+    solution: `const logoUrl = '/favicon.svg';
+
+function App() {
+  return <img src={logoUrl} alt="Logga" className="logo" />;
+}`,
+    hints: [
+      'Byt null mot en img-tagg som stängs med />.',
+      'src ska få värdet från logoUrl, alltså src={logoUrl}.',
+      'Klassen skrivs className="logo".',
+    ],
+    tests: [
+      {
+        description: 'App renderar en img',
+        code: '/^<img[^>]*>$/.test(__render(<App />))',
+        expected: true,
+      },
+      {
+        description: 'img har src="/favicon.svg"',
+        code: '__render(<App />).includes(\'src="/favicon.svg"\')',
+        expected: true,
+      },
+      {
+        description: 'img har alt="Logga"',
+        code: '__render(<App />).includes(\'alt="Logga"\')',
+        expected: true,
+      },
+      {
+        description: 'img har klassen "logo"',
+        code: '__render(<App />).includes(\'class="logo"\')',
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'src hämtas med {logoUrl}',
+        pattern: /src=\{\s*logoUrl\s*\}/,
+      },
+      {
+        description: 'Klassen skrivs med className, inte class',
+        pattern: /\bclass\s*=/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'jsx-05',
+    title: 'En rot: Fragment',
+    xp: 10,
+    track: 'jsx',
+    isBoss: false,
+    description:
+      'En komponent får bara returnera ett element. Vill du returnera två element bredvid varandra lägger du dem i en Fragment: <>…</>. Den samlar ihop dem utan att lägga till något extra element på sidan, som en div skulle göra.',
+    task: 'Uppgift: Låt App returnera en h1 med "Profil" och direkt efter den en p med "Ada, 36 år". Använd user.name och user.age. Lägg dem i en Fragment, inte en div.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const user = { name: 'Ada', age: 36 };
+
+function App() {
+  return <h1>Profil</h1>;
+}`,
+    solution: `const user = { name: 'Ada', age: 36 };
+
+function App() {
+  return (
+    <>
+      <h1>Profil</h1>
+      <p>
+        {user.name}, {user.age} år
+      </p>
+    </>
+  );
+}`,
+    hints: [
+      'Två element bredvid varandra måste ha en gemensam förälder.',
+      'Skriv <> före h1 och </> efter p. JSX över flera rader omges med ( ).',
+      'p:n blir <p>{user.name}, {user.age} år</p>',
+    ],
+    tests: [
+      {
+        description: 'App renderar <h1>Profil</h1><p>Ada, 36 år</p>',
+        code: '__render(<App />)',
+        expected: '<h1>Profil</h1><p>Ada, 36 år</p>',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Namnet och åldern hämtas från user',
+        pattern: /user\s*\.\s*name[^]*user\s*\.\s*age/,
+      },
+    ],
+  },
+  {
+    id: 'jsx-boss-01',
+    title: 'Boss: Profilkort',
+    xp: 30,
+    track: 'jsx',
+    isBoss: true,
+    description:
+      'Kombinera allt om JSX: värden och uttryck i { }, attribut, className och självstängande taggar.',
+    task: `Uppgift: Låt App returnera ett profilkort för user.
+  En div med klassen "card".
+  I den: en img med src från user.avatar och alt från user.name.
+  Sedan en h2 med user.name.
+  Sist en p med user.title i versaler (toUpperCase).
+  Allt ska hämtas från user, inget skrivs in som text.`,
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const user = {
+  name: 'Ada Lovelace',
+  title: 'Programmerare',
+  avatar: '/favicon.svg',
+};
+
+function App() {
+  return null;
+}`,
+    solution: `const user = {
+  name: 'Ada Lovelace',
+  title: 'Programmerare',
+  avatar: '/favicon.svg',
+};
+
+function App() {
+  return (
+    <div className="card">
+      <img src={user.avatar} alt={user.name} />
+      <h2>{user.name}</h2>
+      <p>{user.title.toUpperCase()}</p>
+    </div>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Kortet är en div med klassen "card"',
+        code: '/^<div class="card">.*<\\/div>$/.test(__render(<App />))',
+        expected: true,
+      },
+      {
+        description: 'img har src="/favicon.svg" och alt="Ada Lovelace"',
+        code: '/<img(?=[^>]*\\bsrc="\\/favicon\\.svg")(?=[^>]*\\balt="Ada Lovelace")[^>]*>/.test(__render(<App />))',
+        expected: true,
+      },
+      {
+        description:
+          'Efter img kommer <h2>Ada Lovelace</h2><p>PROGRAMMERARE</p>',
+        code: '__render(<App />).endsWith("><h2>Ada Lovelace</h2><p>PROGRAMMERARE</p></div>")',
+        expected: true,
+      },
+      {
+        description: 'Kortet visar en annan användare om user ändras',
+        code: "(user.name = 'Linus', user.title = 'Utvecklare', __render(<App />).includes('<h2>Linus</h2><p>UTVECKLARE</p>'))",
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Titeln görs om med toUpperCase',
+        pattern: /\.\s*toUpperCase\s*\(/,
+      },
+      {
+        description: 'Klassen skrivs med className, inte class',
+        pattern: /\bclass\s*=/,
+        forbidden: true,
+      },
+    ],
+  },
 ];

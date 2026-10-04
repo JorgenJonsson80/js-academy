@@ -5,4 +5,5 @@ export const tracks = [
   { id: 'array-methods', title: 'Array-metoder' },
   { id: 'modern-js', title: 'Modern JS för React' },
   { id: 'modules', title: 'Moduler: import & export' },
+  { id: 'jsx', title: 'React: JSX' },
 ];

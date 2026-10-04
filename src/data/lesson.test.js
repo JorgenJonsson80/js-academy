@@ -7,6 +7,7 @@ function check(lesson, code) {
   const { error, results } = evaluate(code, lesson.tests, lesson.sourceChecks, {
     fileName: lesson.fileName,
     files: lesson.files,
+    preview: lesson.preview,
   });
   const failed = results.filter(result => !result.passed);
   return {
@@ -50,6 +51,20 @@ describe('rättning av lektionerna', () => {
       reason: '',
     });
   });
+
+  it.each(lessons.filter(lesson => lesson.preview))(
+    '$id kan förhandsvisa sin lösning',
+    lesson => {
+      const { preview, previewError } = evaluate(
+        lesson.solution,
+        [],
+        [],
+        lesson,
+      );
+      expect(previewError).toBeUndefined();
+      expect(preview).toBeTruthy();
+    },
+  );
 
   it.each(lessons)('$id underkänner startkoden', lesson => {
     expect(check(lesson, lesson.starterCode).passed).toBe(false);
@@ -139,6 +154,21 @@ const correctAnswers = [
   [
     'modules-boss-01',
     "import { MAX_TODOS } from './config.js';\n\nconst addTodo = (todos, text) =>\n  todos.length >= MAX_TODOS ? todos : [...todos, text];\n\nfunction countTodos(todos) {\n  return `${todos.length} av ${MAX_TODOS}`;\n}\n\nexport { countTodos };\nexport default addTodo;",
+  ],
+  ['jsx-01', 'const App = () => <h1>Hej React!</h1>;'],
+  ['jsx-01', 'function App() {\n  return (\n    <h1>Hej React!</h1>\n  );\n}'],
+  ['jsx-02', "const name = 'Ada';\nconst App = () => <p>{`Hej ${name}!`}</p>;"],
+  [
+    'jsx-04',
+    "const logoUrl = '/favicon.svg';\nexport default function App() {\n  return <img className=\"logo\" alt='Logga' src={logoUrl}/>;\n}",
+  ],
+  [
+    'jsx-05',
+    "import { Fragment } from 'react';\nconst user = { name: 'Ada', age: 36 };\nfunction App() {\n  return <Fragment><h1>Profil</h1><p>{`${user.name}, ${user.age} år`}</p></Fragment>;\n}",
+  ],
+  [
+    'jsx-boss-01',
+    "const user = { name: 'Ada Lovelace', title: 'Programmerare', avatar: '/favicon.svg' };\nconst App = () => {\n  const { name, title, avatar } = user;\n  return (\n    <div className=\"card\">\n      <img alt={name} src={avatar} />\n      <h2>{name}</h2>\n      <p>{title.toUpperCase()}</p>\n    </div>\n  );\n};",
   ],
 ];
 
@@ -310,6 +340,41 @@ const wrongAnswers = [
   [
     'modules-boss-01',
     "import { MAX_TODOS } from './config.js';\nexport function addTodo(todos, text) {\n  if (todos.length >= MAX_TODOS) return todos;\n  return [...todos, text];\n}\nexport const countTodos = todos => `${todos.length} av ${MAX_TODOS}`;",
+  ],
+  ['jsx-01', 'function app() {\n  return <h1>Hej React!</h1>;\n}'],
+  ['jsx-01', "function App() {\n  return '<h1>Hej React!</h1>';\n}"],
+  ['jsx-01', 'function App() {\n  <h1>Hej React!</h1>;\n}'],
+  [
+    'jsx-02',
+    "const name = 'Ada';\nfunction App() {\n  return <p>Hej Ada!</p>;\n}",
+  ],
+  [
+    'jsx-02',
+    "const name = 'Ada';\nfunction App() {\n  return <p>Hej name!</p>;\n}",
+  ],
+  [
+    'jsx-03',
+    'const items = 3;\nconst price = 25;\nfunction App() {\n  return <p>Totalt: items * price kr</p>;\n}',
+  ],
+  [
+    'jsx-04',
+    'const logoUrl = \'/favicon.svg\';\nfunction App() {\n  return <img src="logoUrl" alt="Logga" className="logo" />;\n}',
+  ],
+  [
+    'jsx-04',
+    'const logoUrl = \'/favicon.svg\';\nfunction App() {\n  return <img src={logoUrl} alt="Logga" class="logo" />;\n}',
+  ],
+  [
+    'jsx-05',
+    "const user = { name: 'Ada', age: 36 };\nfunction App() {\n  return (\n    <div>\n      <h1>Profil</h1>\n      <p>{user.name}, {user.age} år</p>\n    </div>\n  );\n}",
+  ],
+  [
+    'jsx-05',
+    "const user = { name: 'Ada', age: 36 };\nfunction App() {\n  return (\n    <h1>Profil</h1>\n    <p>{user.name}, {user.age} år</p>\n  );\n}",
+  ],
+  [
+    'jsx-boss-01',
+    "const user = { name: 'Ada Lovelace', title: 'Programmerare', avatar: '/favicon.svg' };\nfunction App() {\n  return (\n    <div className=\"card\">\n      <img src={user.avatar} alt={user.name} />\n      <h2>Ada Lovelace</h2>\n      <p>{'PROGRAMMERARE'.toUpperCase()}</p>\n    </div>\n  );\n}",
   ],
 ];
 

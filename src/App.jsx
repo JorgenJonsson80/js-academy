@@ -89,21 +89,26 @@ function App() {
   }
 
   async function checkCode() {
-    const { error, results } = await runTests(
+    const { error, results, preview, previewError } = await runTests(
       code,
       lesson.tests,
       lesson.sourceChecks,
-      { fileName: lesson.fileName, files: lesson.files },
+      {
+        fileName: lesson.fileName,
+        files: lesson.files,
+        preview: lesson.preview,
+      },
     );
     const isCorrect =
       !error && results.length > 0 && results.every(result => result.passed);
-    return { isCorrect, error, results };
+    return { isCorrect, error, results, preview, previewError };
   }
 
   async function handleCheck() {
     const checkId = ++checkIdRef.current;
     setIsChecking(true);
-    const { isCorrect, error, results } = await checkCode();
+    const { isCorrect, error, results, preview, previewError } =
+      await checkCode();
     if (checkId !== checkIdRef.current) return;
     setIsChecking(false);
 
@@ -112,6 +117,8 @@ function App() {
       isCorrect,
       error,
       results,
+      preview,
+      previewError,
     });
     if (!isCorrect) {
       setFailedAttempts(previous => previous + 1);
