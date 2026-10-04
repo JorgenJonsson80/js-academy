@@ -291,6 +291,7 @@ function App() {
             isCompleted={completedIds.includes(lesson.id)}
             failedAttempts={failedAttempts}
             trackTitle={track.title}
+            docs={track.docs}
             completedInTrack={completedInTrack}
             trackLessonCount={trackLessons.length}
             lessonNumber={lessonIndex + 1}

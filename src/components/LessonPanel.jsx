@@ -8,6 +8,7 @@ export default function LessonPanel({
   lesson,
 
   trackTitle,
+  docs,
   completedInTrack,
   trackLessonCount,
   lessonNumber,
@@ -45,6 +46,23 @@ export default function LessonPanel({
       </h2>
       <p className="lesson-description">{lesson.description}</p>
       <p className="lesson-task">{lesson.task}</p>
+      {docs?.length > 0 && (
+        <details className="lesson-docs">
+          <summary>📚 Läs mer i dokumentationen</summary>
+          <ul>
+            {docs.map(doc => (
+              <li key={doc.url}>
+                <a href={doc.url} target="_blank" rel="noreferrer">
+                  {doc.title}
+                </a>{' '}
+                <span className="muted">
+                  ({doc.url.includes('mozilla.org') ? 'MDN' : 'react.dev'})
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
       {Object.entries(lesson.files ?? {}).map(([fileName, source]) => (
         <FileView key={fileName} fileName={fileName} source={source} />
       ))}

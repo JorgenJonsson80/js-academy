@@ -1150,6 +1150,384 @@ const receipt = checkout(200, 3, true);`,
     ],
   },
   {
+    id: 'str-01',
+    title: 'Strängmetoder',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'En sträng är text. Strängar har egna funktioner, metoder, som anropas med en punkt: name.toUpperCase() ger texten i versaler. Strängen själv ändras aldrig, du får en ny. length är en egenskap och har inga parenteser: name.length ger antalet tecken.',
+    task: 'Uppgift: Skapa shout som är name i versaler med toUpperCase, och letters som är antalet tecken i name.',
+    starterCode: `const name = 'Ada Lovelace';
+
+`,
+    solution: `const name = 'Ada Lovelace';
+
+const shout = name.toUpperCase();
+const letters = name.length;`,
+    hints: [
+      'Metoder anropas med punkt och parenteser: name.toUpperCase().',
+      'length har inga parenteser.',
+      'Skriv const letters = name.length;',
+    ],
+    tests: [
+      {
+        description: 'shout är "ADA LOVELACE"',
+        code: 'shout',
+        expected: 'ADA LOVELACE',
+      },
+      { description: 'letters är 12', code: 'letters', expected: 12 },
+      {
+        description: 'name är oförändrad',
+        code: 'name',
+        expected: 'Ada Lovelace',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'shout skapas med toUpperCase',
+        pattern: /name\s*\.\s*toUpperCase\s*\(\s*\)/,
+      },
+      {
+        description: 'letters skapas med name.length',
+        pattern: /name\s*\.\s*length\b/,
+      },
+    ],
+  },
+  {
+    id: 'str-02',
+    title: 'Sök i text med includes',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'text.includes("React") är true om texten innehåller "React". Den skiljer på stora och små bokstäver. Gör därför om båda till gemener med toLowerCase innan du jämför. Det är så sökfält fungerar.',
+    task: 'Uppgift: Skriv funktionen matches(name, query) som returnerar true om name innehåller query, oavsett stora eller små bokstäver.',
+    starterCode: '// Skriv din kod här',
+    solution: `function matches(name, query) {
+  return name.toLowerCase().includes(query.toLowerCase());
+}`,
+    hints: [
+      'Gör om både name och query till gemener.',
+      'Metoder kan kedjas: name.toLowerCase().includes(…).',
+      'Returnera name.toLowerCase().includes(query.toLowerCase());',
+    ],
+    tests: [
+      {
+        description: 'matches("Ada Lovelace", "love") är true',
+        code: "matches('Ada Lovelace', 'love')",
+        expected: true,
+      },
+      {
+        description: 'matches("Ada Lovelace", "ADA") är true',
+        code: "matches('Ada Lovelace', 'ADA')",
+        expected: true,
+      },
+      {
+        description: 'matches("Ada Lovelace", "xyz") är false',
+        code: "matches('Ada Lovelace', 'xyz')",
+        expected: false,
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder includes', pattern: /\.\s*includes\s*\(/ },
+    ],
+  },
+  {
+    id: 'str-03',
+    title: 'Städa text med trim',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'Användare skriver ofta mellanslag av misstag. text.trim() tar bort mellanslag i början och slutet. En text med bara mellanslag blir då tom, så du kan se att inget riktigt skrivits.',
+    task: 'Uppgift: Skriv funktionen isBlank(text) som returnerar true om text är tom eller bara innehåller mellanslag.',
+    starterCode: '// Skriv din kod här',
+    solution: `function isBlank(text) {
+  return text.trim() === '';
+}`,
+    hints: [
+      'Ta bort mellanslagen med text.trim().',
+      "Jämför resultatet med en tom sträng ''.",
+      "Returnera text.trim() === '';",
+    ],
+    tests: [
+      {
+        description: 'isBlank("   ") är true',
+        code: "isBlank('   ')",
+        expected: true,
+      },
+      {
+        description: 'isBlank("") är true',
+        code: "isBlank('')",
+        expected: true,
+      },
+      {
+        description: 'isBlank("  Ada ") är false',
+        code: "isBlank('  Ada ')",
+        expected: false,
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder trim', pattern: /\.\s*trim\s*\(\s*\)/ },
+    ],
+  },
+  {
+    id: 'str-04',
+    title: 'Dela upp och sätt ihop',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'text.split(" ") delar upp en sträng i en array vid varje mellanslag. array.join("-") gör tvärtom och sätter ihop en array till en sträng med "-" emellan.',
+    task: 'Uppgift: Skriv funktionen toSlug(title) som gör om titeln till gemener och byter varje mellanslag mot ett bindestreck med split och join.',
+    starterCode: '// Skriv din kod här',
+    solution: `function toSlug(title) {
+  return title.toLowerCase().split(' ').join('-');
+}`,
+    hints: [
+      'Börja med title.toLowerCase().',
+      "Dela vid mellanslag med .split(' ').",
+      "Sätt ihop med .join('-').",
+    ],
+    tests: [
+      {
+        description:
+          'toSlug("Min Första React App") ger "min-första-react-app"',
+        code: "toSlug('Min Första React App')",
+        expected: 'min-första-react-app',
+      },
+      {
+        description: 'toSlug("Hej") ger "hej"',
+        code: "toSlug('Hej')",
+        expected: 'hej',
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder split', pattern: /\.\s*split\s*\(/ },
+      { description: 'Koden använder join', pattern: /\.\s*join\s*\(/ },
+    ],
+  },
+  {
+    id: 'str-05',
+    title: '=== och ==',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'JavaScript har två sätt att jämföra. == gör om värdena innan det jämför, så "5" == 5 är true. === jämför både värde och typ, så "5" === 5 är false. Använd alltid === och !==, då slipper du överraskningar.',
+    task: 'Uppgift: isFive använder == och säger att texten "5" är talet 5. Rätta den så att bara talet 5 räknas.',
+    starterCode: `function isFive(value) {
+  return value == 5;
+}`,
+    solution: `function isFive(value) {
+  return value === 5;
+}`,
+    hints: [
+      'Problemet är jämförelsen.',
+      '== gör om "5" till 5 innan den jämför.',
+      'Byt == mot ===.',
+    ],
+    tests: [
+      { description: 'isFive(5) är true', code: 'isFive(5)', expected: true },
+      {
+        description: 'isFive("5") är false',
+        code: "isFive('5')",
+        expected: false,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden använder inte ==',
+        pattern: /[^=!]==[^=]/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'str-06',
+    title: 'Truthy och falsy',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'I ett villkor räknas varje värde som sant eller falskt. Exakt sex värden är falsy: false, 0, "", null, undefined och NaN. Allt annat är truthy, även "0", [] och {}. Därför visar {count && …} en nolla i React: 0 är falsy men renderas ändå.',
+    task: 'Uppgift: Skapa arrayen falsyValues med alla sex falsy värden.',
+    starterCode: '// Skriv din kod här',
+    solution: "const falsyValues = [false, 0, '', null, undefined, NaN];",
+    hints: [
+      'Arrayen ska ha sex värden.',
+      'Två av dem är false och 0. En är en tom sträng.',
+      "Skriv [false, 0, '', null, undefined, NaN].",
+    ],
+    tests: [
+      {
+        description: 'falsyValues har sex värden',
+        code: 'falsyValues.length',
+        expected: 6,
+      },
+      {
+        description: 'Alla värden är falsy',
+        code: 'falsyValues.every(value => !value)',
+        expected: true,
+      },
+      {
+        description: 'Alla sex olika falsy värden finns med',
+        code: "[false, 0, '', null, undefined].every(value => falsyValues.includes(value)) && falsyValues.some(Number.isNaN)",
+        expected: true,
+      },
+    ],
+  },
+  {
+    id: 'str-07',
+    title: 'Reservvärde med ??',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'value ?? "reserv" ger reservvärdet bara om value är null eller undefined. Den äldre varianten value || "reserv" byter även ut 0 och "", och det är ofta fel. En volym på 0 är ett riktigt värde.',
+    task: 'Uppgift: Skriv funktionen getVolume(settings) som returnerar settings.volume, eller 50 om volume saknas. En volym på 0 ska behållas.',
+    starterCode: '// Skriv din kod här',
+    solution: `function getVolume(settings) {
+  return settings.volume ?? 50;
+}`,
+    hints: [
+      'Värdet finns i settings.volume.',
+      '|| byter ut 0. Använd ?? i stället.',
+      'Returnera settings.volume ?? 50;',
+    ],
+    tests: [
+      {
+        description: 'getVolume({ volume: 80 }) ger 80',
+        code: 'getVolume({ volume: 80 })',
+        expected: 80,
+      },
+      {
+        description: 'getVolume({}) ger 50',
+        code: 'getVolume({})',
+        expected: 50,
+      },
+      {
+        description: 'getVolume({ volume: 0 }) ger 0',
+        code: 'getVolume({ volume: 0 })',
+        expected: 0,
+      },
+    ],
+    sourceChecks: [{ description: 'Koden använder ??', pattern: /\?\?/ }],
+  },
+  {
+    id: 'str-08',
+    title: 'Läs säkert med ?.',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'user.address.city kraschar om user eller address saknas. Med optional chaining, user?.address?.city, blir svaret undefined i stället. Kombinera med ?? för ett reservvärde. Det är vanligt i React, där data ofta inte har hunnit laddas än.',
+    task: 'Uppgift: Skriv funktionen getCity(user) som returnerar user.address.city, eller "Okänd stad" om user, address eller city saknas.',
+    starterCode: '// Skriv din kod här',
+    solution: `function getCity(user) {
+  return user?.address?.city ?? 'Okänd stad';
+}`,
+    hints: [
+      'Byt varje . mot ?. där värdet kan saknas.',
+      'user?.address?.city ger undefined om något saknas.',
+      "Lägg till ?? 'Okänd stad' sist.",
+    ],
+    tests: [
+      {
+        description: 'En hel adress ger staden',
+        code: "getCity({ address: { city: 'Lund' } })",
+        expected: 'Lund',
+      },
+      {
+        description: 'Utan address: "Okänd stad"',
+        code: 'getCity({})',
+        expected: 'Okänd stad',
+      },
+      {
+        description: 'Utan user: "Okänd stad"',
+        code: 'getCity(null)',
+        expected: 'Okänd stad',
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder ?.', pattern: /\?\.\s*address/ },
+      {
+        description: 'Koden använder inte if',
+        pattern: /\bif\b/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'str-boss-01',
+    title: 'Boss: Sökrutan',
+    xp: 30,
+    track: 'strings',
+    isBoss: true,
+    description:
+      'Bygg logiken bakom en sökruta: städa texten, jämför utan att bry dig om stora och små bokstäver, och hantera data som saknas.',
+    task: `Uppgift: Skriv funktionen searchUsers(users, query).
+  Varje användare visas med sitt smeknamn (nickname),
+    eller med name om nickname saknas. Använd ??.
+  Ta bort mellanslag runt query med trim.
+  Är query tom: returnera alla visningsnamn.
+  Annars: returnera visningsnamnen för användarna vars name
+    innehåller query, oavsett stora och små bokstäver.`,
+    starterCode: `const users = [
+  { name: 'Ada Lovelace', nickname: 'Ada' },
+  { name: 'Linus Torvalds' },
+  { name: 'Grace Hopper', nickname: 'Amazing Grace' },
+];
+
+`,
+    solution: `const users = [
+  { name: 'Ada Lovelace', nickname: 'Ada' },
+  { name: 'Linus Torvalds' },
+  { name: 'Grace Hopper', nickname: 'Amazing Grace' },
+];
+
+function searchUsers(users, query) {
+  const cleanQuery = query.trim().toLowerCase();
+  const found = users.filter(user =>
+    user.name.toLowerCase().includes(cleanQuery),
+  );
+  return found.map(user => user.nickname ?? user.name);
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Tom sökning ger alla visningsnamn',
+        code: "searchUsers(users, '')",
+        expected: ['Ada', 'Linus Torvalds', 'Amazing Grace'],
+      },
+      {
+        description: 'Bara mellanslag räknas som tom sökning',
+        code: "searchUsers(users, '   ').length",
+        expected: 3,
+      },
+      {
+        description: '"  HOPPER " hittar Grace',
+        code: "searchUsers(users, '  HOPPER ')",
+        expected: ['Amazing Grace'],
+      },
+      {
+        description: '"o" hittar alla med o i namnet',
+        code: "searchUsers(users, 'o')",
+        expected: ['Ada', 'Linus Torvalds', 'Amazing Grace'],
+      },
+      {
+        description: 'En sökning utan träffar ger []',
+        code: "searchUsers(users, 'xyz')",
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder ??', pattern: /\?\?/ },
+      { description: 'Koden använder trim', pattern: /\.\s*trim\s*\(\s*\)/ },
+    ],
+  },
+  {
     id: 'map-01',
     title: 'Dubbla med map',
     xp: 10,
@@ -2006,6 +2384,471 @@ const todos = ['Handla', 'Träna'];
           'message använder ${updatedProfile.name} och ${allTodos.length}',
         pattern:
           /`(?=[^`]*\$\{\s*updatedProfile\s*\.\s*name\s*\})(?=[^`]*\$\{\s*allTodos\s*\.\s*length\s*\})[^`]*`/,
+      },
+    ],
+  },
+  {
+    id: 'imm-01',
+    title: 'Samma array eller en kopia?',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'En variabel med en array eller ett objekt innehåller inte själva datan, utan en referens till den. const b = a; ger därför två namn på samma array, och b.push(3) ändrar även a. === jämför referenser, så [1] === [1] är false men b === a är true.',
+    task: 'Uppgift: Skapa copy som en kopia av original med spread och lägg till 3 i copy med push. original ska vara oförändrad.',
+    starterCode: `const original = [1, 2];
+
+`,
+    solution: `const original = [1, 2];
+
+const copy = [...original];
+copy.push(3);`,
+    hints: [
+      'En kopia skapas med [...original].',
+      'Ändra sedan bara copy.',
+      'Skriv const copy = [...original]; och copy.push(3);',
+    ],
+    tests: [
+      { description: 'copy är [1, 2, 3]', code: 'copy', expected: [1, 2, 3] },
+      {
+        description: 'original är fortfarande [1, 2]',
+        code: 'original',
+        expected: [1, 2],
+      },
+      {
+        description: 'copy är en annan array än original',
+        code: 'copy !== original',
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'copy skapas med [...original]',
+        pattern: /\[\s*\.\.\.\s*original\s*\]/,
+      },
+    ],
+  },
+  {
+    id: 'imm-02',
+    title: 'Ändra inte, skapa nytt',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'React avgör om något ändrats genom att jämföra referenser med ===. Ändrar du en array med push är den fortfarande samma array, och React tror att ingenting hänt. Därför skapar man alltid en ny array eller ett nytt objekt i stället.',
+    task: 'Uppgift: Skriv funktionen addItem(list, item) som returnerar en ny array med item sist. list får inte ändras.',
+    starterCode: '// Skriv din kod här',
+    solution: `function addItem(list, item) {
+  return [...list, item];
+}`,
+    hints: [
+      'Använd inte push, den ändrar list.',
+      'Spread skapar en ny array: [...list, …].',
+      'Returnera [...list, item];',
+    ],
+    tests: [
+      {
+        description: 'addItem([1, 2], 3) ger [1, 2, 3]',
+        code: 'addItem([1, 2], 3)',
+        expected: [1, 2, 3],
+      },
+      {
+        description: 'list ändras inte',
+        code: '(() => { const list = [1]; addItem(list, 2); return list; })()',
+        expected: [1],
+      },
+      {
+        description: 'Resultatet är en ny array',
+        code: '(() => { const list = [1]; return addItem(list, 2) !== list; })()',
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden använder inte push',
+        pattern: /\.\s*push\s*\(/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'imm-03',
+    title: 'some, every och includes',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'some är true om minst ett element klarar villkoret. every är true om alla gör det. includes kollar om ett värde finns i arrayen. Inget av dem ändrar arrayen.',
+    task: 'Uppgift: Skapa allDone (är alla todos klara?), anyDone (är minst en klar?) och hasShopping (finns "Handla" bland names?).',
+    starterCode: `const todos = [
+  { text: 'Handla', done: true },
+  { text: 'Träna', done: false },
+];
+const names = todos.map(todo => todo.text);
+
+`,
+    solution: `const todos = [
+  { text: 'Handla', done: true },
+  { text: 'Träna', done: false },
+];
+const names = todos.map(todo => todo.text);
+
+const allDone = todos.every(todo => todo.done);
+const anyDone = todos.some(todo => todo.done);
+const hasShopping = names.includes('Handla');`,
+    hints: [
+      'allDone: todos.every(todo => todo.done)',
+      'anyDone: todos.some(todo => todo.done)',
+      "hasShopping: names.includes('Handla')",
+    ],
+    tests: [
+      { description: 'allDone är false', code: 'allDone', expected: false },
+      { description: 'anyDone är true', code: 'anyDone', expected: true },
+      {
+        description: 'hasShopping är true',
+        code: 'hasShopping',
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'allDone använder every',
+        pattern: /allDone\s*=\s*todos\s*\.\s*every\s*\(/,
+      },
+      {
+        description: 'anyDone använder some',
+        pattern: /anyDone\s*=\s*todos\s*\.\s*some\s*\(/,
+      },
+      {
+        description: 'hasShopping använder includes',
+        pattern: /\.\s*includes\s*\(/,
+      },
+    ],
+  },
+  {
+    id: 'imm-04',
+    title: 'Sortera utan att förstöra',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'sort ändrar den array den anropas på, vilket i React betyder att du ändrar state direkt. Sortera därför en kopia: [...scores].sort(…) eller scores.toSorted(…). sort behöver en jämförelsefunktion för tal: (a, b) => b - a sorterar från störst till minst.',
+    task: 'Uppgift: Skapa topScores som innehåller scores sorterade från högst till lägst. scores får inte ändras.',
+    starterCode: `const scores = [40, 95, 72, 18];
+
+`,
+    solution: `const scores = [40, 95, 72, 18];
+
+const topScores = [...scores].sort((a, b) => b - a);`,
+    hints: [
+      'Gör en kopia först: [...scores].',
+      'Sortera kopian med .sort(…).',
+      'Från högst till lägst: (a, b) => b - a.',
+    ],
+    tests: [
+      {
+        description: 'topScores är [95, 72, 40, 18]',
+        code: 'topScores',
+        expected: [95, 72, 40, 18],
+      },
+      {
+        description: 'scores är oförändrad',
+        code: 'scores',
+        expected: [40, 95, 72, 18],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden sorterar med sort eller toSorted',
+        pattern: /\.\s*(sort|toSorted)\s*\(/,
+      },
+    ],
+  },
+  {
+    id: 'imm-05',
+    title: 'Uppdatera ett element med map',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'För att ändra ett element skapar du en ny array med map. Elementet som ska ändras byts mot en kopia med det nya värdet, alla andra behålls som de är: todo.id === id ? { ...todo, done: !todo.done } : todo.',
+    task: 'Uppgift: Skriv funktionen toggleTodo(todos, id) som returnerar en ny array där done är omvänd för todon med det id:t. Inget får ändras.',
+    starterCode: '// Skriv din kod här',
+    solution: `function toggleTodo(todos, id) {
+  return todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo));
+}`,
+    hints: [
+      'Börja med return todos.map(todo => …);',
+      'Är todo.id === id? Returnera då { ...todo, done: !todo.done }.',
+      'Annars returneras todo som den är.',
+    ],
+    tests: [
+      {
+        description: 'Rätt todo ändras',
+        code: 'toggleTodo([{ id: 1, done: false }, { id: 2, done: false }], 2)',
+        expected: [
+          { id: 1, done: false },
+          { id: 2, done: true },
+        ],
+      },
+      {
+        description: 'Originalet ändras inte',
+        code: '(() => { const todos = [{ id: 1, done: false }]; toggleTodo(todos, 1); return todos[0].done; })()',
+        expected: false,
+      },
+      {
+        description: 'Orörda todos är samma objekt som förut',
+        code: '(() => { const todos = [{ id: 1, done: false }, { id: 2, done: false }]; return toggleTodo(todos, 2)[0] === todos[0]; })()',
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder map', pattern: /\.\s*map\s*\(/ },
+    ],
+  },
+  {
+    id: 'imm-06',
+    title: 'Ta bort med slice',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'splice tar bort element men ändrar arrayen. slice(start, slut) ger en kopia av en del av arrayen och ändrar ingenting. Två slice runt elementet och spread blir en ny array utan det.',
+    task: 'Uppgift: Skriv funktionen removeAt(list, index) som returnerar en ny array utan elementet på platsen index. Använd slice, inte splice.',
+    starterCode: '// Skriv din kod här',
+    solution: `function removeAt(list, index) {
+  return [...list.slice(0, index), ...list.slice(index + 1)];
+}`,
+    hints: [
+      'list.slice(0, index) ger allt före elementet.',
+      'list.slice(index + 1) ger allt efter.',
+      'Returnera [...list.slice(0, index), ...list.slice(index + 1)];',
+    ],
+    tests: [
+      {
+        description: "removeAt(['a', 'b', 'c'], 1) ger ['a', 'c']",
+        code: "removeAt(['a', 'b', 'c'], 1)",
+        expected: ['a', 'c'],
+      },
+      {
+        description: 'Första elementet kan tas bort',
+        code: "removeAt(['a', 'b'], 0)",
+        expected: ['b'],
+      },
+      {
+        description: 'list ändras inte',
+        code: "(() => { const list = ['a', 'b']; removeAt(list, 0); return list; })()",
+        expected: ['a', 'b'],
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder slice', pattern: /\.\s*slice\s*\(/ },
+      {
+        description: 'Koden använder inte splice',
+        pattern: /\.\s*splice\s*\(/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'imm-07',
+    title: 'Kortform och beräknade nycklar',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'Heter variabeln samma som egenskapen kan du skriva { name, age } i stället för { name: name, age: age }. Med hakparenteser blir nyckeln ett värde: { [field]: value }. Det används i React-formulär där ett fält uppdateras med sitt namn: { ...form, [event.target.name]: event.target.value }.',
+    task: 'Uppgift: Skapa user med kortform av name och age. Skriv sedan funktionen updateField(form, field, value) som returnerar en kopia av form där field har fått värdet value.',
+    starterCode: `const name = 'Ada';
+const age = 36;
+
+`,
+    solution: `const name = 'Ada';
+const age = 36;
+
+const user = { name, age };
+
+function updateField(form, field, value) {
+  return { ...form, [field]: value };
+}`,
+    hints: [
+      'user skrivs { name, age }.',
+      'updateField börjar med en kopia: { ...form }.',
+      'Lägg till [field]: value efter ...form.',
+    ],
+    tests: [
+      {
+        description: 'user är { name: "Ada", age: 36 }',
+        code: 'user',
+        expected: { name: 'Ada', age: 36 },
+      },
+      {
+        description: 'updateField ändrar rätt fält',
+        code: "updateField({ email: '', city: 'Lund' }, 'email', 'ada@example.com')",
+        expected: { email: 'ada@example.com', city: 'Lund' },
+      },
+      {
+        description: 'form ändras inte',
+        code: "(() => { const form = { email: '' }; updateField(form, 'email', 'x'); return form.email; })()",
+        expected: '',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'user skapas med kortform',
+        pattern: /\{\s*name\s*,\s*age\s*\}/,
+      },
+      { description: 'Nyckeln skrivs [field]', pattern: /\[\s*field\s*\]\s*:/ },
+    ],
+  },
+  {
+    id: 'imm-08',
+    title: 'Object.entries',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'Object.keys(obj) ger en array med nycklarna och Object.values(obj) med värdena. Object.entries(obj) ger par: [["keps", 199], …]. Då kan du använda map på ett objekt, till exempel för att visa det som en lista i React.',
+    task: 'Uppgift: Skapa lines med Object.entries och map, så att varje rad blir "keps: 199 kr".',
+    starterCode: `const prices = { keps: 199, mössa: 149 };
+
+`,
+    solution: `const prices = { keps: 199, mössa: 149 };
+
+const lines = Object.entries(prices).map(([item, price]) => \`\${item}: \${price} kr\`);`,
+    hints: [
+      'Object.entries(prices) ger [["keps", 199], ["mössa", 149]].',
+      'Plocka ut paret med destructuring: ([item, price]) => …',
+      'Returnera `${item}: ${price} kr` från map.',
+    ],
+    tests: [
+      {
+        description: 'lines är ["keps: 199 kr", "mössa: 149 kr"]',
+        code: 'lines',
+        expected: ['keps: 199 kr', 'mössa: 149 kr'],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden använder Object.entries',
+        pattern: /Object\s*\.\s*entries\s*\(/,
+      },
+    ],
+  },
+  {
+    id: 'imm-09',
+    title: 'Closures: funktioner minns',
+    xp: 10,
+    track: 'immutable',
+    isBoss: false,
+    description:
+      'En funktion minns variablerna som fanns där den skapades, även efteråt. Det kallas closure. Varje anrop av makeCounter skapar en ny count som bara den returnerade funktionen kommer åt. I React är det därför en effekt eller ett intervall kan se ett gammalt värde: funktionen minns värdet från när den skapades.',
+    task: 'Uppgift: Skriv funktionen makeCounter som skapar let count = 0 och returnerar en arrow function. Varje anrop av den ökar count med 1 och returnerar det nya värdet.',
+    starterCode: '// Skriv din kod här',
+    solution: `function makeCounter() {
+  let count = 0;
+  return () => {
+    count += 1;
+    return count;
+  };
+}`,
+    hints: [
+      'Börja med let count = 0; inuti makeCounter.',
+      'Returnera en arrow function: return () => { … };',
+      'I den: count += 1; och return count;',
+    ],
+    tests: [
+      {
+        description: 'Tre anrop ger 1, 2 och 3',
+        code: '(() => { const next = makeCounter(); return [next(), next(), next()]; })()',
+        expected: [1, 2, 3],
+      },
+      {
+        description: 'Två räknare räknar var för sig',
+        code: '(() => { const a = makeCounter(); const b = makeCounter(); a(); a(); return [a(), b()]; })()',
+        expected: [3, 1],
+      },
+    ],
+  },
+  {
+    id: 'imm-boss-01',
+    title: 'Boss: Flytta ett kort',
+    xp: 30,
+    track: 'immutable',
+    isBoss: true,
+    description:
+      'Uppdatera nästlad data utan att ändra något, precis som när state i React innehåller objekt i arrayer i objekt.',
+    task: `Uppgift: Skriv funktionen moveCard(board, cardId, fromId, toId).
+  board har columns, och varje kolumn har id och cards.
+  Returnera ett nytt board där kortet med cardId har flyttats
+    från kolumnen fromId till slutet av kolumnen toId.
+  Inget i board får ändras. Använd varken push eller splice.`,
+    starterCode: `const board = {
+  title: 'Veckans plan',
+  columns: [
+    { id: 'todo', cards: [{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }] },
+    { id: 'done', cards: [] },
+  ],
+};
+
+`,
+    solution: `const board = {
+  title: 'Veckans plan',
+  columns: [
+    { id: 'todo', cards: [{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }] },
+    { id: 'done', cards: [] },
+  ],
+};
+
+function moveCard(board, cardId, fromId, toId) {
+  const from = board.columns.find(column => column.id === fromId);
+  const card = from.cards.find(item => item.id === cardId);
+
+  const columns = board.columns.map(column => {
+    if (column.id === fromId) {
+      return { ...column, cards: column.cards.filter(item => item.id !== cardId) };
+    }
+    if (column.id === toId) {
+      return { ...column, cards: [...column.cards, card] };
+    }
+    return column;
+  });
+
+  return { ...board, columns };
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Kortet flyttas till rätt kolumn',
+        code: "moveCard(board, 1, 'todo', 'done').columns.map(column => column.cards.map(card => card.text))",
+        expected: [['Träna'], ['Handla']],
+      },
+      {
+        description: 'board ändras inte',
+        code: "(() => { const before = JSON.stringify(board); moveCard(board, 1, 'todo', 'done'); return JSON.stringify(board) === before; })()",
+        expected: true,
+      },
+      {
+        description: 'Det nya board är ett nytt objekt med nya columns',
+        code: "(() => { const next = moveCard(board, 1, 'todo', 'done'); return [next !== board, next.columns !== board.columns, next.title]; })()",
+        expected: [true, true, 'Veckans plan'],
+      },
+      {
+        description: 'Ett kort kan flyttas tillbaka',
+        code: "moveCard(moveCard(board, 2, 'todo', 'done'), 2, 'done', 'todo').columns[0].cards.map(card => card.id)",
+        expected: [1, 2],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden använder inte push',
+        pattern: /\.\s*push\s*\(/,
+        forbidden: true,
+      },
+      {
+        description: 'Koden använder inte splice',
+        pattern: /\.\s*splice\s*\(/,
+        forbidden: true,
       },
     ],
   },

@@ -38,6 +38,15 @@ describe('lektionsdata', () => {
     expect(tracks.map(track => track.id)).toContain(lesson.track);
   });
 
+  it.each(tracks)('$id har länkar till dokumentationen', track => {
+    expect(track.docs.length).toBeGreaterThan(0);
+    for (const doc of track.docs) {
+      expect(doc.url).toMatch(
+        /^https:\/\/(developer\.mozilla\.org|react\.dev)\//,
+      );
+    }
+  });
+
   it('har lektionerna i samma ordning som banorna', () => {
     const order = lessons
       .map(lesson => lesson.track)
@@ -320,6 +329,16 @@ const correctAnswers = [
   [
     'js-log-02',
     'const name = \'Ada\';\nconst age = 36;\nconsole.log(name);\nconsole.log("Ålder:", age);',
+  ],
+  ['str-03', 'const isBlank = text => text.trim().length === 0;'],
+  ['str-08', "const getCity = user => user?.address?.city || 'Okänd stad';"],
+  [
+    'imm-04',
+    'const scores = [40, 95, 72, 18];\nconst topScores = scores.toSorted((a, b) => b - a);',
+  ],
+  [
+    'imm-06',
+    'function removeAt(list, index) {\n  return list.slice(0, index).concat(list.slice(index + 1));\n}',
   ],
 ];
 
@@ -803,6 +822,48 @@ const wrongAnswers = [
   [
     'js-log-02',
     "const name = 'Ada';\nconst age = 36;\nconsole.log('name');\nconsole.log('Ålder:', 'age');",
+  ],
+  [
+    'str-01',
+    "const name = 'Ada Lovelace';\nconst shout = 'ADA LOVELACE';\nconst letters = 12;",
+  ],
+  [
+    'str-02',
+    'function matches(name, query) {\n  return name.includes(query);\n}',
+  ],
+  ['str-05', 'function isFive(value) {\n  return value == 5 && true;\n}'],
+  [
+    'str-07',
+    'function getVolume(settings) {\n  return settings.volume || 50;\n}',
+  ],
+  [
+    'str-08',
+    "function getCity(user) {\n  return user.address.city ?? 'Okänd stad';\n}",
+  ],
+  ['imm-01', 'const original = [1, 2];\nconst copy = original;\ncopy.push(3);'],
+  [
+    'imm-02',
+    'function addItem(list, item) {\n  list.push(item);\n  return list;\n}',
+  ],
+  [
+    'imm-04',
+    'const scores = [40, 95, 72, 18];\nconst topScores = scores.sort((a, b) => b - a);',
+  ],
+  [
+    'imm-05',
+    'function toggleTodo(todos, id) {\n  const todo = todos.find(t => t.id === id);\n  todo.done = !todo.done;\n  return todos.map(t => t);\n}',
+  ],
+  [
+    'imm-06',
+    'function removeAt(list, index) {\n  list.splice(index, 1);\n  return list.slice();\n}',
+  ],
+  [
+    'imm-09',
+    'let count = 0;\nfunction makeCounter() {\n  return () => {\n    count += 1;\n    return count;\n  };\n}',
+  ],
+  [
+    'imm-boss-01',
+    "const board = { title: 'Veckans plan', columns: [{ id: 'todo', cards: [{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }] }, { id: 'done', cards: [] }] };\nfunction moveCard(board, cardId, fromId, toId) {\n  const from = board.columns.find(c => c.id === fromId);\n  const to = board.columns.find(c => c.id === toId);\n  const card = from.cards.find(c => c.id === cardId);\n  from.cards = from.cards.filter(c => c.id !== cardId);\n  to.cards = [...to.cards, card];\n  return { ...board, columns: [...board.columns] };\n}",
   ],
 ];
 

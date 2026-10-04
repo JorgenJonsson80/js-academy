@@ -331,6 +331,28 @@
   font-weight: 600;
 }
 
+.lesson-docs {
+  margin: 0 0 16px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-sunken);
+}
+
+.lesson-docs summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.lesson-docs ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+.lesson-docs a {
+  color: #c4b5fd;
+}
+
 .lesson-panel label {
   color: var(--muted);
   font-size: 0.9rem;
