@@ -1,9 +1,38 @@
+// reward: föremålet eleven får till sin samling när banan är klar.
 export const tracks = [
-  { id: 'js-basics', title: 'JavaScript Basics' },
-  { id: 'arrays', title: 'Arrays & Objects' },
-  { id: 'functions', title: 'Functions' },
-  { id: 'array-methods', title: 'Array-metoder' },
-  { id: 'modern-js', title: 'Modern JS för React' },
-  { id: 'modules', title: 'Moduler: import & export' },
-  { id: 'jsx', title: 'React: JSX' },
+  {
+    id: 'js-basics',
+    title: 'JavaScript Basics',
+    reward: { emoji: '🧸', name: 'Nalle' },
+  },
+  {
+    id: 'arrays',
+    title: 'Arrays & Objects',
+    reward: { emoji: '🎒', name: 'Ryggsäck' },
+  },
+  {
+    id: 'functions',
+    title: 'Functions',
+    reward: { emoji: '🛹', name: 'Skateboard' },
+  },
+  {
+    id: 'array-methods',
+    title: 'Array-metoder',
+    reward: { emoji: '🎧', name: 'Hörlurar' },
+  },
+  {
+    id: 'modern-js',
+    title: 'Modern JS för React',
+    reward: { emoji: '☕', name: 'Kaffekopp' },
+  },
+  {
+    id: 'modules',
+    title: 'Moduler: import & export',
+    reward: { emoji: '🪪', name: 'Passerkort' },
+  },
+  {
+    id: 'jsx',
+    title: 'React: JSX',
+    reward: { emoji: '💻', name: 'Laptop' },
+  },
 ];

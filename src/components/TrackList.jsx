@@ -12,7 +12,7 @@ export default function TrackList({
 }) {
   return (
     <>
-      <h2>{title}</h2>
+      <h2 className="card-title">{title}</h2>
       <ul className="track-list">
         {tracks.map(item => {
           const items = lessons.filter(lesson => lesson.track === item.id);
@@ -21,51 +21,74 @@ export default function TrackList({
           ).length;
           const isTrackCompleted =
             items.length > 0 && completed === items.length;
+          const isUnlocked = isTrackUnlocked(item.id);
+          const isActive = item.id === activeTrackId;
           return (
-            <li key={item.id}>
+            <li
+              key={item.id}
+              className={isActive ? 'track-card active' : 'track-card'}
+            >
               <button
+                className="track-button"
                 type="button"
-                disabled={!isTrackUnlocked(item.id)}
+                disabled={!isUnlocked}
                 onClick={() => handleSelectTrack(item.id)}
-                aria-current={item.id === activeTrackId ? 'true' : undefined}
+                aria-current={isActive ? 'true' : undefined}
               >
-                {item.title}
+                <span className="track-icon" aria-hidden="true">
+                  {isTrackCompleted
+                    ? item.reward.emoji
+                    : isUnlocked
+                      ? '▶'
+                      : '🔒'}
+                </span>
+                <span className="track-title">{item.title}</span>
+                <span className="track-count">
+                  {completed}/{items.length}
+                  <span className="visually-hidden">
+                    {' '}
+                    klarade{isUnlocked ? '' : ', låst'}
+                  </span>
+                </span>
               </button>
-              <span>
-                {' '}
-                {completed} av {items.length} klarade
-              </span>
               <progress
                 value={completed}
                 max={items.length}
                 aria-label={item.title}
               />
-              <span>{isTrackUnlocked(item.id) ? 'Upplåst' : 'Låst'}</span>
-              {isTrackCompleted && (
-                <p className="feedback-success">Banan är klar</p>
-              )}
-              <ol>
-                {items.map(lesson => (
-                  <li key={lesson.id}>
-                    <button
-                      type="button"
-                      disabled={!isTrackUnlocked(lesson.track)}
-                      onClick={() => onSelectLesson(lesson.id)}
-                      aria-current={
-                        lesson.id === activeLessonId ? 'true' : undefined
-                      }
-                    >
-                      {lesson.title}
-                      {completedIds.includes(lesson.id) && ' ✓'}
-                      {!completedIds.includes(lesson.id) &&
-                        typeof drafts[lesson.id] === 'string' &&
-                        drafts[lesson.id] !== lesson.starterCode && (
-                          <span> — Utkast</span>
+              {isActive && (
+                <ol className="lesson-list">
+                  {items.map(lesson => (
+                    <li key={lesson.id}>
+                      <button
+                        type="button"
+                        disabled={!isTrackUnlocked(lesson.track)}
+                        onClick={() => onSelectLesson(lesson.id)}
+                        aria-current={
+                          lesson.id === activeLessonId ? 'true' : undefined
+                        }
+                      >
+                        <span aria-hidden="true">
+                          {completedIds.includes(lesson.id)
+                            ? '✓'
+                            : lesson.isBoss
+                              ? '👑'
+                              : '○'}
+                        </span>{' '}
+                        {lesson.title}
+                        {completedIds.includes(lesson.id) && (
+                          <span className="visually-hidden"> (klar)</span>
                         )}
-                    </button>
-                  </li>
-                ))}
-              </ol>
+                        {!completedIds.includes(lesson.id) &&
+                          typeof drafts[lesson.id] === 'string' &&
+                          drafts[lesson.id] !== lesson.starterCode && (
+                            <span className="draft"> · utkast</span>
+                          )}
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              )}
             </li>
           );
         })}

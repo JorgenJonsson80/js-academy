@@ -1,67 +1,40 @@
-textarea {
-  display: block;
-  width: 100%;
-  min-height: 200px;
-  margin: 8px 0 16px;
-  padding: 16px;
-  border: 1px solid #64748b;
-  border-radius: 8px;
-  background: #0b1220;
-  color: #e5e7eb;
-  font-family: ui-monospace, monospace;
-  font-size: 16px;
-  resize: vertical;
-}
+/* Sidhuvud */
 
-textarea:focus-visible {
-  outline: 2px solid #a78bfa;
-  outline-offset: 2px;
-}
-
-button {
-  min-height: 44px;
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
   padding: 10px 16px;
-  border: 1px solid #64748b;
-  border-radius: 8px;
-  background: #1e293b;
-  color: #e5e7eb;
-  cursor: pointer;
+  background: rgb(15 23 42 / 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
 }
 
-button:hover:not(:disabled) {
-  background: #334155;
+.app-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
 }
 
-button:focus-visible {
-  outline: 2px solid #a78bfa;
-  outline-offset: 2px;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.track-list {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  gap: 12px;
-}
-
-.track-list > li {
-  display: grid;
+.header-stats {
+  display: flex;
+  align-items: center;
   gap: 8px;
-  padding: 16px;
-  background: #1e293b;
-  border: 1px solid #475569;
-  border-radius: 12px;
+  margin: 0;
+  font-weight: 600;
 }
 
-.track-list progress {
-  width: 100%;
-  accent-color: #a78bfa;
+.header-stats .avatar {
+  height: 36px;
+  width: auto;
 }
+
+/* Layout */
 
 .academy-layout {
   display: grid;
@@ -74,11 +47,294 @@ button:disabled {
   min-width: 0;
 }
 
-.lesson-panel {
-  padding: 20px;
-  background: #1e293b;
-  border: 1px solid #475569;
+.academy-layout > aside {
+  display: grid;
+  gap: 16px;
+}
+
+/* På smala skärmar kommer lektionen först, figuren och banorna under. */
+@media (max-width: 899px) {
+  .academy-layout > aside {
+    order: 1;
+  }
+}
+
+@media (min-width: 900px) {
+  .academy-layout {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  .academy-layout > aside {
+    position: sticky;
+    top: 72px;
+    max-height: calc(100vh - 88px);
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+}
+
+.card {
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.card-title {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+/* Etiketter */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip-xp {
+  color: var(--xp);
+  border-color: #78350f;
+}
+
+.chip-boss {
+  color: #fde68a;
+  background: #3b2a06;
+  border-color: #a16207;
+}
+
+.chip-done {
+  color: var(--success);
+  border-color: #166534;
+}
+
+/* Figuren */
+
+.hero-card {
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 30%, var(--accent-soft), transparent 70%),
+    var(--surface);
+}
+
+.hero-card h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.hero-avatar {
+  display: flex;
+  justify-content: center;
+}
+
+.avatar-body {
+  transform-origin: 60px 160px;
+  animation: breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  50% {
+    transform: scaleY(1.02) translateY(-1px);
+  }
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+
+.growth {
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.growth p {
+  margin: 0 0 6px;
+}
+
+.continue-button {
+  width: 100%;
+}
+
+/* Samling */
+
+.collection {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.collection-item {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px dashed var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface-sunken);
+  color: var(--muted);
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.collection-item.earned {
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  animation: pop 0.4s ease-out;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+  }
+}
+
+/* Banor */
+
+.track-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.track-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
+}
+
+.track-card.active {
+  border-color: var(--accent);
+}
+
+.track-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
+.track-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  font-size: 0.95rem;
+}
+
+.track-title {
+  flex: 1;
+}
+
+.track-count {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.lesson-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lesson-list button {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 400;
+  text-align: left;
+}
+
+.lesson-list button:hover:not(:disabled) {
+  background: var(--surface-sunken);
+  color: var(--text);
+}
+
+.lesson-list button[aria-current='true'] {
+  background: var(--accent-soft);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.draft {
+  color: var(--xp);
+  font-size: 0.85em;
+}
+
+/* Lektion */
+
+.lesson-panel {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.lesson-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+}
+
+.lesson-title {
+  margin: 12px 0 8px;
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.lesson-description {
+  margin: 0 0 12px;
+  color: #cbd5e1;
+}
+
+.lesson-task {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-soft);
+  white-space: pre-line;
+  font-weight: 600;
+}
+
+.lesson-panel label {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .lesson-panel pre {
@@ -88,19 +344,25 @@ button:disabled {
 .lesson-file {
   margin: 0 0 16px;
   padding: 8px 12px;
-  background: #0f172a;
-  border: 1px solid #475569;
-  border-radius: 8px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
 }
 
 .lesson-file figcaption {
-  color: #94a3b8;
-  font-family: monospace;
-  font-size: 0.9em;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
 }
 
 .lesson-file pre {
   margin: 8px 0 0;
+}
+
+.editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .preview {
@@ -109,20 +371,15 @@ button:disabled {
   height: 160px;
   margin: 12px 0;
   background: #ffffff;
-  border: 1px solid #475569;
-  border-radius: 8px;
-}
-
-@media (min-width: 900px) {
-  .academy-layout {
-    grid-template-columns: 280px minmax(0, 1fr);
-  }
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
 }
 
 .primary-button {
-  background: #a78bfa;
+  background: var(--accent);
   color: #111827;
-  border-color: #a78bfa;
+  border-color: var(--accent);
+  font-weight: 800;
 }
 
 .primary-button:hover:not(:disabled) {
@@ -132,16 +389,43 @@ button:disabled {
 .lesson-navigation {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   gap: 12px;
   margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
+/* Återkoppling */
+
 .feedback-success {
-  color: #86efac;
+  color: var(--success);
 }
 
 .feedback-error {
-  color: #fca5a5;
+  color: var(--error);
+}
+
+.feedback-message {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.xp-pop {
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--xp);
+  animation: xp-pop 0.6s ease-out;
+}
+
+@keyframes xp-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.8);
+  }
+  60% {
+    transform: translateY(-4px) scale(1.15);
+  }
 }
 
 .hint {
@@ -149,17 +433,7 @@ button:disabled {
   background: #292515;
   border-left: 3px solid #facc15;
   padding: 12px;
-  border-radius: 6px;
-}
-
-.boss-label {
-  color: #fbbf24;
-  font-weight: 700;
-}
-
-.track-list button[aria-current='true'] {
-  border-color: #a78bfa;
-  box-shadow: 0 0 0 1px #a78bfa;
+  border-radius: 8px;
 }
 
 .test-results {
@@ -167,5 +441,68 @@ button:disabled {
   padding: 0;
   display: grid;
   gap: 4px;
-  font-family: ui-monospace, monospace;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.9rem;
+}
+
+/* Firande när en bana är klar */
+
+.level-up {
+  width: min(400px, calc(100% - 32px));
+  padding: 24px;
+  border: 1px solid var(--accent);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 50% 35%, var(--accent-soft), transparent 70%),
+    var(--surface);
+  color: var(--text);
+  text-align: center;
+}
+
+.level-up[open] {
+  animation: rise 0.35s ease-out;
+}
+
+.level-up::backdrop {
+  background: rgb(2 6 23 / 0.7);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.95);
+  }
+}
+
+.level-up h2 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.level-up-confetti {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.level-up-avatar {
+  display: flex;
+  justify-content: center;
+  animation: jump 0.8s ease-out 0.3s 2;
+}
+
+@keyframes jump {
+  40% {
+    transform: translateY(-16px);
+  }
+}
+
+.level-up-reward {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--surface-sunken);
+}
+
+.level-up form {
+  margin-top: 16px;
 }

@@ -29,20 +29,22 @@ export default function LessonPanel({
 }) {
   return (
     <section className="lesson-panel" aria-labelledby="lesson-title">
-      <p>Bana: {trackTitle}</p>
-      <p>
-        Klarade i banan: {completedInTrack} av {trackLessonCount}
+      <p className="lesson-meta">
+        <span className="chip">
+          {trackTitle} · {completedInTrack}/{trackLessonCount}
+        </span>
+        <span className="chip">
+          Övning {lessonNumber} av {lessonCount}
+        </span>
+        <span className="chip chip-xp">⭐ {lesson.xp} XP</span>
+        {lesson.isBoss && <span className="chip chip-boss">👑 Boss</span>}
+        {isCompleted && <span className="chip chip-done">✓ Klar</span>}
       </p>
-      {lesson.isBoss && <p className="boss-label">Boss Level</p>}
-      <h2 id="lesson-title">{lesson.title}</h2>
-      <p>Övningen ger: {lesson.xp}xp</p>
-      {isCompleted && <p className="feedback-success">✓ Övningen är klar</p>}
-      <p>
-        Övning {lessonNumber} av {lessonCount}
-      </p>
-
-      <p>{lesson.description}</p>
-      <p>{lesson.task}</p>
+      <h2 id="lesson-title" className="lesson-title">
+        {lesson.title}
+      </h2>
+      <p className="lesson-description">{lesson.description}</p>
+      <p className="lesson-task">{lesson.task}</p>
       {Object.entries(lesson.files ?? {}).map(([fileName, source]) => (
         <FileView key={fileName} fileName={fileName} source={source} />
       ))}
@@ -52,17 +54,19 @@ export default function LessonPanel({
         fileName={lesson.fileName}
       />
       {feedback?.preview && <Preview html={feedback?.preview} />}
-      <button
-        className="primary-button"
-        type="button"
-        onClick={onCheck}
-        disabled={isChecking}
-      >
-        {isChecking ? 'Kör koden…' : 'Kolla lösning'}
-      </button>
-      <button type="button" onClick={onResetCode}>
-        Återställ kod
-      </button>
+      <div className="editor-actions">
+        <button
+          className="primary-button"
+          type="button"
+          onClick={onCheck}
+          disabled={isChecking}
+        >
+          {isChecking ? 'Kör koden…' : 'Kolla lösning'}
+        </button>
+        <button type="button" onClick={onResetCode}>
+          Återställ kod
+        </button>
+      </div>
       <FeedbackPanel feedback={feedback} />
       <HintPanel
         hints={lesson.hints}

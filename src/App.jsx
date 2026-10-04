@@ -5,7 +5,11 @@ import LessonPanel from './components/LessonPanel';
 
 import { lessons } from './data/lesson';
 import { tracks } from './data/tracks';
-import ProgressPanel from './components/ProgressPanel';
+import Avatar from './components/Avatar';
+import Collection from './components/Collection';
+import HeroCard from './components/HeroCard';
+import LevelUp from './components/LevelUp';
+import { getGrowth } from './data/stages';
 import { runTests } from './runner/runTests';
 
 function App() {
@@ -17,6 +21,7 @@ function App() {
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
+  const [celebration, setCelebration] = useState(null);
   // Räknas upp vid varje kontroll och lektionsbyte, så att ett
   // sent testresultat inte hamnar på fel lektion.
   const checkIdRef = useRef(0);
@@ -57,6 +62,14 @@ function App() {
   const totalXp = lessons
     .filter(lesson => completedIds.includes(lesson.id))
     .reduce((sum, lesson) => sum + lesson.xp, 0);
+
+  const growth = getGrowth(tracks, lessons, completedIds);
+  const completedTrackIds = tracks
+    .filter(item => {
+      const items = lessons.filter(lesson => lesson.track === item.id);
+      return items.every(lesson => completedIds.includes(lesson.id));
+    })
+    .map(item => item.id);
 
   const trackLessons = lessons.filter(item => item.track === track.id);
   const completedInTrack = trackLessons.filter(item =>
@@ -112,8 +125,11 @@ function App() {
     if (checkId !== checkIdRef.current) return;
     setIsChecking(false);
 
+    const isFirstTime = isCorrect && !completedIds.includes(lesson.id);
+
     setFeedback({
       message: isCorrect ? 'Rätt svar!' : 'Försök igen.',
+      xpGained: isFirstTime ? lesson.xp : 0,
       isCorrect,
       error,
       results,
@@ -123,11 +139,20 @@ function App() {
     if (!isCorrect) {
       setFailedAttempts(previous => previous + 1);
     }
-    if (isCorrect) {
-      setCompletedIds(previous => {
-        if (previous.includes(lesson.id)) return previous;
-        return [...previous, lesson.id];
-      });
+    if (isFirstTime) {
+      const newIds = [...completedIds, lesson.id];
+      setCompletedIds(newIds);
+
+      // Blev banan klar nu? Då firar vi och visar hur figuren växt.
+      const isTrackDone = trackLessons.every(item => newIds.includes(item.id));
+      if (isTrackDone) {
+        const newGrowth = getGrowth(tracks, lessons, newIds);
+        setCelebration({
+          track,
+          stage: newGrowth.stage,
+          hasGrown: newGrowth.stageIndex > growth.stageIndex,
+        });
+      }
     }
   }
   function selectLesson(index) {
@@ -186,68 +211,87 @@ function App() {
 
   const allCompleted = lessons.every(item => completedIds.includes(item.id));
   return (
-    <main>
-      <h1>JS / React Academy</h1>
-      <div className="academy-layout">
-        <aside aria-label="Banor och progression">
-          <TrackList
-            title="Dina banor"
-            tracks={tracks}
-            lessons={lessons}
-            completedIds={completedIds}
-            isTrackUnlocked={isTrackUnlocked}
-            handleSelectTrack={handleSelectTrack}
-            activeTrackId={lesson.track}
-            onSelectLesson={handleSelectLesson}
-            activeLessonId={lesson.id}
-            drafts={drafts}
-          />
-          <ProgressPanel
-            completedCount={completedIds.length}
+    <>
+      <header className="app-header">
+        <h1>
+          <span aria-hidden="true">⚛️</span> JS / React Academy
+        </h1>
+        <p className="header-stats">
+          <Avatar stage={growth.stage} size={28} />
+          <span>{growth.stage.title}</span>
+          <span className="chip chip-xp">⭐ {totalXp} XP</span>
+        </p>
+      </header>
+      <main>
+        <div className="academy-layout">
+          <aside aria-label="Banor och progression">
+            <HeroCard
+              growth={growth}
+              totalXp={totalXp}
+              completedCount={completedIds.length}
+              lessonCount={lessons.length}
+            />
+            <button
+              className="primary-button continue-button"
+              type="button"
+              onClick={handleContinue}
+              disabled={nextUncompletedIndex === -1}
+            >
+              Fortsätt träna →
+            </button>
+            <Collection tracks={tracks} completedTrackIds={completedTrackIds} />
+            <TrackList
+              title="Dina banor"
+              tracks={tracks}
+              lessons={lessons}
+              completedIds={completedIds}
+              isTrackUnlocked={isTrackUnlocked}
+              handleSelectTrack={handleSelectTrack}
+              activeTrackId={lesson.track}
+              onSelectLesson={handleSelectLesson}
+              activeLessonId={lesson.id}
+              drafts={drafts}
+            />
+            {allCompleted && (
+              <p className="feedback-success">
+                Alla övningar är klara! Du kan fortfarande repetera dem.
+              </p>
+            )}
+          </aside>
+          <LessonPanel
+            code={code}
+            onCodeChange={handleCodeChange}
+            onCheck={handleCheck}
+            isChecking={isChecking}
+            onResetCode={handleResetCode}
+            showSolution={showSolution}
+            onShowSolution={() => setShowSolution(true)}
+            feedback={feedback}
+            lesson={lesson}
+            isCompleted={completedIds.includes(lesson.id)}
+            failedAttempts={failedAttempts}
+            trackTitle={track.title}
+            completedInTrack={completedInTrack}
+            trackLessonCount={trackLessons.length}
+            lessonNumber={lessonIndex + 1}
             lessonCount={lessons.length}
-            totalXp={totalXp}
+            onPrevious={handlePrevious}
+            onNext={handleNext}
+            canPrevious={lessonIndex > 0}
+            canNext={
+              lessonIndex < lessons.length - 1 &&
+              isTrackUnlocked(lessons[lessonIndex + 1].track)
+            }
           />
-          <button
-            type="button"
-            onClick={handleContinue}
-            disabled={nextUncompletedIndex === -1}
-          >
-            Fortsätt träna
-          </button>
-
-          {allCompleted && (
-            <p className="feedback-success">
-              Alla övningar är klara! Du kan fortfarande repetera dem.
-            </p>
-          )}
-        </aside>
-        <LessonPanel
-          code={code}
-          onCodeChange={handleCodeChange}
-          onCheck={handleCheck}
-          isChecking={isChecking}
-          onResetCode={handleResetCode}
-          showSolution={showSolution}
-          onShowSolution={() => setShowSolution(true)}
-          feedback={feedback}
-          lesson={lesson}
-          isCompleted={completedIds.includes(lesson.id)}
-          failedAttempts={failedAttempts}
-          trackTitle={track.title}
-          completedInTrack={completedInTrack}
-          trackLessonCount={trackLessons.length}
-          lessonNumber={lessonIndex + 1}
-          lessonCount={lessons.length}
-          onPrevious={handlePrevious}
-          onNext={handleNext}
-          canPrevious={lessonIndex > 0}
-          canNext={
-            lessonIndex < lessons.length - 1 &&
-            isTrackUnlocked(lessons[lessonIndex + 1].track)
-          }
+        </div>
+      </main>
+      {celebration && (
+        <LevelUp
+          celebration={celebration}
+          onClose={() => setCelebration(null)}
         />
-      </div>
-    </main>
+      )}
+    </>
   );
 }
 
