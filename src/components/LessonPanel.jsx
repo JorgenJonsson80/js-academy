@@ -1,5 +1,6 @@
 import CodeEditor from './CodeEditor';
 import FeedbackPanel from './FeedbackPanel';
+import FileView from './FileView';
 import HintPanel from './HintPanel';
 
 export default function LessonPanel({
@@ -42,12 +43,7 @@ export default function LessonPanel({
       <p>{lesson.description}</p>
       <p>{lesson.task}</p>
       {Object.entries(lesson.files ?? {}).map(([fileName, source]) => (
-        <figure className="lesson-file" key={fileName}>
-          <figcaption>{fileName}</figcaption>
-          <pre>
-            <code>{source}</code>
-          </pre>
-        </figure>
+        <FileView key={fileName} fileName={fileName} source={source} />
       ))}
       <CodeEditor
         code={code}
