@@ -4181,6 +4181,628 @@ function TodoApp() {
     ],
   },
   {
+    id: 'lift-01',
+    title: 'Skicka data uppåt',
+    xp: 10,
+    track: 'lifting',
+    isBoss: false,
+    description:
+      'Props går bara neråt, från förälder till barn. Vill ett barn berätta något för föräldern skickar föräldern ner en funktion, en callback, som barnet anropar med datan: onRate(3). Sådana props brukar heta on-något.',
+    task: 'Uppgift: Skriv komponenten Rating({ onRate }) med tre knappar "1", "2" och "3". Ett klick på en knapp anropar onRate med det talet.',
+    fileName: 'App.jsx',
+    preview: '<Rating onRate={() => {}} />',
+    starterCode: '// Skriv din kod här',
+    solution: `function Rating({ onRate }) {
+  return (
+    <div>
+      <button onClick={() => onRate(1)}>1</button>
+      <button onClick={() => onRate(2)}>2</button>
+      <button onClick={() => onRate(3)}>3</button>
+    </div>
+  );
+}`,
+    hints: [
+      'Returnera en div med tre knappar.',
+      'Varje knapp behöver en egen pilfunktion i onClick.',
+      'Första knappen: <button onClick={() => onRate(1)}>1</button>',
+    ],
+    tests: [
+      {
+        description: 'Ett klick på "3" anropar onRate(3)',
+        code: "(() => { const calls = []; __mount(<Rating onRate={value => calls.push(value)} />).click('3'); return calls; })()",
+        expected: [3],
+      },
+      {
+        description: 'Varje knapp skickar sitt eget tal',
+        code: "(() => { const calls = []; __mount(<Rating onRate={value => calls.push(value)} />).click('1').click('2').click('3'); return calls; })()",
+        expected: [1, 2, 3],
+      },
+      {
+        description: 'onRate anropas inte förrän man klickar',
+        code: '(() => { const calls = []; __mount(<Rating onRate={value => calls.push(value)} />); return calls; })()',
+        expected: [],
+      },
+    ],
+  },
+  {
+    id: 'lift-02',
+    title: 'Föräldern äger state',
+    xp: 10,
+    track: 'lifting',
+    isBoss: false,
+    description:
+      'När två komponenter behöver samma värde lägger man state i deras gemensamma förälder. Föräldern skickar värdet neråt som en prop och en funktion som ändrar det. Barnen har inget eget state, de visar bara och berättar.',
+    task: 'Uppgift: Skriv App. Den äger state count (börjar på 0) och renderar Display med count och IncrementButton med onIncrement, som ökar count med 1.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `import { useState } from 'react';
+
+function Display({ count }) {
+  return <p>Antal: {count}</p>;
+}
+
+function IncrementButton({ onIncrement }) {
+  return <button onClick={onIncrement}>+1</button>;
+}
+
+function App() {
+  // Din kod här
+}`,
+    solution: `import { useState } from 'react';
+
+function Display({ count }) {
+  return <p>Antal: {count}</p>;
+}
+
+function IncrementButton({ onIncrement }) {
+  return <button onClick={onIncrement}>+1</button>;
+}
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <Display count={count} />
+      <IncrementButton onIncrement={() => setCount(count + 1)} />
+    </div>
+  );
+}`,
+    hints: [
+      'App börjar med const [count, setCount] = useState(0);',
+      'Display får count={count}.',
+      'IncrementButton får onIncrement={() => setCount(count + 1)}.',
+    ],
+    tests: [
+      {
+        description: 'Display visar 0 från början',
+        code: "__mount(<App />).text('p')",
+        expected: 'Antal: 0',
+      },
+      {
+        description: 'Knappen i ett barn ändrar det andra barnet',
+        code: "__mount(<App />).click('+1').click('+1').text('p')",
+        expected: 'Antal: 2',
+      },
+    ],
+    sourceChecks: [
+      { description: 'App använder <Display', pattern: /<Display\b/ },
+      {
+        description: 'App använder <IncrementButton',
+        pattern: /<IncrementButton\b/,
+      },
+    ],
+  },
+  {
+    id: 'lift-03',
+    title: 'Syskon som delar state',
+    xp: 10,
+    track: 'lifting',
+    isBoss: false,
+    description:
+      'Sökfältet och resultatlistan är syskon. Listan behöver veta vad som står i sökfältet, så query bor i föräldern. SearchBar får både värdet och en callback för att ändra det: query och onQueryChange.',
+    task: 'Uppgift: Skriv App. Den äger state query (börjar som "") och kopplar ihop SearchBar och ResultList.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `import { useState } from 'react';
+
+const fruits = ['Äpple', 'Banan', 'Päron', 'Ananas'];
+
+function SearchBar({ query, onQueryChange }) {
+  return (
+    <input value={query} onChange={event => onQueryChange(event.target.value)} />
+  );
+}
+
+function ResultList({ query }) {
+  const matches = fruits.filter(fruit =>
+    fruit.toLowerCase().includes(query.toLowerCase()),
+  );
+  return (
+    <ul>
+      {matches.map(fruit => (
+        <li key={fruit}>{fruit}</li>
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  // Din kod här
+}`,
+    solution: `import { useState } from 'react';
+
+const fruits = ['Äpple', 'Banan', 'Päron', 'Ananas'];
+
+function SearchBar({ query, onQueryChange }) {
+  return (
+    <input value={query} onChange={event => onQueryChange(event.target.value)} />
+  );
+}
+
+function ResultList({ query }) {
+  const matches = fruits.filter(fruit =>
+    fruit.toLowerCase().includes(query.toLowerCase()),
+  );
+  return (
+    <ul>
+      {matches.map(fruit => (
+        <li key={fruit}>{fruit}</li>
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <div>
+      <SearchBar query={query} onQueryChange={setQuery} />
+      <ResultList query={query} />
+    </div>
+  );
+}`,
+    hints: [
+      "App börjar med const [query, setQuery] = useState('');",
+      'SearchBar behöver query={query} och onQueryChange={setQuery}.',
+      'ResultList behöver bara query={query}.',
+    ],
+    tests: [
+      {
+        description: 'Alla frukter visas från början',
+        code: "__mount(<App />).count('li')",
+        expected: 4,
+      },
+      {
+        description: 'Sökningen "an" visar Banan och Ananas',
+        code: "__mount(<App />).type('an').text('ul')",
+        expected: 'BananAnanas',
+      },
+      {
+        description: 'Sökfältet visar det man skrivit',
+        code: "__mount(<App />).type('pä').html().includes('value=\"pä\"')",
+        expected: true,
+      },
+    ],
+  },
+  {
+    id: 'lift-04',
+    title: 'Skriv ett kontrollerat barn',
+    xp: 10,
+    track: 'lifting',
+    isBoss: false,
+    description:
+      'Nu skriver du barnet själv. Ett kontrollerat barn har inget eget state: värdet kommer som en prop och ändringar skickas uppåt med en callback. Det är samma kontrollerade fält som förut, bara uppdelat på två komponenter.',
+    task: 'Uppgift: Skriv NameInput({ name, onNameChange }). Den returnerar ett input som visar name och anropar onNameChange med det nya värdet när man skriver. Använd inte useState i NameInput.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `import { useState } from 'react';
+
+// Skriv NameInput här
+
+function App() {
+  const [name, setName] = useState('');
+
+  return (
+    <div>
+      <NameInput name={name} onNameChange={setName} />
+      <p>Hej {name || 'du'}!</p>
+    </div>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function NameInput({ name, onNameChange }) {
+  return (
+    <input value={name} onChange={event => onNameChange(event.target.value)} />
+  );
+}
+
+function App() {
+  const [name, setName] = useState('');
+
+  return (
+    <div>
+      <NameInput name={name} onNameChange={setName} />
+      <p>Hej {name || 'du'}!</p>
+    </div>
+  );
+}`,
+    hints: [
+      'Börja med function NameInput({ name, onNameChange }).',
+      'input får value={name}.',
+      'onChange={event => onNameChange(event.target.value)}',
+    ],
+    tests: [
+      {
+        description: 'Det man skriver når App',
+        code: "__mount(<App />).type('Ada').text('p')",
+        expected: 'Hej Ada!',
+      },
+      {
+        description: 'NameInput visar värdet från propen',
+        code: '__render(<NameInput name="Linus" onNameChange={() => {}} />)',
+        expected: '<input value="Linus"/>',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'NameInput har inget eget state',
+        pattern: /function\s+NameInput[^]*?useState[^]*?function\s+App/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'lift-05',
+    title: 'Skicka med id',
+    xp: 10,
+    track: 'lifting',
+    isBoss: false,
+    description:
+      'I en lista vet barnet vilken rad det är, men föräldern äger listan. Barnet skickar därför med sitt id: onToggle(todo.id). Föräldern letar upp rätt rad och uppdaterar state.',
+    task: 'Uppgift: Skriv TodoItem({ todo, onToggle, onRemove }). Ett li med en checkbox som visar todo.done och anropar onToggle(todo.id), texten i en span och en button "Ta bort" som anropar onRemove(todo.id).',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `import { useState } from 'react';
+
+// Skriv TodoItem här
+
+function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Handla', done: false },
+    { id: 2, text: 'Träna', done: false },
+  ]);
+
+  function handleToggle(id) {
+    setTodos(
+      todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo)),
+    );
+  }
+
+  function handleRemove(id) {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={handleToggle}
+          onRemove={handleRemove}
+        />
+      ))}
+    </ul>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function TodoItem({ todo, onToggle, onRemove }) {
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={todo.done}
+        onChange={() => onToggle(todo.id)}
+      />
+      <span>{todo.text}</span>
+      <button onClick={() => onRemove(todo.id)}>Ta bort</button>
+    </li>
+  );
+}
+
+function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Handla', done: false },
+    { id: 2, text: 'Träna', done: false },
+  ]);
+
+  function handleToggle(id) {
+    setTodos(
+      todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo)),
+    );
+  }
+
+  function handleRemove(id) {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={handleToggle}
+          onRemove={handleRemove}
+        />
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Börja med function TodoItem({ todo, onToggle, onRemove }) och returnera ett li.',
+      'Checkboxen: <input type="checkbox" checked={todo.done} onChange={() => onToggle(todo.id)} />',
+      'Knappen: <button onClick={() => onRemove(todo.id)}>Ta bort</button>',
+    ],
+    tests: [
+      {
+        description: 'Båda uppgifterna visas',
+        code: "__mount(<App />).count('li')",
+        expected: 2,
+      },
+      {
+        description: 'Checkboxen bockar för rätt uppgift',
+        code: '__mount(<App />).check(1).html().includes(\'<li><input type="checkbox"/><span>Handla\')',
+        expected: true,
+      },
+      {
+        description: 'Checkboxen skickar todo.id till onToggle',
+        code: "(() => { const calls = []; __mount(<TodoItem todo={{ id: 7, text: 'A', done: false }} onToggle={id => calls.push(id)} onRemove={() => {}} />).check(); return calls; })()",
+        expected: [7],
+      },
+      {
+        description: '"Ta bort" tar bort rätt uppgift',
+        code: "__mount(<App />).click('Ta bort').text('span')",
+        expected: 'Träna',
+      },
+    ],
+  },
+  {
+    id: 'lift-06',
+    title: 'Räkna ut i stället för att spara',
+    xp: 10,
+    track: 'lifting',
+    isBoss: false,
+    description:
+      'Spara inte det som går att räkna ut. Här finns både todos och left i state, och de har glidit isär: left uppdateras inte när man tar bort en uppgift. Räkna i stället ut left från todos varje gång komponenten ritas. Då kan de aldrig visa olika saker.',
+    task: 'Uppgift: Ta bort state left. Räkna ut left från todos (antalet som inte är klara) direkt i komponenten.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `import { useState } from 'react';
+
+function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Handla', done: false },
+    { id: 2, text: 'Träna', done: true },
+    { id: 3, text: 'Plugga React', done: false },
+  ]);
+  const [left, setLeft] = useState(2);
+
+  function handleRemove(id) {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  return (
+    <div>
+      <p>{left} kvar</p>
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>
+            {todo.text} <button onClick={() => handleRemove(todo.id)}>Ta bort</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Handla', done: false },
+    { id: 2, text: 'Träna', done: true },
+    { id: 3, text: 'Plugga React', done: false },
+  ]);
+  const left = todos.filter(todo => !todo.done).length;
+
+  function handleRemove(id) {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  return (
+    <div>
+      <p>{left} kvar</p>
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>
+            {todo.text} <button onClick={() => handleRemove(todo.id)}>Ta bort</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}`,
+    hints: [
+      'Ta bort raden med useState(2).',
+      'left är antalet todos där done är false.',
+      'Skriv const left = todos.filter(todo => !todo.done).length;',
+    ],
+    tests: [
+      {
+        description: 'Från början: "2 kvar"',
+        code: "__mount(<App />).text('p')",
+        expected: '2 kvar',
+      },
+      {
+        description: 'Efter att Handla tagits bort: "1 kvar"',
+        code: "__mount(<App />).click('Ta bort').text('p')",
+        expected: '1 kvar',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Det finns bara ett state: todos',
+        pattern: /useState\s*\([^]*useState\s*\(/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'lift-boss-01',
+    title: 'Boss: Kundvagnen',
+    xp: 30,
+    track: 'lifting',
+    isBoss: true,
+    description:
+      'Bygg en butik där App äger kundvagnen och barnen bara visar och berättar. Ingen data får finnas på två ställen.',
+    task: `Uppgift: ProductList är klar. Skriv Cart och App.
+  Cart({ items, onRemove }):
+    är items tom visas <p>Kundvagnen är tom</p>,
+    annars en ul med ett li per vara: namnet följt av en
+    button "Ta bort" som anropar onRemove med varans cartId.
+    Sist en p med "Totalt: 348 kr", uträknat från items.
+  App äger state items (en tom array från början).
+    onAdd(product) lägger till { ...product, cartId: crypto.randomUUID() }.
+    onRemove(cartId) tar bort den varan.
+    App renderar ProductList och sedan Cart.`,
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `import { useState } from 'react';
+
+const products = [
+  { id: 1, name: 'Keps', price: 199 },
+  { id: 2, name: 'Mössa', price: 149 },
+];
+
+function ProductList({ onAdd }) {
+  return (
+    <div>
+      {products.map(product => (
+        <button key={product.id} onClick={() => onAdd(product)}>
+          Köp {product.name}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+`,
+    solution: `import { useState } from 'react';
+
+const products = [
+  { id: 1, name: 'Keps', price: 199 },
+  { id: 2, name: 'Mössa', price: 149 },
+];
+
+function ProductList({ onAdd }) {
+  return (
+    <div>
+      {products.map(product => (
+        <button key={product.id} onClick={() => onAdd(product)}>
+          Köp {product.name}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function Cart({ items, onRemove }) {
+  const total = items.reduce((sum, item) => sum + item.price, 0);
+
+  return (
+    <section>
+      {items.length === 0 ? (
+        <p>Kundvagnen är tom</p>
+      ) : (
+        <ul>
+          {items.map(item => (
+            <li key={item.cartId}>
+              {item.name} <button onClick={() => onRemove(item.cartId)}>Ta bort</button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p>Totalt: {total} kr</p>
+    </section>
+  );
+}
+
+function App() {
+  const [items, setItems] = useState([]);
+
+  function handleAdd(product) {
+    setItems([...items, { ...product, cartId: crypto.randomUUID() }]);
+  }
+
+  function handleRemove(cartId) {
+    setItems(items.filter(item => item.cartId !== cartId));
+  }
+
+  return (
+    <div>
+      <ProductList onAdd={handleAdd} />
+      <Cart items={items} onRemove={handleRemove} />
+    </div>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Kundvagnen är tom från början',
+        code: "__mount(<App />).text('section')",
+        expected: 'Kundvagnen är tomTotalt: 0 kr',
+      },
+      {
+        description: 'Två köpta varor visas med rätt totalsumma',
+        code: "(() => { const app = __mount(<App />).click('Köp Keps').click('Köp Mössa'); return [app.count('li'), app.text('section').endsWith('Totalt: 348 kr')]; })()",
+        expected: [2, true],
+      },
+      {
+        description: 'Samma vara kan köpas två gånger',
+        code: "__mount(<App />).click('Köp Keps').click('Köp Keps').text('section').endsWith('Totalt: 398 kr')",
+        expected: true,
+      },
+      {
+        description: '"Ta bort" tar bort den första varan',
+        code: "(() => { const app = __mount(<App />).click('Köp Keps').click('Köp Mössa').click('Ta bort'); return [app.text('li'), app.text('section').endsWith('Totalt: 149 kr')]; })()",
+        expected: ['Mössa Ta bort', true],
+      },
+      {
+        description: 'Cart anropar onRemove med cartId',
+        code: "(() => { const calls = []; __mount(<Cart items={[{ cartId: 'x1', name: 'Keps', price: 199 }]} onRemove={id => calls.push(id)} />).click('Ta bort'); return calls; })()",
+        expected: ['x1'],
+      },
+      {
+        description: 'Alla varor har en unik key',
+        code: "(__mount(<App />).click('Köp Keps').click('Köp Keps'), __keyProblems)",
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      { description: 'App använder <ProductList', pattern: /<ProductList\b/ },
+      { description: 'App använder <Cart', pattern: /<Cart\b/ },
+      {
+        description: 'Totalsumman räknas ut, den sparas inte i state',
+        pattern: /useState\s*\([^]*useState\s*\(/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
     id: 'effects-01',
     title: 'Din första effekt',
     xp: 10,

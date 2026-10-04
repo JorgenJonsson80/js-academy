@@ -32,6 +32,13 @@ describe('lektionsdata', () => {
     expect(tracks.map(track => track.id)).toContain(lesson.track);
   });
 
+  it('har lektionerna i samma ordning som banorna', () => {
+    const order = lessons
+      .map(lesson => lesson.track)
+      .filter((track, index, all) => track !== all[index - 1]);
+    expect(order).toEqual(tracks.map(track => track.id));
+  });
+
   it.each(lessons)('$id har tester', lesson => {
     expect(lesson.tests.length).toBeGreaterThan(0);
   });
@@ -262,6 +269,17 @@ const correctAnswers = [
   [
     'effects-05',
     "import { useEffect, useState } from 'react';\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n  useEffect(() => {\n    const tick = () => setSeconds(previous => previous + 1);\n    const intervalId = setInterval(tick, 1000);\n    return () => {\n      clearInterval(intervalId);\n    };\n  }, []);\n  return <p>{seconds} sekunder</p>;\n}",
+  ],
+  [
+    'lift-01',
+    'const Rating = ({ onRate }) => (\n  <div>\n    {[1, 2, 3].map(value => (\n      <button key={value} onClick={() => onRate(value)}>{value}</button>\n    ))}\n  </div>\n);',
+  ],
+  [
+    'lift-04',
+    'const NameInput = ({ name, onNameChange }) => <input value={name} onChange={e => onNameChange(e.target.value)} />;\nfunction App() {\n  const [name, setName] = useState("");\n  return <div><NameInput name={name} onNameChange={setName} /><p>Hej {name || "du"}!</p></div>;\n}'.replace(
+      'const NameInput',
+      "import { useState } from 'react';\nconst NameInput",
+    ),
   ],
 ];
 
@@ -654,6 +672,26 @@ const wrongAnswers = [
   [
     'effects-boss-01',
     "import { useEffect, useState } from 'react';\nfunction Stopwatch() {\n  const [seconds, setSeconds] = useState(() => Number(localStorage.getItem('seconds')) || 0);\n  const [isRunning, setIsRunning] = useState(false);\n  useEffect(() => {\n    if (!isRunning) return;\n    setInterval(() => setSeconds(s => s + 1), 1000);\n  }, [isRunning]);\n  useEffect(() => {\n    document.title = `⏱ ${seconds} s`;\n    localStorage.setItem('seconds', String(seconds));\n  }, [seconds]);\n  return <div><p>{seconds} s</p><button onClick={() => setIsRunning(!isRunning)}>{isRunning ? 'Stopp' : 'Start'}</button><button onClick={() => setSeconds(0)}>Nollställ</button></div>;\n}",
+  ],
+  [
+    'lift-01',
+    'function Rating({ onRate }) {\n  return <div><button onClick={onRate(1)}>1</button><button onClick={onRate(2)}>2</button><button onClick={onRate(3)}>3</button></div>;\n}',
+  ],
+  [
+    'lift-01',
+    'function Rating({ onRate }) {\n  return <div><button onClick={onRate}>1</button><button onClick={onRate}>2</button><button onClick={onRate}>3</button></div>;\n}',
+  ],
+  [
+    'lift-02',
+    "import { useState } from 'react';\nfunction Display({ count }) {\n  return <p>Antal: {count}</p>;\n}\nfunction IncrementButton({ onIncrement }) {\n  return <button onClick={onIncrement}>+1</button>;\n}\nfunction App() {\n  const [count, setCount] = useState(0);\n  return <div><Display count={count} /><IncrementButton /></div>;\n}",
+  ],
+  [
+    'lift-04',
+    "import { useState } from 'react';\nfunction NameInput({ name, onNameChange }) {\n  const [value, setValue] = useState(name);\n  return <input value={value} onChange={e => setValue(e.target.value)} />;\n}\nfunction App() {\n  const [name, setName] = useState('');\n  return <div><NameInput name={name} onNameChange={setName} /><p>Hej {name || 'du'}!</p></div>;\n}",
+  ],
+  [
+    'lift-06',
+    "import { useState } from 'react';\nfunction App() {\n  const [todos, setTodos] = useState([{ id: 1, text: 'Handla', done: false }, { id: 2, text: 'Träna', done: true }, { id: 3, text: 'Plugga React', done: false }]);\n  const [left, setLeft] = useState(2);\n  function handleRemove(id) {\n    const todo = todos.find(t => t.id === id);\n    setTodos(todos.filter(t => t.id !== id));\n    if (!todo.done) setLeft(left - 1);\n  }\n  return <div><p>{left} kvar</p><ul>{todos.map(todo => <li key={todo.id}>{todo.text} <button onClick={() => handleRemove(todo.id)}>Ta bort</button></li>)}</ul></div>;\n}",
   ],
 ];
 

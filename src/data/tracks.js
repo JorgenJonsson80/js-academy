@@ -56,6 +56,11 @@ export const tracks = [
     reward: { emoji: '🎮', name: 'Handkontroll' },
   },
   {
+    id: 'lifting',
+    title: 'React: Lyfta state',
+    reward: { emoji: '🤝', name: 'Handslag' },
+  },
+  {
     id: 'effects',
     title: 'React: Effekter',
     reward: { emoji: '⏰', name: 'Väckarklocka' },
