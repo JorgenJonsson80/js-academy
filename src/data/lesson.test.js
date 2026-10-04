@@ -211,6 +211,30 @@ const correctAnswers = [
     'lists-boss-01',
     'const ProductRow = ({ name, price }) => <li>{`${name}: ${price} kr`}</li>;\nfunction ProductList({ products }) {\n  const available = products.filter(p => p.inStock);\n  return (\n    <section>\n      <h2>{available.length} i lager</h2>\n      <ul>\n        {available.map(product => <ProductRow key={product.id} {...product} />)}\n      </ul>\n    </section>\n  );\n}',
   ],
+  [
+    'cond-02',
+    'function Cart({ count }) {\n  return <div>🛒{count ? <span> {count} varor</span> : null}</div>;\n}',
+  ],
+  [
+    'cond-02',
+    'function Cart({ count }) {\n  return <div>🛒{!!count && <span> {count} varor</span>}</div>;\n}',
+  ],
+  [
+    'cond-04',
+    'function Welcome({ name }) {\n  return <h1>Välkommen, {name}!</h1>;\n}\nfunction Login() {\n  return <button>Logga in</button>;\n}\nfunction Page({ user }) {\n  if (!user) return <Login />;\n  return <Welcome name={user.name} />;\n}',
+  ],
+  [
+    'cond-06',
+    'const Warning = ({ message }) => (message ? <p className="warning">{message}</p> : null);',
+  ],
+  [
+    'cond-07',
+    'function TodoList({ todos }) {\n  if (todos.length === 0) return <p>Inga uppgifter</p>;\n  return <ul>{todos.map(t => <li key={t.id}>{t.text}</li>)}</ul>;\n}',
+  ],
+  [
+    'cond-08',
+    "const TodoItem = ({ text, done }) => <li className={`todo${done ? ' done' : ''}`}>{text}</li>;",
+  ],
 ];
 
 // Vanliga fel och genvägar som ska underkännas.
@@ -490,6 +514,42 @@ const wrongAnswers = [
   [
     'lists-boss-01',
     'function ProductRow({ name, price }) {\n  return <li>{name}: {price} kr</li>;\n}\nfunction ProductList({ products }) {\n  const inStock = products.filter(product => product.inStock);\n  return (\n    <section>\n      <h2>2 i lager</h2>\n      <ul>{inStock.map(product => <ProductRow key={product.id} name={product.name} price={product.price} />)}</ul>\n    </section>\n  );\n}',
+  ],
+  [
+    'cond-01',
+    'function Inbox({ count }) {\n  return <div><h2>Inkorg</h2>{count && <p>Du har {count} nya meddelanden</p>}</div>;\n}',
+  ],
+  [
+    'cond-02',
+    'function Cart({ count }) {\n  return <div>🛒<span> {count} varor</span></div>;\n}',
+  ],
+  [
+    'cond-03',
+    "function LoginButton({ isLoggedIn }) {\n  return <button>{isLoggedIn && 'Logga ut'}</button>;\n}",
+  ],
+  [
+    'cond-05',
+    'function Profile({ user }) {\n  return <h2>{user.name}</h2>;\n}',
+  ],
+  [
+    'cond-06',
+    'function Warning({ message }) {\n  return <p className="warning">{message}</p>;\n}',
+  ],
+  [
+    'cond-06',
+    'function Warning({ message }) {\n  if (!message) return <></>;\n  return <p className="warning">{message}</p>;\n}',
+  ],
+  [
+    'cond-07',
+    'function TodoList({ todos }) {\n  return <ul>{todos.map(t => <li key={t.id}>{t.text}</li>)}</ul>;\n}',
+  ],
+  [
+    'cond-08',
+    'function TodoItem({ text, done }) {\n  return <li className="todo done">{text}</li>;\n}',
+  ],
+  [
+    'cond-boss-01',
+    'function OrderSummary({ order }) {\n  if (!order) return <p>Ingen order vald</p>;\n  return (\n    <section>\n      <h2>Order {order.id}</h2>\n      {order.isPaid ? <p>Betald</p> : <p>Ej betald</p>}\n      {order.items.length === 0 ? <p>Ordern är tom</p> : <ul>{order.items.map(item => <li key={item.id}>{item.name}</li>)}</ul>}\n      {order.discount && <p>Rabatt: {order.discount} kr</p>}\n    </section>\n  );\n}',
   ],
 ];
 

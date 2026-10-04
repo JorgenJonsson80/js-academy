@@ -45,4 +45,9 @@ export const tracks = [
     title: 'React: Listor',
     reward: { emoji: '📋', name: 'Checklista' },
   },
+  {
+    id: 'conditionals',
+    title: 'React: Villkor',
+    reward: { emoji: '🚦', name: 'Trafikljus' },
+  },
 ];

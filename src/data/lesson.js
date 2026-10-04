@@ -3086,4 +3086,395 @@ function ProductList({ products }) {
       },
     ],
   },
+  {
+    id: 'cond-01',
+    title: 'Visa bara om: &&',
+    xp: 10,
+    track: 'conditionals',
+    isBoss: false,
+    description:
+      'I JSX kan du inte skriva if, men du kan använda &&: {count > 0 && <p>…</p>}. Är villkoret sant visas elementet, annars visas ingenting. React visar inte false, null eller undefined.',
+    task: 'Uppgift: Skriv komponenten Inbox({ count }). Den returnerar en div med en h2 "Inkorg" och, bara om count är större än 0, en p med "Du har 3 nya meddelanden" (med count i stället för 3).',
+    fileName: 'App.jsx',
+    preview: '<><Inbox count={3} /><Inbox count={0} /></>',
+    starterCode: '// Skriv din kod här',
+    solution: `function Inbox({ count }) {
+  return (
+    <div>
+      <h2>Inkorg</h2>
+      {count > 0 && <p>Du har {count} nya meddelanden</p>}
+    </div>
+  );
+}`,
+    hints: [
+      'Börja med en div med <h2>Inkorg</h2> inuti.',
+      'Efter h2:n: {count > 0 && …}.',
+      'Efter && kommer <p>Du har {count} nya meddelanden</p>.',
+    ],
+    tests: [
+      {
+        description: '<Inbox count={3} /> visar meddelandet',
+        code: '__render(<Inbox count={3} />)',
+        expected: '<div><h2>Inkorg</h2><p>Du har 3 nya meddelanden</p></div>',
+      },
+      {
+        description: '<Inbox count={0} /> visar bara rubriken',
+        code: '__render(<Inbox count={0} />)',
+        expected: '<div><h2>Inkorg</h2></div>',
+      },
+    ],
+    sourceChecks: [{ description: 'Koden använder &&', pattern: /&&/ }],
+  },
+  {
+    id: 'cond-02',
+    title: 'Fallgropen 0 &&',
+    xp: 10,
+    track: 'conditionals',
+    isBoss: false,
+    description:
+      'Se upp med {count && …}. Är count 0 blir hela uttrycket 0, och till skillnad från false visar React talet 0 på sidan. Gör därför villkoret till en riktig boolean: {count > 0 && …}.',
+    task: 'Uppgift: Komponenten visar en ensam 0:a när count är 0. Rätta villkoret så att ingenting visas då.',
+    fileName: 'App.jsx',
+    preview: '<><Cart count={2} /><Cart count={0} /></>',
+    starterCode: `function Cart({ count }) {
+  return <div>🛒{count && <span> {count} varor</span>}</div>;
+}`,
+    solution: `function Cart({ count }) {
+  return <div>🛒{count > 0 && <span> {count} varor</span>}</div>;
+}`,
+    hints: [
+      'Problemet är villkoret före &&.',
+      'count är ett tal, inte en boolean. Jämför det med något.',
+      'Skriv {count > 0 && …}.',
+    ],
+    tests: [
+      {
+        description: '<Cart count={2} /> visar antalet',
+        code: '__render(<Cart count={2} />)',
+        expected: '<div>🛒<span> 2 varor</span></div>',
+      },
+      {
+        description: '<Cart count={0} /> visar ingen 0:a',
+        code: '__render(<Cart count={0} />)',
+        expected: '<div>🛒</div>',
+      },
+    ],
+  },
+  {
+    id: 'cond-03',
+    title: 'Antingen eller: ? :',
+    xp: 10,
+    track: 'conditionals',
+    isBoss: false,
+    description:
+      'Ska något av två alternativ visas använder du ? :. Det fungerar både för text och för element: {isLoggedIn ? "Logga ut" : "Logga in"}.',
+    task: 'Uppgift: Skriv komponenten LoginButton({ isLoggedIn }) som returnerar en button med texten "Logga ut" om isLoggedIn är true och annars "Logga in".',
+    fileName: 'App.jsx',
+    preview:
+      '<><LoginButton isLoggedIn={true} /> <LoginButton isLoggedIn={false} /></>',
+    starterCode: '// Skriv din kod här',
+    solution: `function LoginButton({ isLoggedIn }) {
+  return <button>{isLoggedIn ? 'Logga ut' : 'Logga in'}</button>;
+}`,
+    hints: [
+      'Returnera <button>{ }</button>.',
+      'Inuti klamrarna: isLoggedIn ? … : ….',
+      "Skriv {isLoggedIn ? 'Logga ut' : 'Logga in'}.",
+    ],
+    tests: [
+      {
+        description: 'Inloggad: "Logga ut"',
+        code: '__render(<LoginButton isLoggedIn={true} />)',
+        expected: '<button>Logga ut</button>',
+      },
+      {
+        description: 'Utloggad: "Logga in"',
+        code: '__render(<LoginButton isLoggedIn={false} />)',
+        expected: '<button>Logga in</button>',
+      },
+    ],
+    sourceChecks: [{ description: 'Koden använder ? :', pattern: /\?[^:]+:/ }],
+  },
+  {
+    id: 'cond-04',
+    title: 'Välj komponent',
+    xp: 10,
+    track: 'conditionals',
+    isBoss: false,
+    description:
+      'Med ? : kan du välja mellan hela komponenter: {user ? <Welcome name={user.name} /> : <Login />}. Ett objekt räknas som sant och null som falskt, så du kan använda user direkt som villkor.',
+    task: 'Uppgift: Skriv komponenten Page({ user }). Finns user ska den returnera Welcome med user.name som propen name. Annars returnerar den Login.',
+    fileName: 'App.jsx',
+    preview: "<><Page user={{ name: 'Ada' }} /><Page user={null} /></>",
+    starterCode: `function Welcome({ name }) {
+  return <h1>Välkommen, {name}!</h1>;
+}
+
+function Login() {
+  return <button>Logga in</button>;
+}
+`,
+    solution: `function Welcome({ name }) {
+  return <h1>Välkommen, {name}!</h1>;
+}
+
+function Login() {
+  return <button>Logga in</button>;
+}
+
+function Page({ user }) {
+  return user ? <Welcome name={user.name} /> : <Login />;
+}`,
+    hints: [
+      'Skriv function Page({ user }) under de andra komponenterna.',
+      'Villkoret är bara user.',
+      'Returnera user ? <Welcome name={user.name} /> : <Login />.',
+    ],
+    tests: [
+      {
+        description: 'Med user visas Welcome',
+        code: "__render(<Page user={{ name: 'Ada' }} />)",
+        expected: '<h1>Välkommen, Ada!</h1>',
+      },
+      {
+        description: 'Utan user visas Login',
+        code: '__render(<Page user={null} />)',
+        expected: '<button>Logga in</button>',
+      },
+    ],
+    sourceChecks: [
+      { description: 'Page använder <Welcome', pattern: /<Welcome\b/ },
+      { description: 'Page använder <Login', pattern: /<Login\s*\/>/ },
+    ],
+  },
+  {
+    id: 'cond-05',
+    title: 'Tidig return',
+    xp: 10,
+    track: 'conditionals',
+    isBoss: false,
+    description:
+      'Före return är komponenten vanlig JavaScript, så där kan du använda if. Ett vanligt mönster är att returnera tidigt: if (!user) return <p>Laddar…</p>; Resten av komponenten kan sedan räkna med att user finns.',
+    task: 'Uppgift: Skriv komponenten Profile({ user }). Saknas user returneras <p>Laddar…</p> med en if. Annars returneras en h2 med user.name.',
+    fileName: 'App.jsx',
+    preview: "<><Profile user={{ name: 'Grace' }} /><Profile /></>",
+    starterCode: '// Skriv din kod här',
+    solution: `function Profile({ user }) {
+  if (!user) {
+    return <p>Laddar…</p>;
+  }
+  return <h2>{user.name}</h2>;
+}`,
+    hints: [
+      'Börja funktionen med if (!user) { }.',
+      'Inuti if: return <p>Laddar…</p>;',
+      'Efter if: return <h2>{user.name}</h2>;',
+    ],
+    tests: [
+      {
+        description: 'Utan user visas "Laddar…"',
+        code: '__render(<Profile />)',
+        expected: '<p>Laddar…</p>',
+      },
+      {
+        description: 'Med user visas namnet',
+        code: "__render(<Profile user={{ name: 'Grace' }} />)",
+        expected: '<h2>Grace</h2>',
+      },
+    ],
+    sourceChecks: [{ description: 'Koden använder if', pattern: /\bif\s*\(/ }],
+  },
+  {
+    id: 'cond-06',
+    title: 'Returnera null',
+    xp: 10,
+    track: 'conditionals',
+    isBoss: false,
+    description:
+      'En komponent som inte ska visa något returnerar null. Det är vanligt för till exempel varningar, som bara ska synas när det finns något att varna för.',
+    task: 'Uppgift: Skriv komponenten Warning({ message }). Saknas message returneras null. Annars returneras en p med klassen "warning" och message som text.',
+    fileName: 'App.jsx',
+    preview: '<><Warning message="Lösenordet är för kort" /><Warning /></>',
+    starterCode: '// Skriv din kod här',
+    solution: `function Warning({ message }) {
+  if (!message) return null;
+  return <p className="warning">{message}</p>;
+}`,
+    hints: [
+      'Börja med if (!message).',
+      'Returnera null om message saknas.',
+      'Annars: return <p className="warning">{message}</p>;',
+    ],
+    tests: [
+      {
+        description: 'Utan message renderas ingenting',
+        code: '__render(<Warning />)',
+        expected: '',
+      },
+      {
+        description: 'Med message visas varningen',
+        code: '__render(<Warning message="Fel lösenord" />)',
+        expected: '<p class="warning">Fel lösenord</p>',
+      },
+      {
+        description: 'Warning returnerar null, inte ett tomt element',
+        code: 'Warning({})',
+        expected: null,
+      },
+    ],
+  },
+  {
+    id: 'cond-07',
+    title: 'Tom lista',
+    xp: 10,
+    track: 'conditionals',
+    isBoss: false,
+    description:
+      'En tom lista ger en tom ul, och det ser ut som att något är trasigt. Visa hellre ett meddelande när listan är tom: todos.length === 0 ? <p>…</p> : <ul>…</ul>.',
+    task: 'Uppgift: Skriv komponenten TodoList({ todos }). Är todos tom returneras <p>Inga uppgifter</p>. Annars en ul med ett li per todo, med todo.text som text och todo.id som key.',
+    fileName: 'App.jsx',
+    preview:
+      "<><TodoList todos={[{ id: 1, text: 'Handla' }]} /><TodoList todos={[]} /></>",
+    starterCode: '// Skriv din kod här',
+    solution: `function TodoList({ todos }) {
+  return todos.length === 0 ? (
+    <p>Inga uppgifter</p>
+  ) : (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>{todo.text}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Villkoret är todos.length === 0.',
+      'Använd ? : eller en tidig return med if.',
+      'Listan är samma map som i Listor-banan.',
+    ],
+    tests: [
+      {
+        description: 'Tom lista: "Inga uppgifter"',
+        code: '__render(<TodoList todos={[]} />)',
+        expected: '<p>Inga uppgifter</p>',
+      },
+      {
+        description: 'Med uppgifter visas listan',
+        code: "__render(<TodoList todos={[{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }]} />)",
+        expected: '<ul><li>Handla</li><li>Träna</li></ul>',
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: "(__render(<TodoList todos={[{ id: 1, text: 'A' }, { id: 2, text: 'B' }]} />), __keyProblems)",
+        expected: [],
+      },
+    ],
+  },
+  {
+    id: 'cond-08',
+    title: 'Villkorlig className',
+    xp: 10,
+    track: 'conditionals',
+    isBoss: false,
+    description:
+      'Villkor fungerar i props också. Ett vanligt exempel är att byta klass beroende på data: className={done ? "todo done" : "todo"}. Då kan CSS:en till exempel stryka över klara uppgifter.',
+    task: 'Uppgift: Skriv komponenten TodoItem({ text, done }). Den returnerar ett li med text. Klassen är "todo done" om done är true och annars "todo".',
+    fileName: 'App.jsx',
+    preview: `<ul>
+  <style>{'.done { text-decoration: line-through; color: gray; }'}</style>
+  <TodoItem text="Handla" done={true} />
+  <TodoItem text="Träna" done={false} />
+</ul>`,
+    starterCode: '// Skriv din kod här',
+    solution: `function TodoItem({ text, done }) {
+  return <li className={done ? 'todo done' : 'todo'}>{text}</li>;
+}`,
+    hints: [
+      'className får ett värde inom { }.',
+      'Inuti klamrarna: done ? … : ….',
+      "Skriv className={done ? 'todo done' : 'todo'}.",
+    ],
+    tests: [
+      {
+        description: 'Klar uppgift får klassen "todo done"',
+        code: '__render(<TodoItem text="Handla" done={true} />)',
+        expected: '<li class="todo done">Handla</li>',
+      },
+      {
+        description: 'Oklar uppgift får klassen "todo"',
+        code: '__render(<TodoItem text="Träna" done={false} />)',
+        expected: '<li class="todo">Träna</li>',
+      },
+    ],
+  },
+  {
+    id: 'cond-boss-01',
+    title: 'Boss: Orderstatus',
+    xp: 30,
+    track: 'conditionals',
+    isBoss: true,
+    description:
+      'Använd alla sätt att visa saker villkorligt: tidig return, ? :, && och tomma listor. Akta dig för 0 &&.',
+    task: `Uppgift: Skriv komponenten OrderSummary({ order }).
+  Saknas order: returnera <p>Ingen order vald</p>.
+  Annars en section med, i den här ordningen:
+    en h2 med "Order 42" (order.id i stället för 42),
+    <p>Betald</p> om order.isPaid är true, annars <p>Ej betald</p>,
+    <p>Ordern är tom</p> om order.items är tom,
+      annars en ul med ett li per item (item.name, key item.id),
+    <p>Rabatt: 50 kr</p> bara om order.discount är större än 0.`,
+    fileName: 'App.jsx',
+    preview: `<OrderSummary order={{
+  id: 42,
+  isPaid: true,
+  discount: 50,
+  items: [{ id: 1, name: 'Keps' }, { id: 2, name: 'Halsduk' }],
+}} />`,
+    starterCode: '// Skriv din kod här',
+    solution: `function OrderSummary({ order }) {
+  if (!order) return <p>Ingen order vald</p>;
+
+  return (
+    <section>
+      <h2>Order {order.id}</h2>
+      {order.isPaid ? <p>Betald</p> : <p>Ej betald</p>}
+      {order.items.length === 0 ? (
+        <p>Ordern är tom</p>
+      ) : (
+        <ul>
+          {order.items.map(item => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      )}
+      {order.discount > 0 && <p>Rabatt: {order.discount} kr</p>}
+    </section>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Utan order: "Ingen order vald"',
+        code: '__render(<OrderSummary />)',
+        expected: '<p>Ingen order vald</p>',
+      },
+      {
+        description: 'Betald order med varor och rabatt',
+        code: "__render(<OrderSummary order={{ id: 42, isPaid: true, discount: 50, items: [{ id: 1, name: 'Keps' }, { id: 2, name: 'Halsduk' }] }} />)",
+        expected:
+          '<section><h2>Order 42</h2><p>Betald</p><ul><li>Keps</li><li>Halsduk</li></ul><p>Rabatt: 50 kr</p></section>',
+      },
+      {
+        description: 'Obetald, tom order utan rabatt visar ingen 0:a',
+        code: '__render(<OrderSummary order={{ id: 7, isPaid: false, discount: 0, items: [] }} />)',
+        expected:
+          '<section><h2>Order 7</h2><p>Ej betald</p><p>Ordern är tom</p></section>',
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: "(__render(<OrderSummary order={{ id: 1, isPaid: true, discount: 0, items: [{ id: 1, name: 'A' }, { id: 2, name: 'B' }] }} />), __keyProblems)",
+        expected: [],
+      },
+    ],
+  },
 ];
