@@ -286,6 +286,22 @@ const correctAnswers = [
       "import { useState } from 'react';\nconst NameInput",
     ),
   ],
+  [
+    'async-02',
+    "function getUser() {\n  return Promise.resolve({ id: 1, name: 'Ada' });\n}\nconst getName = async () => (await getUser()).name;",
+  ],
+  [
+    'async-04',
+    "async function loadUsers() {\n  const response = await fetch('/api/users');\n  const users = await response.json();\n  return users;\n}",
+  ],
+  [
+    'async-06',
+    'async function safeLoad(url) {\n  try {\n    const response = await fetch(url);\n    if (response.ok) return response.json();\n    return [];\n  } catch (error) {\n    return [];\n  }\n}',
+  ],
+  [
+    'data-01',
+    "import { useEffect, useState } from 'react';\nfunction Users() {\n  const [users, setUsers] = useState([]);\n  useEffect(() => {\n    const load = async () => {\n      const res = await fetch('/api/users');\n      setUsers(await res.json());\n    };\n    load();\n  }, []);\n  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;\n}",
+  ],
 ];
 
 // Vanliga fel och genvägar som ska underkännas.
@@ -697,6 +713,42 @@ const wrongAnswers = [
   [
     'lift-06',
     "import { useState } from 'react';\nfunction App() {\n  const [todos, setTodos] = useState([{ id: 1, text: 'Handla', done: false }, { id: 2, text: 'Träna', done: true }, { id: 3, text: 'Plugga React', done: false }]);\n  const [left, setLeft] = useState(2);\n  function handleRemove(id) {\n    const todo = todos.find(t => t.id === id);\n    setTodos(todos.filter(t => t.id !== id));\n    if (!todo.done) setLeft(left - 1);\n  }\n  return <div><p>{left} kvar</p><ul>{todos.map(todo => <li key={todo.id}>{todo.text} <button onClick={() => handleRemove(todo.id)}>Ta bort</button></li>)}</ul></div>;\n}",
+  ],
+  [
+    'async-01',
+    "function getUser() {\n  return Promise.resolve({ id: 1, name: 'Ada' });\n}\nconst namePromise = 'Ada';",
+  ],
+  [
+    'async-01',
+    "function getUser() {\n  return Promise.resolve({ id: 1, name: 'Ada' });\n}\nconst namePromise = getUser().name;",
+  ],
+  [
+    'async-02',
+    "function getUser() {\n  return Promise.resolve({ id: 1, name: 'Ada' });\n}\nasync function getName() {\n  const user = getUser();\n  return user.name;\n}",
+  ],
+  [
+    'async-04',
+    "async function loadUsers() {\n  const response = await fetch('/api/users');\n  return response;\n}",
+  ],
+  [
+    'async-05',
+    'async function loadUser(id) {\n  const response = await fetch(`/api/users/${id}`);\n  return await response.json();\n}',
+  ],
+  [
+    'async-07',
+    "async function getJson(url) {\n  const response = await fetch(url);\n  return await response.json();\n}\nasync function loadCounts() {\n  const users = await getJson('/api/users');\n  const todos = await getJson('/api/todos');\n  return [users.length, todos.length];\n}",
+  ],
+  [
+    'data-01',
+    "import { useEffect, useState } from 'react';\nfunction Users() {\n  const [users, setUsers] = useState([]);\n  useEffect(() => {\n    fetch('/api/users').then(r => r.json()).then(setUsers);\n  });\n  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;\n}",
+  ],
+  [
+    'data-02',
+    "import { useEffect, useState } from 'react';\nfunction Todos() {\n  const [todos, setTodos] = useState([]);\n  useEffect(async () => {\n    const response = await fetch('/api/todos');\n    setTodos(await response.json());\n  }, []);\n  return <ul>{todos.map(t => <li key={t.id}>{t.title}</li>)}</ul>;\n}",
+  ],
+  [
+    'data-05',
+    "import { useEffect, useState } from 'react';\nfunction UserCard({ userId }) {\n  const [user, setUser] = useState(null);\n  useEffect(() => {\n    fetch(`/api/users/${userId}`).then(r => r.json()).then(setUser);\n  }, []);\n  if (!user) return <p>Laddar…</p>;\n  return <h2>{user.name}</h2>;\n}",
   ],
 ];
 

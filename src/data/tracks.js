@@ -31,6 +31,11 @@ export const tracks = [
     reward: { emoji: '🪪', name: 'Passerkort' },
   },
   {
+    id: 'async',
+    title: 'Async: Promises & fetch',
+    reward: { emoji: '⏳', name: 'Timglas' },
+  },
+  {
     id: 'jsx',
     title: 'React: JSX',
     reward: { emoji: '💻', name: 'Laptop' },
@@ -64,5 +69,10 @@ export const tracks = [
     id: 'effects',
     title: 'React: Effekter',
     reward: { emoji: '⏰', name: 'Väckarklocka' },
+  },
+  {
+    id: 'data',
+    title: 'React: Hämta data',
+    reward: { emoji: '📡', name: 'Antenn' },
   },
 ];

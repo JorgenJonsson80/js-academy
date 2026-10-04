@@ -1997,6 +1997,373 @@ export const countTodos = todos => \`\${todos.length} av \${MAX_TODOS}\`;`,
     ],
   },
   {
+    id: 'async-01',
+    title: 'Vad är ett Promise?',
+    xp: 10,
+    track: 'async',
+    isBoss: false,
+    description:
+      'Vissa saker tar tid, som att hämta data från en server. Då får du inte svaret direkt utan ett Promise, ett löfte om ett värde senare. Med .then(…) säger du vad som ska hända med värdet när det kommer. .then ger själv ett nytt Promise.',
+    task: 'Uppgift: getUser() ger ett Promise med en användare. Skapa namePromise med getUser().then(…) så att det ger användarens namn.',
+    starterCode: `function getUser() {
+  return Promise.resolve({ id: 1, name: 'Ada' });
+}
+
+`,
+    solution: `function getUser() {
+  return Promise.resolve({ id: 1, name: 'Ada' });
+}
+
+const namePromise = getUser().then(user => user.name);`,
+    hints: [
+      'Börja med const namePromise = getUser().then( );',
+      'then får en funktion som tar emot användaren.',
+      'Skriv getUser().then(user => user.name);',
+    ],
+    tests: [
+      {
+        description: 'namePromise är ett Promise',
+        code: 'namePromise instanceof Promise',
+        expected: true,
+      },
+      {
+        description: 'namePromise ger "Ada"',
+        code: 'namePromise',
+        expected: 'Ada',
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder .then', pattern: /\.\s*then\s*\(/ },
+    ],
+  },
+  {
+    id: 'async-02',
+    title: 'async och await',
+    xp: 10,
+    track: 'async',
+    isBoss: false,
+    description:
+      'Med async och await skriver du samma sak som med then, fast det läses uppifrån och ned. I en async-funktion pausar await tills löftet är uppfyllt och ger dig värdet. En async-funktion returnerar alltid ett Promise.',
+    task: 'Uppgift: Skriv async-funktionen getName som väntar på getUser() med await och returnerar användarens namn.',
+    starterCode: `function getUser() {
+  return Promise.resolve({ id: 1, name: 'Ada' });
+}
+
+`,
+    solution: `function getUser() {
+  return Promise.resolve({ id: 1, name: 'Ada' });
+}
+
+async function getName() {
+  const user = await getUser();
+  return user.name;
+}`,
+    hints: [
+      'Börja med async function getName() { }.',
+      'Inuti: const user = await getUser();',
+      'Returnera user.name.',
+    ],
+    tests: [
+      {
+        description: 'getName() ger "Ada"',
+        code: 'getName()',
+        expected: 'Ada',
+      },
+      {
+        description: 'getName returnerar ett Promise',
+        code: 'getName() instanceof Promise',
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder await', pattern: /\bawait\b/ },
+      {
+        description: 'Koden använder inte .then',
+        pattern: /\.\s*then\s*\(/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'async-03',
+    title: 'Vänta i tur och ordning',
+    xp: 10,
+    track: 'async',
+    isBoss: false,
+    description:
+      'Ibland behöver ett anrop svaret från ett annat. Med await efter varandra väntar du på det första innan du gör det andra.',
+    task: 'Uppgift: Skriv async-funktionen countTodos. Hämta användaren med getUser(), sedan användarens uppgifter med getTodos(user.id), och returnera antalet uppgifter.',
+    starterCode: `function getUser() {
+  return Promise.resolve({ id: 1, name: 'Ada' });
+}
+
+function getTodos(userId) {
+  const todos = [
+    { userId: 1, title: 'Handla' },
+    { userId: 2, title: 'Träna' },
+    { userId: 1, title: 'Plugga' },
+  ];
+  return Promise.resolve(todos.filter(todo => todo.userId === userId));
+}
+
+`,
+    solution: `function getUser() {
+  return Promise.resolve({ id: 1, name: 'Ada' });
+}
+
+function getTodos(userId) {
+  const todos = [
+    { userId: 1, title: 'Handla' },
+    { userId: 2, title: 'Träna' },
+    { userId: 1, title: 'Plugga' },
+  ];
+  return Promise.resolve(todos.filter(todo => todo.userId === userId));
+}
+
+async function countTodos() {
+  const user = await getUser();
+  const todos = await getTodos(user.id);
+  return todos.length;
+}`,
+    hints: [
+      'Börja med async function countTodos() { }.',
+      'const user = await getUser(); och sedan const todos = await getTodos(user.id);',
+      'Returnera todos.length.',
+    ],
+    tests: [
+      { description: 'countTodos() ger 2', code: 'countTodos()', expected: 2 },
+    ],
+    sourceChecks: [
+      {
+        description: 'getTodos får user.id',
+        pattern: /getTodos\s*\(\s*user\s*\.\s*id\s*\)/,
+      },
+    ],
+  },
+  {
+    id: 'async-04',
+    title: 'fetch och json',
+    xp: 10,
+    track: 'async',
+    isBoss: false,
+    description:
+      'fetch(url) hämtar data från en server och ger ett Promise med ett svar, en response. Själva datan läser du med response.json(), som också ger ett Promise. Därför behövs två await. I övningarna finns ett låtsas-API på /api/users.',
+    task: 'Uppgift: Skriv async-funktionen loadUsers som hämtar /api/users och returnerar datan från response.json().',
+    starterCode: '// Skriv din kod här',
+    solution: `async function loadUsers() {
+  const response = await fetch('/api/users');
+  return await response.json();
+}`,
+    hints: [
+      "Börja med const response = await fetch('/api/users');",
+      'Datan läses med response.json().',
+      'Returnera await response.json();',
+    ],
+    tests: [
+      {
+        description: 'loadUsers() ger tre användare',
+        code: 'loadUsers().then(users => users.map(user => user.name))',
+        expected: ['Ada Lovelace', 'Linus Torvalds', 'Grace Hopper'],
+      },
+      {
+        description: 'loadUsers hämtar /api/users',
+        code: 'loadUsers().then(() => fetch.calls)',
+        expected: ['/api/users'],
+      },
+    ],
+  },
+  {
+    id: 'async-05',
+    title: 'Kolla response.ok',
+    xp: 10,
+    track: 'async',
+    isBoss: false,
+    description:
+      'fetch ger ett svar även när servern svarar med ett fel, som 404 när något inte finns. response.ok är true bara om allt gick bra. Kontrollera det och kasta ett eget fel annars: throw new Error("…").',
+    task: 'Uppgift: Skriv async-funktionen loadUser(id) som hämtar /api/users/ följt av id. Är response.ok false kastas ett Error med texten "Hittade inte användaren". Annars returneras datan.',
+    starterCode: '// Skriv din kod här',
+    solution: `async function loadUser(id) {
+  const response = await fetch(\`/api/users/\${id}\`);
+  if (!response.ok) {
+    throw new Error('Hittade inte användaren');
+  }
+  return await response.json();
+}`,
+    hints: [
+      'Adressen blir en template literal: `/api/users/${id}`.',
+      'Efter fetch: if (!response.ok) { … }.',
+      "Inuti if: throw new Error('Hittade inte användaren');",
+    ],
+    tests: [
+      {
+        description: 'loadUser(2) ger Linus Torvalds',
+        code: 'loadUser(2).then(user => user.name)',
+        expected: 'Linus Torvalds',
+      },
+      {
+        description: 'loadUser(99) kastar "Hittade inte användaren"',
+        code: 'loadUser(99).then(() => "inget fel", error => error.message)',
+        expected: 'Hittade inte användaren',
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden kontrollerar response.ok', pattern: /\.\s*ok\b/ },
+    ],
+  },
+  {
+    id: 'async-06',
+    title: 'Fånga fel med try/catch',
+    xp: 10,
+    track: 'async',
+    isBoss: false,
+    description:
+      'Med try/catch fångar du fel så att programmet inte kraschar. Det som står i try körs, och kastas ett fel där hoppar koden till catch. Med await fungerar det även för fel från Promises.',
+    task: 'Uppgift: Skriv async-funktionen safeLoad(url). Den hämtar url och returnerar datan. Är response.ok false, eller går något annat fel, returneras en tom array i stället.',
+    starterCode: '// Skriv din kod här',
+    solution: `async function safeLoad(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Serverfel');
+    return await response.json();
+  } catch {
+    return [];
+  }
+}`,
+    hints: [
+      'Lägg fetch och json inuti try { }.',
+      'Kasta ett fel i try om response.ok är false.',
+      'catch { return []; }',
+    ],
+    tests: [
+      {
+        description: 'safeLoad("/api/users") ger tre användare',
+        code: "safeLoad('/api/users').then(users => users.length)",
+        expected: 3,
+      },
+      {
+        description: 'safeLoad("/api/broken") ger []',
+        code: "safeLoad('/api/broken')",
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder try', pattern: /\btry\s*\{/ },
+      { description: 'Koden använder catch', pattern: /\bcatch\b/ },
+    ],
+  },
+  {
+    id: 'async-07',
+    title: 'Flera samtidigt: Promise.all',
+    xp: 10,
+    track: 'async',
+    isBoss: false,
+    description:
+      'Två await efter varandra väntar på det första innan det andra startar. Behövs inte svaren av varandra kan du starta båda direkt och vänta på dem tillsammans: const [a, b] = await Promise.all([first(), second()]).',
+    task: 'Uppgift: Skriv async-funktionen loadCounts. Hämta /api/users och /api/todos samtidigt med Promise.all och getJson, och returnera [antal användare, antal uppgifter].',
+    starterCode: `async function getJson(url) {
+  const response = await fetch(url);
+  return await response.json();
+}
+
+`,
+    solution: `async function getJson(url) {
+  const response = await fetch(url);
+  return await response.json();
+}
+
+async function loadCounts() {
+  const [users, todos] = await Promise.all([
+    getJson('/api/users'),
+    getJson('/api/todos'),
+  ]);
+  return [users.length, todos.length];
+}`,
+    hints: [
+      'Promise.all får en array med Promises.',
+      "Skriv await Promise.all([getJson('/api/users'), getJson('/api/todos')]).",
+      'Plocka ut svaren med const [users, todos] = … och returnera [users.length, todos.length].',
+    ],
+    tests: [
+      {
+        description: 'loadCounts() ger [3, 3]',
+        code: 'loadCounts()',
+        expected: [3, 3],
+      },
+      {
+        description: 'Båda hämtningarna startar direkt',
+        code: '(loadCounts(), fetch.calls.length)',
+        expected: 2,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden använder Promise.all',
+        pattern: /Promise\s*\.\s*all\s*\(/,
+      },
+    ],
+  },
+  {
+    id: 'async-boss-01',
+    title: 'Boss: Rapporten',
+    xp: 30,
+    track: 'async',
+    isBoss: true,
+    description:
+      'Kombinera fetch, response.ok, try/catch och Promise.all i en funktion som tål fel.',
+    task: `Uppgift: Skriv async-funktionen loadReport(baseUrl).
+  Hämta baseUrl + "/users" och baseUrl + "/todos" samtidigt med Promise.all.
+  Är något svar inte ok ska ett fel kastas.
+  Gick allt bra returneras { users: 3, openTodos: 2 }:
+    antalet användare och antalet uppgifter där done är false.
+  Gick något fel returneras { error: "Kunde inte ladda rapporten" }.`,
+    starterCode: '// Skriv din kod här',
+    solution: `async function loadReport(baseUrl) {
+  try {
+    const [usersResponse, todosResponse] = await Promise.all([
+      fetch(\`\${baseUrl}/users\`),
+      fetch(\`\${baseUrl}/todos\`),
+    ]);
+    if (!usersResponse.ok || !todosResponse.ok) {
+      throw new Error('Serverfel');
+    }
+    const users = await usersResponse.json();
+    const todos = await todosResponse.json();
+    return {
+      users: users.length,
+      openTodos: todos.filter(todo => !todo.done).length,
+    };
+  } catch {
+    return { error: 'Kunde inte ladda rapporten' };
+  }
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'loadReport("/api") ger { users: 3, openTodos: 2 }',
+        code: "loadReport('/api')",
+        expected: { users: 3, openTodos: 2 },
+      },
+      {
+        description:
+          'Ett serverfel ger { error: "Kunde inte ladda rapporten" }',
+        code: "loadReport('/api/broken')",
+        expected: { error: 'Kunde inte ladda rapporten' },
+      },
+      {
+        description: 'Båda hämtningarna startar direkt',
+        code: "(loadReport('/api'), fetch.calls)",
+        expected: ['/api/users', '/api/todos'],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Koden använder Promise.all',
+        pattern: /Promise\s*\.\s*all\s*\(/,
+      },
+      { description: 'Koden använder try', pattern: /\btry\s*\{/ },
+    ],
+  },
+  {
     id: 'jsx-01',
     title: 'Din första komponent',
     xp: 10,
@@ -5257,6 +5624,464 @@ function Stopwatch() {
         code: "(__mount(<Stopwatch />).click('Start').tick(1000).unmount(), __clock.active())",
         expected: 0,
       },
+    ],
+  },
+  {
+    id: 'data-01',
+    title: 'Hämta i en effekt',
+    xp: 10,
+    track: 'data',
+    isBoss: false,
+    description:
+      'Att hämta data är en sidoeffekt, så det görs i useEffect. Med [] som beroendelista hämtas datan en gång när komponenten visas. När svaret kommer sparas det i state, och då ritas listan om.',
+    task: 'Uppgift: Hämta /api/users i en effekt som bara körs en gång. Spara användarna i users och visa ett li per användare med user.name (key user.id).',
+    fileName: 'App.jsx',
+    preview: '<Users />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function Users() {
+  const [users, setUsers] = useState([]);
+
+  return <ul></ul>;
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function Users() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/users')
+      .then(response => response.json())
+      .then(data => setUsers(data));
+  }, []);
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Skriv useEffect(() => { … }, []); före return.',
+      "I effekten: fetch('/api/users').then(response => response.json()).then(data => setUsers(data));",
+      'Listan: {users.map(user => <li key={user.id}>{user.name}</li>)}',
+    ],
+    tests: [
+      {
+        description: 'Tre användare visas när datan kommit',
+        code: "(async () => { const app = __mount(<Users />); await app.settle(); return app.count('li'); })()",
+        expected: 3,
+      },
+      {
+        description: 'Första användaren är Ada Lovelace',
+        code: "(async () => { const app = __mount(<Users />); await app.settle(); return app.text('li'); })()",
+        expected: 'Ada Lovelace',
+      },
+      {
+        description: 'Datan hämtas bara en gång',
+        code: '(async () => { const app = __mount(<Users />); await app.settle(); return fetch.calls; })()',
+        expected: ['/api/users'],
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: '(async () => { const app = __mount(<Users />); await app.settle(); return __keyProblems; })()',
+        expected: [],
+      },
+    ],
+  },
+  {
+    id: 'data-02',
+    title: 'async i en effekt',
+    xp: 10,
+    track: 'data',
+    isBoss: false,
+    description:
+      'Effektens funktion får inte vara async, eftersom React förväntar sig att få tillbaka en städfunktion och inte ett Promise. Skriv i stället en async-funktion inuti effekten och anropa den direkt.',
+    task: 'Uppgift: Hämta /api/todos med async/await i en funktion inuti effekten. Visa ett li per uppgift med todo.title (key todo.id).',
+    fileName: 'App.jsx',
+    preview: '<Todos />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function Todos() {
+  const [todos, setTodos] = useState([]);
+
+  return <ul></ul>;
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function Todos() {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    async function load() {
+      const response = await fetch('/api/todos');
+      setTodos(await response.json());
+    }
+    load();
+  }, []);
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>{todo.title}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Inuti useEffect: async function load() { … } och sedan load();',
+      "I load: const response = await fetch('/api/todos');",
+      'Spara med setTodos(await response.json());',
+    ],
+    tests: [
+      {
+        description: 'Tre uppgifter visas',
+        code: "(async () => { const app = __mount(<Todos />); await app.settle(); return app.count('li'); })()",
+        expected: 3,
+      },
+      {
+        description: 'Första uppgiften är "Skriv första programmet"',
+        code: "(async () => { const app = __mount(<Todos />); await app.settle(); return app.text('li'); })()",
+        expected: 'Skriv första programmet',
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder await', pattern: /\bawait\b/ },
+      {
+        description: 'Effektens funktion är inte async',
+        pattern: /useEffect\s*\(\s*async/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'data-03',
+    title: 'Laddar…',
+    xp: 10,
+    track: 'data',
+    isBoss: false,
+    description:
+      'Medan datan hämtas ska användaren se att något händer. Ett state isLoading som börjar som true och sätts till false när datan kommit räcker långt.',
+    task: 'Uppgift: Lägg till state isLoading som börjar som true. Visa <p>Laddar…</p> så länge den är true. Sätt den till false när användarna sparats.',
+    fileName: 'App.jsx',
+    preview: '<Users />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function Users() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function load() {
+      const response = await fetch('/api/users');
+      setUsers(await response.json());
+    }
+    load();
+  }, []);
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function Users() {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      const response = await fetch('/api/users');
+      setUsers(await response.json());
+      setIsLoading(false);
+    }
+    load();
+  }, []);
+
+  if (isLoading) return <p>Laddar…</p>;
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'const [isLoading, setIsLoading] = useState(true);',
+      'Anropa setIsLoading(false) efter setUsers i load.',
+      'Före return: if (isLoading) return <p>Laddar…</p>;',
+    ],
+    tests: [
+      {
+        description: '"Laddar…" visas innan datan kommit',
+        code: '__mount(<Users />).text()',
+        expected: 'Laddar…',
+      },
+      {
+        description: 'Listan visas när datan kommit',
+        code: "(async () => { const app = __mount(<Users />); await app.settle(); return [app.count('li'), app.count('p')]; })()",
+        expected: [3, 0],
+      },
+    ],
+  },
+  {
+    id: 'data-04',
+    title: 'Visa fel',
+    xp: 10,
+    track: 'data',
+    isBoss: false,
+    description:
+      'Hämtningar kan misslyckas. Spara felet i state och visa det, i stället för att användaren ser "Laddar…" för evigt. try/catch/finally passar bra: finally körs både när det gick bra och när det blev fel.',
+    task: `Uppgift: UserList får adressen som propen url.
+  Kasta ett fel om response.ok är false.
+  Fånga felet och spara texten "Kunde inte hämta användarna" i error.
+  Sätt isLoading till false i finally.
+  Visa <p className="error">{error}</p> om det finns ett fel.`,
+    fileName: 'App.jsx',
+    preview: '<><UserList url="/api/users" /><UserList url="/api/broken" /></>',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function UserList({ url }) {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      const response = await fetch(url);
+      setUsers(await response.json());
+      setIsLoading(false);
+    }
+    load();
+  }, [url]);
+
+  if (isLoading) return <p>Laddar…</p>;
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function UserList({ url }) {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Serverfel');
+        setUsers(await response.json());
+      } catch {
+        setError('Kunde inte hämta användarna');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    load();
+  }, [url]);
+
+  if (isLoading) return <p>Laddar…</p>;
+  if (error) return <p className="error">{error}</p>;
+
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Lägg innehållet i load i try { } och lägg till catch och finally.',
+      "I try: if (!response.ok) throw new Error('Serverfel');",
+      'Efter if (isLoading): if (error) return <p className="error">{error}</p>;',
+    ],
+    tests: [
+      {
+        description: 'En fungerande adress visar användarna',
+        code: '(async () => { const app = __mount(<UserList url="/api/users" />); await app.settle(); return app.count(\'li\'); })()',
+        expected: 3,
+      },
+      {
+        description: 'Ett serverfel visar felmeddelandet',
+        code: '(async () => { const app = __mount(<UserList url="/api/broken" />); await app.settle(); return app.html(); })()',
+        expected: '<p class="error">Kunde inte hämta användarna</p>',
+      },
+    ],
+    sourceChecks: [
+      { description: 'Koden använder finally', pattern: /\bfinally\b/ },
+    ],
+  },
+  {
+    id: 'data-05',
+    title: 'Hämta igen när en prop ändras',
+    xp: 10,
+    track: 'data',
+    isBoss: false,
+    description:
+      'Beror hämtningen på en prop ska den finnas i beroendelistan. Då hämtas ny data varje gång propen ändras, till exempel när man väljer en annan användare.',
+    task: 'Uppgift: UserCard({ userId }) hämtar /api/users/ följt av userId och visar <h2>{user.name}</h2>. Visa <p>Laddar…</p> medan user är null. Hämta igen när userId ändras.',
+    fileName: 'App.jsx',
+    preview: '<UserCard userId={3} />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+`,
+    solution: `import { useEffect, useState } from 'react';
+
+function UserCard({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      const response = await fetch(\`/api/users/\${userId}\`);
+      setUser(await response.json());
+    }
+    load();
+  }, [userId]);
+
+  if (!user) return <p>Laddar…</p>;
+  return <h2>{user.name}</h2>;
+}`,
+    hints: [
+      'Börja med const [user, setUser] = useState(null);',
+      'Adressen: `/api/users/${userId}`.',
+      'Beroendelistan är [userId].',
+    ],
+    tests: [
+      {
+        description: 'userId 1 visar Ada Lovelace',
+        code: "(async () => { const app = __mount(<UserCard userId={1} />); await app.settle(); return app.text('h2'); })()",
+        expected: 'Ada Lovelace',
+      },
+      {
+        description: '"Laddar…" visas först',
+        code: '__mount(<UserCard userId={1} />).text()',
+        expected: 'Laddar…',
+      },
+      {
+        description: 'Ny userId hämtar en ny användare',
+        code: "(async () => { const app = __mount(<UserCard userId={1} />); await app.settle(); app.rerender(<UserCard userId={2} />); await app.settle(); return app.text('h2'); })()",
+        expected: 'Linus Torvalds',
+      },
+    ],
+  },
+  {
+    id: 'data-boss-01',
+    title: 'Boss: Sök användare',
+    xp: 30,
+    track: 'data',
+    isBoss: true,
+    description:
+      'Bygg en sökning som hämtar nya träffar när man skriver, med laddning, fel och tomt resultat.',
+    task: `Uppgift: Skriv komponenten UserSearch.
+  State: query (""), users ([]), isLoading (true), error (null).
+  Ett kontrollerat input för query.
+  En effekt hämtar /api/users?q= följt av query varje gång query ändras.
+    Sätt isLoading till true när en hämtning startar och false när den är klar.
+    Är svaret inte ok: spara "Sökningen misslyckades" i error.
+  Under input, i den här ordningen av alternativ:
+    <p>Laddar…</p> medan isLoading är true,
+    annars <p>{error}</p> om det finns ett fel,
+    annars <p>Inga träffar</p> om users är tom,
+    annars en ul med ett li per user.name (key user.id).`,
+    fileName: 'App.jsx',
+    preview: '<UserSearch />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+`,
+    solution: `import { useEffect, useState } from 'react';
+
+function UserSearch() {
+  const [query, setQuery] = useState('');
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function search() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(\`/api/users?q=\${query}\`);
+        if (!response.ok) throw new Error('Serverfel');
+        setUsers(await response.json());
+      } catch {
+        setError('Sökningen misslyckades');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    search();
+  }, [query]);
+
+  let result;
+  if (isLoading) result = <p>Laddar…</p>;
+  else if (error) result = <p>{error}</p>;
+  else if (users.length === 0) result = <p>Inga träffar</p>;
+  else
+    result = (
+      <ul>
+        {users.map(user => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    );
+
+  return (
+    <div>
+      <input value={query} onChange={event => setQuery(event.target.value)} />
+      {result}
+    </div>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Alla användare visas från början',
+        code: "(async () => { const app = __mount(<UserSearch />); await app.settle(); return app.count('li'); })()",
+        expected: 3,
+      },
+      {
+        description: 'Sökningen "gr" visar Grace Hopper',
+        code: "(async () => { const app = __mount(<UserSearch />); await app.settle(); app.type('gr'); await app.settle(); return app.text('ul'); })()",
+        expected: 'Grace Hopper',
+      },
+      {
+        description: 'En sökning utan träffar visar "Inga träffar"',
+        code: "(async () => { const app = __mount(<UserSearch />); await app.settle(); app.type('xyz'); await app.settle(); return app.text('p'); })()",
+        expected: 'Inga träffar',
+      },
+      {
+        description: 'Sökningen skickar query till API:t',
+        code: "(async () => { const app = __mount(<UserSearch />); await app.settle(); app.type('gr'); await app.settle(); return fetch.calls.at(-1); })()",
+        expected: '/api/users?q=gr',
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: '(async () => { const app = __mount(<UserSearch />); await app.settle(); return __keyProblems; })()',
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'query finns i beroendelistan',
+        pattern: /,\s*\[\s*query\s*\]\s*\)/,
+      },
+      { description: 'Koden kontrollerar response.ok', pattern: /\.\s*ok\b/ },
     ],
   },
 ];
