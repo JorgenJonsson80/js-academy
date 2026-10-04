@@ -40,4 +40,9 @@ export const tracks = [
     title: 'React: Komponenter & props',
     reward: { emoji: '🧩', name: 'Pusselbit' },
   },
+  {
+    id: 'lists',
+    title: 'React: Listor',
+    reward: { emoji: '📋', name: 'Checklista' },
+  },
 ];

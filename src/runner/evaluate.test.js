@@ -92,4 +92,23 @@ describe('evaluate', () => {
     const { error } = evaluate('const a = <h1>Hej</h2>;', []);
     expect(error).toContain('Koden går inte att tolka');
   });
+
+  it('hittar element i listor som saknar key', () => {
+    const tests = [
+      {
+        description: 'inga key-problem',
+        code: '(__render(<List />), __keyProblems)',
+        expected: [],
+      },
+    ];
+    const list = items =>
+      `const items = ${items};\nfunction List() {\n  return <div><h2>Lista</h2><ul>{items.map(item => <li ITEM>{item}</li>)}</ul></div>;\n}`;
+    expect(
+      passes(list("['a', 'b']").replace('ITEM', 'key={item}'), tests),
+    ).toBe(true);
+    expect(passes(list("['a', 'b']").replace('ITEM', ''), tests)).toBe(false);
+    expect(
+      passes(list("['a', 'a']").replace('ITEM', 'key={item}'), tests),
+    ).toBe(false);
+  });
 });

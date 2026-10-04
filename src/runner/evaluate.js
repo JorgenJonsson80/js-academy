@@ -14,12 +14,45 @@ function render(element) {
   );
 }
 
-// Det som all kod i övningarna når. Testerna kan rendera en
-// komponent till HTML med __render(<Greeting />).
-const runtime = {
-  packages: { react: { ...React, default: React } },
-  globals: { __React: React, __render: render },
-};
+// JSX blir anrop av __React.createElement. Här kontrolleras samma regel
+// som React själv varnar för: element i en array, t.ex. från map,
+// måste ha en key och keys får inte förekomma två gånger.
+function createKeyChecker() {
+  const keyProblems = [];
+
+  function createElement(type, props, ...children) {
+    for (const child of children) {
+      if (!Array.isArray(child)) continue;
+      const elements = child.filter(React.isValidElement);
+      const keys = elements.map(element => element.key);
+      if (keys.includes(null)) {
+        keyProblems.push('Ett element i en lista saknar key');
+      }
+      const usedKeys = keys.filter(key => key !== null);
+      if (new Set(usedKeys).size !== usedKeys.length) {
+        keyProblems.push('Två element i en lista har samma key');
+      }
+    }
+    return React.createElement(type, props, ...children);
+  }
+
+  return { keyProblems, React: { ...React, createElement } };
+}
+
+// Det som all kod i övningarna når. Testerna kan rendera en komponent
+// till HTML med __render(<Greeting />) och läsa __keyProblems efteråt.
+// Skapas på nytt för varje körning, så att keyProblems börjar tomt.
+function createRuntime() {
+  const keyChecker = createKeyChecker();
+  return {
+    packages: { react: { ...React, default: React } },
+    globals: {
+      __React: keyChecker.React,
+      __render: render,
+      __keyProblems: keyChecker.keyProblems,
+    },
+  };
+}
 
 function format(value) {
   if (typeof value === 'function') return 'en funktion';
@@ -50,7 +83,10 @@ function isEqual(actual, expected) {
 // variabler och anropa funktioner eleven skapat. De andra filerna nås
 // med __require('./app.js').
 function runExpression(code, expression, { fileName = 'main.js', files = {} }) {
-  const modules = createModuleSystem({ ...files, [fileName]: code }, runtime);
+  const modules = createModuleSystem(
+    { ...files, [fileName]: code },
+    createRuntime(),
+  );
   return modules.runFile(
     fileName,
     code,

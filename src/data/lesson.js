@@ -2650,4 +2650,440 @@ function ProfileCard({ user, isOnline = false }) {
       },
     ],
   },
+  {
+    id: 'lists-01',
+    title: 'Rendera en lista med map',
+    xp: 10,
+    track: 'lists',
+    isBoss: false,
+    description:
+      'JSX kan visa en array av element. Därför gör man om data till element med map: fruits.map(fruit => <li>{fruit}</li>) ger ett li för varje frukt. Själva listan läggs inom { } i JSX:en.',
+    task: 'Uppgift: Låt App returnera en ul med ett li för varje frukt i fruits. Använd map.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const fruits = ['Äpple', 'Banan', 'Päron'];
+
+function App() {
+  return <ul></ul>;
+}`,
+    solution: `const fruits = ['Äpple', 'Banan', 'Päron'];
+
+function App() {
+  return (
+    <ul>
+      {fruits.map(fruit => (
+        <li key={fruit}>{fruit}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Skriv { } mellan <ul> och </ul>.',
+      'Inuti klamrarna: fruits.map(fruit => …).',
+      'Varje frukt blir <li>{fruit}</li>.',
+    ],
+    tests: [
+      {
+        description: 'App renderar en ul med tre li',
+        code: '__render(<App />)',
+        expected: '<ul><li>Äpple</li><li>Banan</li><li>Päron</li></ul>',
+      },
+      {
+        description: 'Listan följer med när fruits ändras',
+        code: "(fruits.push('Kiwi'), __render(<App />).endsWith('<li>Kiwi</li></ul>'))",
+        expected: true,
+      },
+    ],
+    sourceChecks: [
+      { description: 'Listan skapas med map', pattern: /\.\s*map\s*\(/ },
+    ],
+  },
+  {
+    id: 'lists-02',
+    title: 'key',
+    xp: 10,
+    track: 'lists',
+    isBoss: false,
+    description:
+      'Varje element i en lista behöver en key, ett värde som är unikt inom listan. Med den kan React hålla reda på vilket element som är vilket när listan ändras. key skrivs som en prop: <li key={fruit}>. Den syns inte på sidan.',
+    task: 'Uppgift: Ge varje li en key. Frukterna är unika, så fruit duger som key.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const fruits = ['Äpple', 'Banan', 'Päron'];
+
+function App() {
+  return (
+    <ul>
+      {fruits.map(fruit => (
+        <li>{fruit}</li>
+      ))}
+    </ul>
+  );
+}`,
+    solution: `const fruits = ['Äpple', 'Banan', 'Päron'];
+
+function App() {
+  return (
+    <ul>
+      {fruits.map(fruit => (
+        <li key={fruit}>{fruit}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'key skrivs som ett attribut på li.',
+      'Värdet är en variabel, så det står inom { }.',
+      'Skriv <li key={fruit}>',
+    ],
+    tests: [
+      {
+        description: 'App renderar fortfarande listan',
+        code: '__render(<App />)',
+        expected: '<ul><li>Äpple</li><li>Banan</li><li>Päron</li></ul>',
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: '(__render(<App />), __keyProblems)',
+        expected: [],
+      },
+    ],
+  },
+  {
+    id: 'lists-03',
+    title: 'key från id',
+    xp: 10,
+    track: 'lists',
+    isBoss: false,
+    description:
+      'Är listan en array av objekt används oftast ett id som key: <li key={todo.id}>. Använd inte platsen i arrayen (index) som key. Tas ett element bort eller byter ordning flyttas index till fel element, och då kan React blanda ihop dem.',
+    task: 'Uppgift: Låt App returnera en ul med ett li för varje todo. Visa todo.text och använd todo.id som key.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const todos = [
+  { id: 1, text: 'Handla' },
+  { id: 2, text: 'Träna' },
+  { id: 3, text: 'Plugga React' },
+];
+
+function App() {
+  return <ul></ul>;
+}`,
+    solution: `const todos = [
+  { id: 1, text: 'Handla' },
+  { id: 2, text: 'Träna' },
+  { id: 3, text: 'Plugga React' },
+];
+
+function App() {
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>{todo.text}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Börja med {todos.map(todo => …)} inuti ul.',
+      'Texten finns i todo.text.',
+      'Skriv <li key={todo.id}>{todo.text}</li>',
+    ],
+    tests: [
+      {
+        description: 'App renderar de tre uppgifterna',
+        code: '__render(<App />)',
+        expected: '<ul><li>Handla</li><li>Träna</li><li>Plugga React</li></ul>',
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: '(__render(<App />), __keyProblems)',
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'key är todo.id',
+        pattern: /key=\{\s*todo\s*\.\s*id\s*\}/,
+      },
+    ],
+  },
+  {
+    id: 'lists-04',
+    title: 'En lista av komponenter',
+    xp: 10,
+    track: 'lists',
+    isBoss: false,
+    description:
+      'map kan lika gärna returnera dina egna komponenter: <TodoItem key={todo.id} text={todo.text} />. key sätts på komponenten i map, inte på li:n inuti TodoItem. Det är listan i map som behöver key, och TodoItem vet inte ens att den ligger i en lista.',
+    task: 'Uppgift: Låt App returnera en ul med en TodoItem för varje todo. Skicka todo.text som propen text och använd todo.id som key.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const todos = [
+  { id: 1, text: 'Handla' },
+  { id: 2, text: 'Träna' },
+];
+
+function TodoItem({ text }) {
+  return <li>✅ {text}</li>;
+}
+
+function App() {
+  return <ul></ul>;
+}`,
+    solution: `const todos = [
+  { id: 1, text: 'Handla' },
+  { id: 2, text: 'Träna' },
+];
+
+function TodoItem({ text }) {
+  return <li>✅ {text}</li>;
+}
+
+function App() {
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem key={todo.id} text={todo.text} />
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'map ska returnera <TodoItem /> i stället för <li>.',
+      'TodoItem behöver propen text={todo.text}.',
+      'key={todo.id} skrivs på TodoItem.',
+    ],
+    tests: [
+      {
+        description: 'App renderar en TodoItem per uppgift',
+        code: '__render(<App />)',
+        expected: '<ul><li>✅ Handla</li><li>✅ Träna</li></ul>',
+      },
+      {
+        description: 'Varje TodoItem har en unik key',
+        code: '(__render(<App />), __keyProblems)',
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'map returnerar <TodoItem',
+        pattern: /=>\s*\(?\s*<TodoItem\b/,
+      },
+      {
+        description: 'key sitter på TodoItem',
+        pattern: /<TodoItem[^>]*\bkey=\{\s*todo\s*\.\s*id\s*\}/,
+      },
+    ],
+  },
+  {
+    id: 'lists-05',
+    title: 'filter före map',
+    xp: 10,
+    track: 'lists',
+    isBoss: false,
+    description:
+      'Vill du bara visa en del av listan filtrerar du först och renderar sedan: todos.filter(todo => !todo.done).map(…). Data ändras aldrig, du väljer bara vad som visas.',
+    task: 'Uppgift: Låt App returnera en ul med bara de todos som inte är klara (done är false). Visa todo.text och använd todo.id som key.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const todos = [
+  { id: 1, text: 'Handla', done: true },
+  { id: 2, text: 'Träna', done: false },
+  { id: 3, text: 'Plugga React', done: false },
+];
+
+function App() {
+  return <ul></ul>;
+}`,
+    solution: `const todos = [
+  { id: 1, text: 'Handla', done: true },
+  { id: 2, text: 'Träna', done: false },
+  { id: 3, text: 'Plugga React', done: false },
+];
+
+function App() {
+  return (
+    <ul>
+      {todos
+        .filter(todo => !todo.done)
+        .map(todo => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Börja med todos.filter(todo => !todo.done).',
+      'Kedja på .map(…) direkt efter filter.',
+      'map ger <li key={todo.id}>{todo.text}</li>.',
+    ],
+    tests: [
+      {
+        description: 'App visar bara Träna och Plugga React',
+        code: '__render(<App />)',
+        expected: '<ul><li>Träna</li><li>Plugga React</li></ul>',
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: '(__render(<App />), __keyProblems)',
+        expected: [],
+      },
+      {
+        description: 'todos är oförändrad',
+        code: 'todos.length',
+        expected: 3,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Listan filtreras med filter',
+        pattern: /\.\s*filter\s*\(/,
+      },
+    ],
+  },
+  {
+    id: 'lists-06',
+    title: 'Numrera med index',
+    xp: 10,
+    track: 'lists',
+    isBoss: false,
+    description:
+      'map skickar med platsen i arrayen som andra argument: players.map((player, index) => …). index passar bra för att visa en numrering, men key ska fortfarande vara player.id.',
+    task: 'Uppgift: Låt App returnera en ol med ett li per spelare med texten "1. Ada", där talet är index + 1. Använd player.id som key.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const players = [
+  { id: 'a7', name: 'Ada' },
+  { id: 'l3', name: 'Linus' },
+  { id: 'g9', name: 'Grace' },
+];
+
+function App() {
+  return <ol></ol>;
+}`,
+    solution: `const players = [
+  { id: 'a7', name: 'Ada' },
+  { id: 'l3', name: 'Linus' },
+  { id: 'g9', name: 'Grace' },
+];
+
+function App() {
+  return (
+    <ol>
+      {players.map((player, index) => (
+        <li key={player.id}>
+          {index + 1}. {player.name}
+        </li>
+      ))}
+    </ol>
+  );
+}`,
+    hints: [
+      'map tar emot (player, index), med parenteser runt båda.',
+      'Numret är {index + 1}.',
+      'Skriv <li key={player.id}>{index + 1}. {player.name}</li>',
+    ],
+    tests: [
+      {
+        description: 'App renderar en numrerad lista',
+        code: '__render(<App />)',
+        expected: '<ol><li>1. Ada</li><li>2. Linus</li><li>3. Grace</li></ol>',
+      },
+      {
+        description: 'Alla li har en unik key',
+        code: '(__render(<App />), __keyProblems)',
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'key är player.id',
+        pattern: /key=\{\s*player\s*\.\s*id\s*\}/,
+      },
+      {
+        description: 'Numret räknas ut med index + 1',
+        pattern: /index\s*\+\s*1/,
+      },
+    ],
+  },
+  {
+    id: 'lists-boss-01',
+    title: 'Boss: Produktlistan',
+    xp: 30,
+    track: 'lists',
+    isBoss: true,
+    description:
+      'Kombinera komponenter, props, filter, map och key i en riktig produktlista.',
+    task: `Uppgift: Skriv två komponenter.
+  ProductRow({ name, price }): ett li med texten "Keps: 199 kr".
+  ProductList({ products }): en section med
+    en h2 med texten "2 i lager" (antalet produkter där inStock är true),
+    och en ul med en ProductRow per produkt i lager.
+  Använd filter och map, och product.id som key på ProductRow.`,
+    fileName: 'App.jsx',
+    preview: `<ProductList products={[
+  { id: 1, name: 'Keps', price: 199, inStock: true },
+  { id: 2, name: 'Mössa', price: 149, inStock: false },
+  { id: 3, name: 'Halsduk', price: 299, inStock: true },
+]} />`,
+    starterCode: '// Skriv din kod här',
+    solution: `function ProductRow({ name, price }) {
+  return (
+    <li>
+      {name}: {price} kr
+    </li>
+  );
+}
+
+function ProductList({ products }) {
+  const inStock = products.filter(product => product.inStock);
+  return (
+    <section>
+      <h2>{inStock.length} i lager</h2>
+      <ul>
+        {inStock.map(product => (
+          <ProductRow key={product.id} name={product.name} price={product.price} />
+        ))}
+      </ul>
+    </section>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'ProductRow renderar <li>Keps: 199 kr</li>',
+        code: '__render(<ProductRow name="Keps" price={199} />)',
+        expected: '<li>Keps: 199 kr</li>',
+      },
+      {
+        description: 'ProductList visar bara produkter i lager',
+        code: "__render(<ProductList products={[{ id: 1, name: 'Keps', price: 199, inStock: true }, { id: 2, name: 'Mössa', price: 149, inStock: false }, { id: 3, name: 'Halsduk', price: 299, inStock: true }]} />)",
+        expected:
+          '<section><h2>2 i lager</h2><ul><li>Keps: 199 kr</li><li>Halsduk: 299 kr</li></ul></section>',
+      },
+      {
+        description: 'Rubriken räknar produkterna i lager',
+        code: "__render(<ProductList products={[{ id: 7, name: 'Vante', price: 99, inStock: true }]} />).startsWith('<section><h2>1 i lager</h2>')",
+        expected: true,
+      },
+      {
+        description: 'Varje ProductRow har en unik key',
+        code: "(__render(<ProductList products={[{ id: 1, name: 'A', price: 1, inStock: true }, { id: 2, name: 'B', price: 2, inStock: true }]} />), __keyProblems)",
+        expected: [],
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Produkterna filtreras med filter',
+        pattern: /\.\s*filter\s*\(/,
+      },
+      { description: 'Raderna skapas med map', pattern: /\.\s*map\s*\(/ },
+      {
+        description: 'map returnerar <ProductRow med key={product.id}',
+        pattern: /<ProductRow[^>]*\bkey=\{\s*product\s*\.\s*id\s*\}/,
+      },
+    ],
+  },
 ];

@@ -195,6 +195,22 @@ const correctAnswers = [
     'props-boss-01',
     "const Avatar = ({ name, src }) => <img alt={name} src={src} />;\nconst Card = ({ children }) => <div className=\"card\">{children}</div>;\nfunction ProfileCard({ user, isOnline = false }) {\n  const { name, avatar } = user;\n  return (\n    <Card>\n      <Avatar name={name} src={avatar} />\n      <h2>{name}</h2>\n      <p>{isOnline ? 'Online' : 'Offline'}</p>\n    </Card>\n  );\n}",
   ],
+  [
+    'lists-01',
+    "const fruits = ['Äpple', 'Banan', 'Päron'];\nconst App = () => <ul>{fruits.map(f => <li>{f}</li>)}</ul>;",
+  ],
+  [
+    'lists-03',
+    "const todos = [{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }, { id: 3, text: 'Plugga React' }];\nfunction App() {\n  return <ul>{todos.map(todo => {\n    return <li key={todo.id}>{todo.text}</li>;\n  })}</ul>;\n}",
+  ],
+  [
+    'lists-05',
+    "const todos = [{ id: 1, text: 'Handla', done: true }, { id: 2, text: 'Träna', done: false }, { id: 3, text: 'Plugga React', done: false }];\nfunction App() {\n  const notDone = todos.filter(todo => todo.done === false);\n  return <ul>{notDone.map(todo => <li key={todo.id}>{todo.text}</li>)}</ul>;\n}",
+  ],
+  [
+    'lists-boss-01',
+    'const ProductRow = ({ name, price }) => <li>{`${name}: ${price} kr`}</li>;\nfunction ProductList({ products }) {\n  const available = products.filter(p => p.inStock);\n  return (\n    <section>\n      <h2>{available.length} i lager</h2>\n      <ul>\n        {available.map(product => <ProductRow key={product.id} {...product} />)}\n      </ul>\n    </section>\n  );\n}',
+  ],
 ];
 
 // Vanliga fel och genvägar som ska underkännas.
@@ -438,6 +454,42 @@ const wrongAnswers = [
   [
     'props-boss-01',
     'function Avatar({ src, name }) {\n  return <img src={src} alt={name} />;\n}\nfunction Card({ children }) {\n  return <div className="card">{children}</div>;\n}\nfunction ProfileCard({ user, isOnline = false }) {\n  return (\n    <div className="card">\n      <img src={user.avatar} alt={user.name} />\n      <h2>{user.name}</h2>\n      <p>{isOnline ? \'Online\' : \'Offline\'}</p>\n    </div>\n  );\n}',
+  ],
+  [
+    'lists-01',
+    "const fruits = ['Äpple', 'Banan', 'Päron'];\nfunction App() {\n  return <ul><li>Äpple</li><li>Banan</li><li>Päron</li></ul>;\n}",
+  ],
+  [
+    'lists-02',
+    "const fruits = ['Äpple', 'Banan', 'Päron'];\nfunction App() {\n  return <ul>{fruits.map(fruit => <li>{fruit}</li>)}</ul>;\n}",
+  ],
+  [
+    'lists-02',
+    "const fruits = ['Äpple', 'Banan', 'Päron'];\nfunction App() {\n  return <ul>{fruits.map(fruit => <li key=\"fruit\">{fruit}</li>)}</ul>;\n}",
+  ],
+  [
+    'lists-03',
+    "const todos = [{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }, { id: 3, text: 'Plugga React' }];\nfunction App() {\n  return <ul>{todos.map((todo, index) => <li key={index}>{todo.text}</li>)}</ul>;\n}",
+  ],
+  [
+    'lists-03',
+    "const todos = [{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }, { id: 3, text: 'Plugga React' }];\nfunction App() {\n  return <ul>{todos.map(todo => <li key={todo.id}>{todo}</li>)}</ul>;\n}",
+  ],
+  [
+    'lists-04',
+    "const todos = [{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }];\nfunction TodoItem({ text }) {\n  return <li>✅ {text}</li>;\n}\nfunction App() {\n  return <ul>{todos.map(todo => <TodoItem text={todo.text} />)}</ul>;\n}",
+  ],
+  [
+    'lists-05',
+    "const todos = [{ id: 1, text: 'Handla', done: true }, { id: 2, text: 'Träna', done: false }, { id: 3, text: 'Plugga React', done: false }];\nfunction App() {\n  return <ul>{todos.filter(todo => todo.done).map(todo => <li key={todo.id}>{todo.text}</li>)}</ul>;\n}",
+  ],
+  [
+    'lists-06',
+    "const players = [{ id: 'a7', name: 'Ada' }, { id: 'l3', name: 'Linus' }, { id: 'g9', name: 'Grace' }];\nfunction App() {\n  return <ol>{players.map((player, index) => <li key={player.id}>{index}. {player.name}</li>)}</ol>;\n}",
+  ],
+  [
+    'lists-boss-01',
+    'function ProductRow({ name, price }) {\n  return <li>{name}: {price} kr</li>;\n}\nfunction ProductList({ products }) {\n  const inStock = products.filter(product => product.inStock);\n  return (\n    <section>\n      <h2>2 i lager</h2>\n      <ul>{inStock.map(product => <ProductRow key={product.id} name={product.name} price={product.price} />)}</ul>\n    </section>\n  );\n}',
   ],
 ];
 
