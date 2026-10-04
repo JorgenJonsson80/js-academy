@@ -428,6 +428,14 @@
   }
 }
 
+.style-note {
+  padding: 10px 12px;
+  border-left: 3px solid #38bdf8;
+  border-radius: 8px;
+  background: #0c2233;
+  color: #bae6fd;
+}
+
 .hint {
   color: #fde68a;
   background: #292515;

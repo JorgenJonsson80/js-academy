@@ -805,6 +805,286 @@ const result = multiply(3, 4);`,
     ],
   },
   {
+    id: 'functions-06',
+    title: 'return eller console.log?',
+    xp: 10,
+    track: 'functions',
+    isBoss: false,
+    description:
+      'console.log visar ett värde i konsolen, men funktionen ger inte tillbaka något. Utan return blir resultatet av ett anrop undefined. Vill du använda värdet efteråt måste funktionen returnera det.',
+    task: 'Uppgift: double skriver ut svaret i stället för att returnera det, så result blir undefined. Rätta double så att result blir 8.',
+    starterCode: `function double(number) {
+  console.log(number * 2);
+}
+
+const result = double(4);`,
+    solution: `function double(number) {
+  return number * 2;
+}
+
+const result = double(4);`,
+    hints: [
+      'Problemet är inuti double.',
+      'console.log visar bara värdet. Det behöver skickas tillbaka.',
+      'Byt console.log(number * 2); mot return number * 2;',
+    ],
+    tests: [
+      { description: 'result är 8', code: 'result', expected: 8 },
+      {
+        description: 'double(10) returnerar 20',
+        code: 'double(10)',
+        expected: 20,
+      },
+    ],
+  },
+  {
+    id: 'functions-07',
+    title: 'Standardvärden',
+    xp: 10,
+    track: 'functions',
+    isBoss: false,
+    description:
+      'Skickas inget argument blir parametern undefined. Med ett standardvärde, function greet(name = "du"), får den ett värde ändå. Samma sak används för props i React.',
+    task: 'Uppgift: Skriv funktionen greet med parametern name som har standardvärdet "du". Den returnerar "Hej " + name + "!".',
+    starterCode: '// Skriv din kod här',
+    solution: `function greet(name = 'du') {
+  return 'Hej ' + name + '!';
+}`,
+    hints: [
+      'Börja med function greet(name) { }.',
+      "Standardvärdet skrivs i parentesen: name = 'du'.",
+      "Returnera 'Hej ' + name + '!'.",
+    ],
+    tests: [
+      {
+        description: 'greet("Ada") ger "Hej Ada!"',
+        code: "greet('Ada')",
+        expected: 'Hej Ada!',
+      },
+      {
+        description: 'greet() ger "Hej du!"',
+        code: 'greet()',
+        expected: 'Hej du!',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'name har ett standardvärde',
+        pattern: /name\s*=\s*['"`]du['"`]/,
+      },
+    ],
+  },
+  {
+    id: 'functions-08',
+    title: 'Funktioner som använder funktioner',
+    xp: 10,
+    track: 'functions',
+    isBoss: false,
+    description:
+      'Små funktioner som gör en sak var är lättare att förstå och testa. Sedan kan större funktioner bygga på dem. Precis så byggs React-appar av små komponenter.',
+    task: 'Uppgift: Skriv funktionen square(n) som returnerar n * n. Skriv sedan sumOfSquares(a, b) som returnerar square(a) + square(b). Använd square inuti sumOfSquares.',
+    starterCode: '// Skriv din kod här',
+    solution: `function square(n) {
+  return n * n;
+}
+
+function sumOfSquares(a, b) {
+  return square(a) + square(b);
+}`,
+    hints: [
+      'Skriv square först: function square(n) { return n * n; }',
+      'sumOfSquares tar emot a och b.',
+      'Returnera square(a) + square(b);',
+    ],
+    tests: [
+      {
+        description: 'square(5) returnerar 25',
+        code: 'square(5)',
+        expected: 25,
+      },
+      {
+        description: 'sumOfSquares(3, 4) returnerar 25',
+        code: 'sumOfSquares(3, 4)',
+        expected: 25,
+      },
+      {
+        description: 'sumOfSquares(1, 2) returnerar 5',
+        code: 'sumOfSquares(1, 2)',
+        expected: 5,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'sumOfSquares använder square',
+        pattern: /function\s+sumOfSquares[^]*square\s*\(\s*a\s*\)/,
+      },
+    ],
+  },
+  {
+    id: 'functions-09',
+    title: 'Arrow function med klamrar',
+    xp: 10,
+    track: 'functions',
+    isBoss: false,
+    description:
+      'Behöver en arrow function flera rader använder du klamrar. Då måste du skriva return själv, precis som i en vanlig funktion. Utan return blir resultatet undefined.',
+    task: 'Uppgift: Skapa arrow functionen getGrade med parametern points. Den returnerar "A" om points är minst 90, "B" om points är minst 50 och annars "C". Använd klamrar och if.',
+    starterCode: '// Skriv din kod här',
+    solution: `const getGrade = points => {
+  if (points >= 90) return 'A';
+  if (points >= 50) return 'B';
+  return 'C';
+};`,
+    hints: [
+      'Börja med const getGrade = points => { };',
+      "Första villkoret: if (points >= 90) return 'A';",
+      "Sist, efter alla if: return 'C';",
+    ],
+    tests: [
+      {
+        description: 'getGrade(95) ger "A"',
+        code: 'getGrade(95)',
+        expected: 'A',
+      },
+      {
+        description: 'getGrade(90) ger "A"',
+        code: 'getGrade(90)',
+        expected: 'A',
+      },
+      {
+        description: 'getGrade(60) ger "B"',
+        code: 'getGrade(60)',
+        expected: 'B',
+      },
+      {
+        description: 'getGrade(20) ger "C"',
+        code: 'getGrade(20)',
+        expected: 'C',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'getGrade är en arrow function',
+        pattern: /getGrade\s*=\s*\(?\s*points\s*\)?\s*=>/,
+      },
+    ],
+  },
+  {
+    id: 'functions-10',
+    title: 'Skicka en funktion som argument',
+    xp: 10,
+    track: 'functions',
+    isBoss: false,
+    description:
+      'En funktion är ett värde, precis som ett tal. Den kan sparas i en variabel och skickas in i en annan funktion, som sedan anropar den. En sådan funktion kallas callback. Det är så map, filter och onClick i React fungerar.',
+    task: 'Uppgift: Skapa arrow functionen addThree som returnerar talet plus 3. Anropa sedan applyTwice med addThree och 10, och spara svaret i result.',
+    starterCode: `function applyTwice(fn, value) {
+  return fn(fn(value));
+}
+
+`,
+    solution: `function applyTwice(fn, value) {
+  return fn(fn(value));
+}
+
+const addThree = number => number + 3;
+const result = applyTwice(addThree, 10);`,
+    hints: [
+      'Skapa const addThree = number => number + 3;',
+      'Skicka in funktionen utan parenteser: applyTwice(addThree, 10).',
+      'Spara svaret: const result = applyTwice(addThree, 10);',
+    ],
+    tests: [
+      {
+        description: 'addThree(1) returnerar 4',
+        code: 'addThree(1)',
+        expected: 4,
+      },
+      { description: 'result är 16', code: 'result', expected: 16 },
+    ],
+    sourceChecks: [
+      {
+        description: 'addThree skickas in utan att anropas',
+        pattern: /applyTwice\s*\(\s*addThree\s*,/,
+      },
+    ],
+  },
+  {
+    id: 'functions-boss-01',
+    title: 'Boss: Kassaapparaten',
+    xp: 30,
+    track: 'functions',
+    isBoss: true,
+    description:
+      'Bygg en liten kassaapparat av funktioner som bygger på varandra: parametrar, standardvärden, return, villkor och arrow functions.',
+    task: `Uppgift: Skriv tre funktioner och ett anrop.
+  lineTotal(price, quantity): returnerar price * quantity.
+    quantity har standardvärdet 1.
+  applyDiscount: en arrow function med (total, percent)
+    som returnerar total minus percent procent av total.
+  checkout(price, quantity, isMember): räknar ut summan med lineTotal.
+    Medlemmar får 10 % rabatt via applyDiscount, andra betalar fullt pris.
+  Spara checkout(200, 3, true) i konstanten receipt.`,
+    starterCode: '// Skriv din kod här',
+    solution: `function lineTotal(price, quantity = 1) {
+  return price * quantity;
+}
+
+const applyDiscount = (total, percent) => total - (total * percent) / 100;
+
+function checkout(price, quantity, isMember) {
+  const total = lineTotal(price, quantity);
+  if (isMember) return applyDiscount(total, 10);
+  return total;
+}
+
+const receipt = checkout(200, 3, true);`,
+    hints: [],
+    tests: [
+      {
+        description: 'lineTotal(50) returnerar 50',
+        code: 'lineTotal(50)',
+        expected: 50,
+      },
+      {
+        description: 'lineTotal(50, 3) returnerar 150',
+        code: 'lineTotal(50, 3)',
+        expected: 150,
+      },
+      {
+        description: 'applyDiscount(200, 25) returnerar 150',
+        code: 'applyDiscount(200, 25)',
+        expected: 150,
+      },
+      {
+        description: 'checkout(100, 2, false) returnerar 200',
+        code: 'checkout(100, 2, false)',
+        expected: 200,
+      },
+      {
+        description: 'checkout(200, 3, true) returnerar 540',
+        code: 'checkout(200, 3, true)',
+        expected: 540,
+      },
+      { description: 'receipt är 540', code: 'receipt', expected: 540 },
+    ],
+    sourceChecks: [
+      {
+        description: 'quantity har standardvärdet 1',
+        pattern: /quantity\s*=\s*1\b/,
+      },
+      {
+        description: 'applyDiscount är en arrow function',
+        pattern: /applyDiscount\s*=\s*\(/,
+      },
+      {
+        description: 'checkout använder lineTotal och applyDiscount',
+        pattern:
+          /function\s+checkout(?=[^]*lineTotal\s*\()(?=[^]*applyDiscount\s*\()/,
+      },
+    ],
+  },
+  {
     id: 'map-01',
     title: 'Dubbla med map',
     xp: 10,

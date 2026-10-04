@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { evaluate } from '../runner/evaluate';
+import { findMissingSemicolons } from '../runner/style';
 import { lessons } from './lesson';
 import { tracks } from './tracks';
 
@@ -77,6 +78,10 @@ describe('rättning av lektionerna', () => {
       expect(preview).toBeTruthy();
     },
   );
+
+  it.each(lessons)('$id har ; efter varje sats i lösningen', lesson => {
+    expect(findMissingSemicolons(lesson.solution)).toEqual([]);
+  });
 
   it.each(lessons)('$id underkänner startkoden', async lesson => {
     expect((await check(lesson, lesson.starterCode)).passed).toBe(false);
@@ -301,6 +306,15 @@ const correctAnswers = [
   [
     'data-01',
     "import { useEffect, useState } from 'react';\nfunction Users() {\n  const [users, setUsers] = useState([]);\n  useEffect(() => {\n    const load = async () => {\n      const res = await fetch('/api/users');\n      setUsers(await res.json());\n    };\n    load();\n  }, []);\n  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;\n}",
+  ],
+  ['functions-07', 'const greet = (name = "du") => `Hej ${name}!`;'],
+  [
+    'functions-09',
+    "const getGrade = (points) => {\n  if (points >= 90) {\n    return 'A';\n  } else if (points >= 50) {\n    return 'B';\n  }\n  return 'C';\n};",
+  ],
+  [
+    'functions-boss-01',
+    'const lineTotal = (price, quantity = 1) => price * quantity;\nconst applyDiscount = (total, percent) => total * (1 - percent / 100);\nfunction checkout(price, quantity, isMember) {\n  const total = lineTotal(price, quantity);\n  return isMember ? applyDiscount(total, 10) : total;\n}\nconst receipt = checkout(200, 3, true);',
   ],
 ];
 
@@ -749,6 +763,31 @@ const wrongAnswers = [
   [
     'data-05',
     "import { useEffect, useState } from 'react';\nfunction UserCard({ userId }) {\n  const [user, setUser] = useState(null);\n  useEffect(() => {\n    fetch(`/api/users/${userId}`).then(r => r.json()).then(setUser);\n  }, []);\n  if (!user) return <p>Laddar…</p>;\n  return <h2>{user.name}</h2>;\n}",
+  ],
+  [
+    'functions-06',
+    'function double(number) {\n  console.log(number * 2);\n  return;\n}\nconst result = 8;',
+  ],
+  ['functions-07', "function greet(name) {\n  return 'Hej ' + name + '!';\n}"],
+  [
+    'functions-08',
+    'function square(n) {\n  return n * n;\n}\nfunction sumOfSquares(a, b) {\n  return a * a + b * b;\n}',
+  ],
+  [
+    'functions-09',
+    "const getGrade = points => {\n  if (points > 90) return 'A';\n  if (points > 50) return 'B';\n  return 'C';\n};",
+  ],
+  [
+    'functions-09',
+    "const getGrade = points => {\n  if (points >= 90) 'A';\n  if (points >= 50) 'B';\n  'C';\n};",
+  ],
+  [
+    'functions-10',
+    'function applyTwice(fn, value) {\n  return fn(fn(value));\n}\nconst addThree = number => number + 3;\nconst result = applyTwice(addThree(10), 10);',
+  ],
+  [
+    'functions-boss-01',
+    'function lineTotal(price, quantity = 1) {\n  return price * quantity;\n}\nconst applyDiscount = (total, percent) => total - (total * percent) / 100;\nfunction checkout(price, quantity, isMember) {\n  return isMember ? price * quantity * 0.9 : price * quantity;\n}\nconst receipt = checkout(200, 3, true);',
   ],
 ];
 

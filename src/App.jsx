@@ -102,12 +102,14 @@ function App() {
   }
 
   async function checkCode() {
-    const { error, results } = await runTests(
-      code,
-      lesson.tests,
-      lesson.sourceChecks,
-      { fileName: lesson.fileName, files: lesson.files },
-    );
+    const {
+      error,
+      results,
+      notes = [],
+    } = await runTests(code, lesson.tests, lesson.sourceChecks, {
+      fileName: lesson.fileName,
+      files: lesson.files,
+    });
     const isCorrect =
       !error && results.length > 0 && results.every(result => result.passed);
     // Förhandsvisningen kör koden på riktigt, men bara om den gick att
@@ -121,13 +123,14 @@ function App() {
             preview: lesson.preview,
           }
         : null;
-    return { isCorrect, error, results, previewSource };
+    return { isCorrect, error, results, notes, previewSource };
   }
 
   async function handleCheck() {
     const checkId = ++checkIdRef.current;
     setIsChecking(true);
-    const { isCorrect, error, results, previewSource } = await checkCode();
+    const { isCorrect, error, results, notes, previewSource } =
+      await checkCode();
     if (checkId !== checkIdRef.current) return;
     setIsChecking(false);
 
@@ -139,6 +142,7 @@ function App() {
       isCorrect,
       error,
       results,
+      notes,
       previewSource,
     });
     if (!isCorrect) {

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { checkSyntax, transformJsx } from './jsx';
 import { createModuleSystem } from './modules';
+import { styleNotes } from './style';
 import { createClock, createFetch, createStorage } from './fakes';
 import { createMount } from './mount';
 
@@ -175,6 +176,7 @@ export async function evaluate(code, tests, sourceChecks = [], options = {}) {
 
   return {
     error: null,
+    notes: styleNotes(code),
     ...renderPreview(code, options),
     results: [
       ...results,

@@ -15,6 +15,11 @@ function FeedbackPanel({ feedback }) {
               <span className="xp-pop"> +{feedback.xpGained} XP</span>
             )}
           </p>
+          {feedback.notes?.map(note => (
+            <p key={note} className="style-note">
+              <span aria-hidden="true">💡</span> Tips: {note}
+            </p>
+          ))}
           {feedback.error && (
             <pre className="feedback-error">{feedback.error}</pre>
           )}
