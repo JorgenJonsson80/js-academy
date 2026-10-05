@@ -3,21 +3,20 @@ import FeedbackPanel from './FeedbackPanel';
 import FileView from './FileView';
 import HintPanel from './HintPanel';
 import Preview from './Preview';
+import SolutionCompare from './SolutionCompare';
 
 // Text inom `backticks` i uppgiften visas som kod, så att det syns
 // vilka funktioner och variabler eleven ska skapa.
 function TaskText({ text }) {
-  return text
-    .split(/`([^`]+)`/)
-    .map((part, index) =>
-      index % 2 === 1 ? (
-        <code key={index} className="task-code">
-          {part}
-        </code>
-      ) : (
-        part
-      ),
-    );
+  return text.split(/`([^`]+)`/).map((part, index) =>
+    index % 2 === 1 ? (
+      <code key={index} className="task-code">
+        {part}
+      </code>
+    ) : (
+      part
+    ),
+  );
 }
 
 export default function LessonPanel({
@@ -104,6 +103,9 @@ export default function LessonPanel({
         </button>
       </div>
       <FeedbackPanel feedback={feedback} />
+      {feedback?.isCorrect && !showSolution && (
+        <SolutionCompare code={code} solution={lesson.solution} />
+      )}
       <HintPanel
         hints={lesson.hints}
         failedAttempts={failedAttempts}

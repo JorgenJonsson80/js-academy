@@ -479,6 +479,25 @@
   white-space: pre-wrap;
 }
 
+.solution-compare {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--success);
+  border-radius: 10px;
+  background: var(--surface-sunken);
+}
+
+.solution-compare figcaption {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.solution-compare pre {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+}
+
 .style-note {
   padding: 10px 12px;
   border-left: 3px solid #38bdf8;
