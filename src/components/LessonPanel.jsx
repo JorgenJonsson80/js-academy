@@ -4,6 +4,22 @@ import FileView from './FileView';
 import HintPanel from './HintPanel';
 import Preview from './Preview';
 
+// Text inom `backticks` i uppgiften visas som kod, så att det syns
+// vilka funktioner och variabler eleven ska skapa.
+function TaskText({ text }) {
+  return text
+    .split(/`([^`]+)`/)
+    .map((part, index) =>
+      index % 2 === 1 ? (
+        <code key={index} className="task-code">
+          {part}
+        </code>
+      ) : (
+        part
+      ),
+    );
+}
+
 export default function LessonPanel({
   lesson,
 
@@ -45,7 +61,9 @@ export default function LessonPanel({
         {lesson.title}
       </h2>
       <p className="lesson-description">{lesson.description}</p>
-      <p className="lesson-task">{lesson.task}</p>
+      <p className="lesson-task">
+        <TaskText text={lesson.task} />
+      </p>
       {docs?.length > 0 && (
         <details className="lesson-docs">
           <summary>📚 Läs mer i dokumentationen</summary>

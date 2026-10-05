@@ -89,7 +89,7 @@ console.log('Ålder:', age);`,
     track: 'js-basics',
     description:
       ' Med const skapar du en variabel som inte kan tilldelas ett nytt värde.',
-    task: 'Uppgift: Skapa en variabel som heter language med värdet "JavaScript".',
+    task: 'Uppgift: Skapa en variabel som heter `language` med värdet "JavaScript".',
     starterCode: '// Skriv din kod här',
     solution: 'const language = "JavaScript";',
     hints: [
@@ -113,7 +113,7 @@ console.log('Ålder:', age);`,
     track: 'js-basics',
     isBoss: false,
     description: 'Tal skrivs utan citattecken.',
-    task: 'Uppgift: Skapa en konstant som heter age med värdet 25.',
+    task: 'Uppgift: Skapa en konstant som heter `age` med värdet 25.',
     starterCode: '// Skriv din kod här',
     solution: 'const age = 25;',
     hints: [
@@ -134,7 +134,7 @@ console.log('Ålder:', age);`,
     isBoss: false,
     description:
       'Med let kan en variabel tilldelas ett nytt värde efter att den skapats.',
-    task: 'Uppgift: Skapa score med let och startvärdet 0. Tilldela sedan score värdet 10.',
+    task: 'Uppgift: Skapa `score` med let och startvärdet 0. Tilldela sedan score värdet 10.',
     starterCode: '// Skriv din kod här',
     solution: `let score = 0;
     score = 10;`,
@@ -162,7 +162,7 @@ console.log('Ålder:', age);`,
     isBoss: false,
     description:
       'Du kan använda variabelns nuvarande värde för att beräkna dess nästa värde.',
-    task: 'Skapa score med let och värdet 10. Öka sedan värdet med 5 genom att skriva score = score + 5.',
+    task: 'Skapa `score` med let och värdet 10. Öka sedan värdet med 5 genom att skriva score = score + 5.',
     starterCode: '// Skriv din kod här',
     solution: `let score = 10;
     score = score + 5;`,
@@ -193,7 +193,7 @@ console.log('Ålder:', age);`,
     track: 'js-basics',
     isBoss: false,
     description: 'En if-sats kör sitt kodblock bara när villkoret är sant.',
-    task: 'Skapa score med let och värdet 10. Om score >= 10 ska du öka värdet med score = score + 5.',
+    task: 'Skapa `score` med let och värdet 10. Om score >= 10 ska du öka värdet med score = score + 5.',
     starterCode: '// Skriv din kod här',
     solution: `let score = 10;
 
@@ -224,7 +224,7 @@ if (score >= 10) {
     isBoss: false,
     description:
       'Ett if/else-statement väljer ett av två kodblock beroende på om villkoret är sant eller falskt.',
-    task: 'Skapa points med let och värdet 4. Om points >= 5 ska du tilldela points värdet points + 10, annars points + 2. Använd if och else.',
+    task: 'Skapa `points` med let och värdet 4. Om points >= 5 ska du tilldela points värdet points + 10, annars points + 2. Använd if och else.',
     starterCode: '// Skriv din kod här',
     solution: `let points = 4;
 
@@ -259,7 +259,7 @@ if (points >= 5) {
     isBoss: false,
     description:
       'En for-loop upprepar ett kodblock så länge dess villkor är sant.',
-    task: 'Skapa total med let och värdet 0. Använd en for-loop med let i = 0, villkoret i < 3 och ökningen i++. Lägg till 2 i total varje varv med total = total + 2.',
+    task: 'Skapa `total` med let och värdet 0. Använd en for-loop med let i = 0, villkoret i < 3 och ökningen i++. Lägg till 2 i total varje varv med total = total + 2.',
     starterCode: '// Skriv din kod här',
     solution: `let total = 0;
 
@@ -284,7 +284,7 @@ for (let i = 0; i < 3; i++) {
     isBoss: false,
     description:
       'En variabel utanför loopen behåller sitt värde mellan varven. Därför kan den samla en summa.',
-    task: 'Skapa total med let och värdet 0. Använd en for-loop med let i = 1, villkoret i <= 4 och ökningen i++. Lägg till i i total varje varv med total = total + i.',
+    task: 'Skapa `total` med let och värdet 0. Använd en for-loop med let i = 1, villkoret i <= 4 och ökningen i++. Lägg till i i total varje varv med total = total + i.',
     starterCode: '// Skriv din kod här',
     solution: `let total = 0;
 
@@ -311,7 +311,7 @@ for (let i = 1; i <= 4; i++) {
     isBoss: false,
     description:
       'En boolean har värdet true eller false och kan beskriva om något är på eller av.',
-    task: 'Uppgift: Skapa konstanten isReady med det booleska värdet true.',
+    task: 'Uppgift: Skapa konstanten `isReady` med det booleska värdet true.',
     starterCode: '// Skriv din kod här',
     solution: 'const isReady = true;',
     hints: [
@@ -336,7 +336,7 @@ for (let i = 1; i <= 4; i++) {
     isBoss: false,
     description:
       'Operatorn >= kontrollerar om vänstra värdet är större än eller lika med det högra. Resultatet är en boolean.',
-    task: 'Uppgift: Skapa konstanten isAdult och tilldela den resultatet av jämförelsen 20 >= 18.',
+    task: 'Uppgift: Skapa konstanten `isAdult` och tilldela den resultatet av jämförelsen 20 >= 18.',
     starterCode: '// Skriv din kod här',
     solution: 'const isAdult = 20 >= 18;',
     hints: [
@@ -363,7 +363,7 @@ for (let i = 1; i <= 4; i++) {
     track: 'arrays',
     isBoss: false,
     description: 'En array samlar flera värden i en ordnad lista.',
-    task: 'Uppgift: Skapa en konstant som heter numbers med arrayen [1, 2, 3].',
+    task: 'Uppgift: Skapa en konstant som heter `numbers` med arrayen [1, 2, 3].',
     starterCode: '// Skriv din kod här',
     solution: 'const numbers = [1, 2, 3];',
     hints: [
@@ -387,7 +387,7 @@ for (let i = 1; i <= 4; i++) {
     track: 'arrays',
     isBoss: false,
     description: 'Egenskapen length anger hur många värden en array innehåller',
-    task: 'Uppgift: Skapa konstanten count och tilldela den längden av [10, 20, 30] med .length.',
+    task: 'Uppgift: Skapa konstanten `count` och tilldela den längden av [10, 20, 30] med .length.',
     starterCode: '// Skriv din kod här',
     solution: 'const count = [10, 20, 30].length;',
     hints: [
@@ -407,7 +407,7 @@ for (let i = 1; i <= 4; i++) {
     track: 'arrays',
     isBoss: false,
     description: 'Arrayens positioner kallas index. Första värdet har index 0.',
-    task: 'Uppgift: Skapa konstanten first och hämta första värdet ur [10, 20, 30] med indexering.',
+    task: 'Uppgift: Skapa konstanten `first` och hämta första värdet ur [10, 20, 30] med indexering.',
     starterCode: '// Skriv din kod här',
     solution: 'const first = [10, 20, 30][0];',
     hints: [
@@ -463,9 +463,9 @@ fruits.push('päron');`,
     track: 'arrays',
     isBoss: true,
     description: 'Kombinera det du lärt dig om arrayer, längd och index.',
-    task: `Uppgift: Skapa konstanten numbers med [10, 20, 30].
-  Skapa count med numbers.length.
-  Skapa first med numbers[0]
+    task: `Uppgift: Skapa konstanten \`numbers\` med [10, 20, 30].
+  Skapa \`count\` med numbers.length.
+  Skapa \`first\` med numbers[0]
   Använd const i alla tre deklarationer.`,
     starterCode: '// Skriv din kod här',
     solution: `const numbers = [10, 20, 30];
@@ -503,7 +503,7 @@ fruits.push('päron');`,
     isBoss: false,
     description:
       'Ett objekt samlar värden under namn, så kallade egenskaper. Det skrivs inuti { } med namn: värde, separerade med kommatecken.',
-    task: 'Uppgift: Skapa konstanten user som ett objekt med egenskapen name som har värdet "Ada" och egenskapen age som har värdet 36.',
+    task: 'Uppgift: Skapa konstanten `user` som ett objekt med egenskapen name som har värdet "Ada" och egenskapen age som har värdet 36.',
     starterCode: '// Skriv din kod här',
     solution: `const user = { name: 'Ada', age: 36 };`,
     hints: [
@@ -530,7 +530,7 @@ fruits.push('päron');`,
     isBoss: false,
     description:
       'Med punktnotation, objekt.egenskap, läser du värdet av en egenskap.',
-    task: 'Uppgift: Skapa konstanten userName och hämta värdet av name ur user med punktnotation.',
+    task: 'Uppgift: Skapa konstanten `userName` och hämta värdet av name ur user med punktnotation.',
     starterCode: `const user = { name: 'Ada', age: 36 };
 
 `,
@@ -563,7 +563,7 @@ const userName = user.name;`,
     isBoss: false,
     description:
       'I React får du ofta data som en array av objekt, till exempel en lista med användare. Kombinera index och punktnotation för att nå ett värde.',
-    task: 'Uppgift: Skapa konstanten secondName och hämta name från andra användaren i users.',
+    task: 'Uppgift: Skapa konstanten `secondName` och hämta name från andra användaren i users.',
     starterCode: `const users = [
   { name: 'Ada', age: 36 },
   { name: 'Linus', age: 28 },
@@ -601,11 +601,11 @@ const secondName = users[1].name;`,
     track: 'arrays',
     isBoss: true,
     description: 'Kombinera arrayer, objekt, index och egenskaper.',
-    task: `Uppgift: Skapa konstanten users med två objekt:
+    task: `Uppgift: Skapa konstanten \`users\` med två objekt:
   { name: "Ada", age: 36 } och { name: "Linus", age: 28 }.
-  Skapa count med users.length.
-  Skapa firstName med name från första användaren.
-  Skapa secondAge med age från andra användaren.
+  Skapa \`count\` med users.length.
+  Skapa \`firstName\` med name från första användaren.
+  Skapa \`secondAge\` med age från andra användaren.
   Använd const i alla fyra deklarationer.`,
     starterCode: '// Skriv din kod här',
     solution: `const users = [
@@ -671,7 +671,7 @@ const secondAge = users[1].age;`,
     isBoss: false,
     description:
       'En parameter tar emot ett värde. Med return skickar funktionen tillbaka ett resultat.',
-    task: 'Skriv funktionen addBonus med parametern points. Använd function och returnera points + 5. Du ska bara definiera funktionen, inte anropa den.',
+    task: 'Skriv funktionen `addBonus` med parametern points. Använd function och returnera points + 5. Du ska bara definiera funktionen, inte anropa den.',
     starterCode: '// Skriv din kod här',
     solution: `function addBonus(points) {
     return points + 5;
@@ -713,7 +713,7 @@ const secondAge = users[1].age;`,
     isBoss: false,
     description:
       'När du anropar en funktion skickar du in ett argument. Returvärdet kan sparas i en variabel.',
-    task: 'Behåll funktionen addBonus. Anropa den med argumentet 10 och spara returvärdet i konstanten result.',
+    task: 'Behåll funktionen `addBonus`. Anropa den med argumentet 10 och spara returvärdet i konstanten `result`.',
     starterCode: `function addBonus(points) {
   return points + 5;
 }
@@ -751,7 +751,7 @@ const secondAge = users[1].age;`,
     isBoss: false,
     description:
       'En funktion kan ta emot flera parametrar. Argumenten kopplas till dem i samma ordning som de skickas in.',
-    task: 'Skriv funktionen multiply som tar emot två tal och returnerar produkten av dem. Anropa sedan funktionen med 3 och 4 och spara returvärdet i konstanten result.',
+    task: 'Skriv funktionen `multiply` som tar emot två tal och returnerar produkten av dem. Anropa sedan funktionen med 3 och 4 och spara returvärdet i konstanten `result`.',
     starterCode: '// Skriv din kod här',
     solution: `function multiply(a, b) {
   return a * b;
@@ -790,7 +790,7 @@ const result = multiply(3, 4);`,
     isBoss: false,
     description:
       'Return avslutar funktionsanropet. Därför kan du returnera ett värde inuti if och ett annat efter blocket.',
-    task: 'Skriv funktionen getDiscount med parametern price. Om price >= 100 ska den returnera 20. Efter if-blocket ska den returnera 0. Använd inte else.',
+    task: 'Skriv funktionen `getDiscount` med parametern price. Om price >= 100 ska den returnera 20. Efter if-blocket ska den returnera 0. Använd inte else.',
     starterCode: '// Skriv din kod här',
     solution: `function getDiscount(price){
     if(price >= 100){
@@ -839,7 +839,7 @@ const result = multiply(3, 4);`,
     isBoss: false,
     description:
       'En arrow function med ett uttryck utan klamrar returnerar uttryckets värde automatiskt.',
-    task: 'Skapa konstanten multiply som en arrow function med parametrarna a och b inom parenteser. Returnera a * b utan klamrar eller return. Du ska inte anropa funktionen.',
+    task: 'Skapa konstanten `multiply` som en arrow function med parametrarna a och b inom parenteser. Returnera a * b utan klamrar eller return. Du ska inte anropa funktionen.',
     starterCode: '// Skriv din kod här',
     solution: 'const multiply = (a, b) => a * b;',
     hints: [
@@ -877,7 +877,7 @@ const result = multiply(3, 4);`,
     isBoss: false,
     description:
       'console.log visar ett värde i konsolen, men funktionen ger inte tillbaka något. Utan return blir resultatet av ett anrop undefined. Vill du använda värdet efteråt måste funktionen returnera det.',
-    task: 'Uppgift: double skriver ut svaret i stället för att returnera det, så result blir undefined. Rätta double så att result blir 8.',
+    task: 'Uppgift: `double` skriver ut svaret i stället för att returnera det, så result blir undefined. Rätta `double` så att result blir 8.',
     starterCode: `function double(number) {
   console.log(number * 2);
 }
@@ -900,6 +900,7 @@ const result = double(4);`,
         code: 'double(10)',
         expected: 20,
       },
+      { description: 'double(0) returnerar 0', code: 'double(0)', expected: 0 },
     ],
   },
   {
@@ -910,7 +911,7 @@ const result = double(4);`,
     isBoss: false,
     description:
       'Skickas inget argument blir parametern undefined. Med ett standardvärde, function greet(name = "du"), får den ett värde ändå. Samma sak används för props i React.',
-    task: 'Uppgift: Skriv funktionen greet med parametern name som har standardvärdet "du". Den returnerar "Hej " + name + "!".',
+    task: 'Uppgift: Skriv funktionen `greet` med parametern name som har standardvärdet "du". Den returnerar "Hej " + name + "!".',
     starterCode: '// Skriv din kod här',
     solution: `function greet(name = 'du') {
   return 'Hej ' + name + '!';
@@ -931,6 +932,11 @@ const result = double(4);`,
         code: 'greet()',
         expected: 'Hej du!',
       },
+      {
+        description: 'greet(\'Linus\') returnerar "Hej Linus!"',
+        code: "greet('Linus')",
+        expected: 'Hej Linus!',
+      },
     ],
     sourceChecks: [
       {
@@ -947,7 +953,7 @@ const result = double(4);`,
     isBoss: false,
     description:
       'Små funktioner som gör en sak var är lättare att förstå och testa. Sedan kan större funktioner bygga på dem. Precis så byggs React-appar av små komponenter.',
-    task: 'Uppgift: Skriv funktionen square(n) som returnerar n * n. Skriv sedan sumOfSquares(a, b) som returnerar square(a) + square(b). Använd square inuti sumOfSquares.',
+    task: 'Uppgift: Skriv funktionen `square(n)` som returnerar n * n. Skriv sedan `sumOfSquares(a, b)` som returnerar square(a) + square(b). Använd square inuti sumOfSquares.',
     starterCode: '// Skriv din kod här',
     solution: `function square(n) {
   return n * n;
@@ -977,6 +983,16 @@ function sumOfSquares(a, b) {
         code: 'sumOfSquares(1, 2)',
         expected: 5,
       },
+      {
+        description: 'square(-3) returnerar 9',
+        code: 'square(-3)',
+        expected: 9,
+      },
+      {
+        description: 'sumOfSquares(0, 5) returnerar 25',
+        code: 'sumOfSquares(0, 5)',
+        expected: 25,
+      },
     ],
     sourceChecks: [
       {
@@ -993,7 +1009,7 @@ function sumOfSquares(a, b) {
     isBoss: false,
     description:
       'Behöver en arrow function flera rader använder du klamrar. Då måste du skriva return själv, precis som i en vanlig funktion. Utan return blir resultatet undefined.',
-    task: 'Uppgift: Skapa arrow functionen getGrade med parametern points. Den returnerar "A" om points är minst 90, "B" om points är minst 50 och annars "C". Använd klamrar och if.',
+    task: 'Uppgift: Skapa arrow functionen `getGrade` med parametern points. Den returnerar "A" om points är minst 90, "B" om points är minst 50 och annars "C". Använd klamrar och if.',
     starterCode: '// Skriv din kod här',
     solution: `const getGrade = points => {
   if (points >= 90) return 'A';
@@ -1026,6 +1042,16 @@ function sumOfSquares(a, b) {
         code: 'getGrade(20)',
         expected: 'C',
       },
+      {
+        description: 'getGrade(50) returnerar "B"',
+        code: 'getGrade(50)',
+        expected: 'B',
+      },
+      {
+        description: 'getGrade(49) returnerar "C"',
+        code: 'getGrade(49)',
+        expected: 'C',
+      },
     ],
     sourceChecks: [
       {
@@ -1042,7 +1068,7 @@ function sumOfSquares(a, b) {
     isBoss: false,
     description:
       'En funktion är ett värde, precis som ett tal. Den kan sparas i en variabel och skickas in i en annan funktion, som sedan anropar den. En sådan funktion kallas callback. Det är så map, filter och onClick i React fungerar.',
-    task: 'Uppgift: Skapa arrow functionen addThree som returnerar talet plus 3. Anropa sedan applyTwice med addThree och 10, och spara svaret i result.',
+    task: 'Uppgift: Skapa arrow functionen `addThree` som returnerar talet plus 3. Anropa sedan applyTwice med addThree och 10, och spara svaret i `result`.',
     starterCode: `function applyTwice(fn, value) {
   return fn(fn(value));
 }
@@ -1066,6 +1092,11 @@ const result = applyTwice(addThree, 10);`,
         expected: 4,
       },
       { description: 'result är 16', code: 'result', expected: 16 },
+      {
+        description: 'addThree(-3) returnerar 0',
+        code: 'addThree(-3)',
+        expected: 0,
+      },
     ],
     sourceChecks: [
       {
@@ -1083,13 +1114,13 @@ const result = applyTwice(addThree, 10);`,
     description:
       'Bygg en liten kassaapparat av funktioner som bygger på varandra: parametrar, standardvärden, return, villkor och arrow functions.',
     task: `Uppgift: Skriv tre funktioner och ett anrop.
-  lineTotal(price, quantity): returnerar price * quantity.
-    quantity har standardvärdet 1.
-  applyDiscount: en arrow function med (total, percent)
-    som returnerar total minus percent procent av total.
-  checkout(price, quantity, isMember): räknar ut summan med lineTotal.
-    Medlemmar får 10 % rabatt via applyDiscount, andra betalar fullt pris.
-  Spara checkout(200, 3, true) i konstanten receipt.`,
+  1. \`lineTotal(price, quantity)\` returnerar price * quantity.
+     quantity har standardvärdet 1.
+  2. \`applyDiscount(total, percent)\` är en arrow function
+     som returnerar total minus percent procent av total.
+  3. \`checkout(price, quantity, isMember)\` räknar ut summan med lineTotal.
+     Medlemmar får 10 % rabatt via applyDiscount, andra betalar fullt pris.
+  Spara checkout(200, 3, true) i konstanten \`receipt\`.`,
     starterCode: '// Skriv din kod här',
     solution: `function lineTotal(price, quantity = 1) {
   return price * quantity;
@@ -1117,14 +1148,39 @@ const receipt = checkout(200, 3, true);`,
         expected: 150,
       },
       {
+        description: 'lineTotal(7, 0) returnerar 0',
+        code: 'lineTotal(7, 0)',
+        expected: 0,
+      },
+      {
         description: 'applyDiscount(200, 25) returnerar 150',
         code: 'applyDiscount(200, 25)',
         expected: 150,
       },
       {
+        description: 'applyDiscount(80, 50) returnerar 40',
+        code: 'applyDiscount(80, 50)',
+        expected: 40,
+      },
+      {
+        description: 'applyDiscount(90, 0) returnerar 90',
+        code: 'applyDiscount(90, 0)',
+        expected: 90,
+      },
+      {
         description: 'checkout(100, 2, false) returnerar 200',
         code: 'checkout(100, 2, false)',
         expected: 200,
+      },
+      {
+        description: 'checkout(50, 4, true) returnerar 180',
+        code: 'checkout(50, 4, true)',
+        expected: 180,
+      },
+      {
+        description: 'checkout(30, 1, true) returnerar 27',
+        code: 'checkout(30, 1, true)',
+        expected: 27,
       },
       {
         description: 'checkout(200, 3, true) returnerar 540',
@@ -1157,7 +1213,7 @@ const receipt = checkout(200, 3, true);`,
     isBoss: false,
     description:
       'En sträng är text. Strängar har egna funktioner, metoder, som anropas med en punkt: name.toUpperCase() ger texten i versaler. Strängen själv ändras aldrig, du får en ny. length är en egenskap och har inga parenteser: name.length ger antalet tecken.',
-    task: 'Uppgift: Skapa shout som är name i versaler med toUpperCase, och letters som är antalet tecken i name.',
+    task: 'Uppgift: Skapa `shout` som är name i versaler med toUpperCase, och `letters` som är antalet tecken i name.',
     starterCode: `const name = 'Ada Lovelace';
 
 `,
@@ -1202,7 +1258,7 @@ const letters = name.length;`,
     isBoss: false,
     description:
       'text.includes("React") är true om texten innehåller "React". Den skiljer på stora och små bokstäver. Gör därför om båda till gemener med toLowerCase innan du jämför. Det är så sökfält fungerar.',
-    task: 'Uppgift: Skriv funktionen matches(name, query) som returnerar true om name innehåller query, oavsett stora eller små bokstäver.',
+    task: 'Uppgift: Skriv funktionen `matches(name, query)` som returnerar true om name innehåller query, oavsett stora eller små bokstäver.',
     starterCode: '// Skriv din kod här',
     solution: `function matches(name, query) {
   return name.toLowerCase().includes(query.toLowerCase());
@@ -1228,6 +1284,16 @@ const letters = name.length;`,
         code: "matches('Ada Lovelace', 'xyz')",
         expected: false,
       },
+      {
+        description: "matches('Grace Hopper', 'hop') returnerar true",
+        code: "matches('Grace Hopper', 'hop')",
+        expected: true,
+      },
+      {
+        description: "matches('Linus', 'Ada') returnerar false",
+        code: "matches('Linus', 'Ada')",
+        expected: false,
+      },
     ],
     sourceChecks: [
       { description: 'Koden använder includes', pattern: /\.\s*includes\s*\(/ },
@@ -1241,7 +1307,7 @@ const letters = name.length;`,
     isBoss: false,
     description:
       'Användare skriver ofta mellanslag av misstag. text.trim() tar bort mellanslag i början och slutet. En text med bara mellanslag blir då tom, så du kan se att inget riktigt skrivits.',
-    task: 'Uppgift: Skriv funktionen isBlank(text) som returnerar true om text är tom eller bara innehåller mellanslag.',
+    task: 'Uppgift: Skriv funktionen `isBlank(text)` som returnerar true om text är tom eller bara innehåller mellanslag.',
     starterCode: '// Skriv din kod här',
     solution: `function isBlank(text) {
   return text.trim() === '';
@@ -1267,6 +1333,11 @@ const letters = name.length;`,
         code: "isBlank('  Ada ')",
         expected: false,
       },
+      {
+        description: "isBlank('a') returnerar false",
+        code: "isBlank('a')",
+        expected: false,
+      },
     ],
     sourceChecks: [
       { description: 'Koden använder trim', pattern: /\.\s*trim\s*\(\s*\)/ },
@@ -1280,7 +1351,7 @@ const letters = name.length;`,
     isBoss: false,
     description:
       'text.split(" ") delar upp en sträng i en array vid varje mellanslag. array.join("-") gör tvärtom och sätter ihop en array till en sträng med "-" emellan.',
-    task: 'Uppgift: Skriv funktionen toSlug(title) som gör om titeln till gemener och byter varje mellanslag mot ett bindestreck med split och join.',
+    task: 'Uppgift: Skriv funktionen `toSlug(title)` som gör om titeln till gemener och byter varje mellanslag mot ett bindestreck med split och join.',
     starterCode: '// Skriv din kod här',
     solution: `function toSlug(title) {
   return title.toLowerCase().split(' ').join('-');
@@ -1302,6 +1373,11 @@ const letters = name.length;`,
         code: "toSlug('Hej')",
         expected: 'hej',
       },
+      {
+        description: 'toSlug(\'React Är Kul\') returnerar "react-är-kul"',
+        code: "toSlug('React Är Kul')",
+        expected: 'react-är-kul',
+      },
     ],
     sourceChecks: [
       { description: 'Koden använder split', pattern: /\.\s*split\s*\(/ },
@@ -1316,7 +1392,7 @@ const letters = name.length;`,
     isBoss: false,
     description:
       'JavaScript har två sätt att jämföra. == gör om värdena innan det jämför, så "5" == 5 är true. === jämför både värde och typ, så "5" === 5 är false. Använd alltid === och !==, då slipper du överraskningar.',
-    task: 'Uppgift: isFive använder == och säger att texten "5" är talet 5. Rätta den så att bara talet 5 räknas.',
+    task: 'Uppgift: `isFive` använder == och säger att texten "5" är talet 5. Rätta den så att bara talet 5 räknas.',
     starterCode: `function isFive(value) {
   return value == 5;
 }`,
@@ -1333,6 +1409,11 @@ const letters = name.length;`,
       {
         description: 'isFive("5") är false',
         code: "isFive('5')",
+        expected: false,
+      },
+      {
+        description: 'isFive(4) returnerar false',
+        code: 'isFive(4)',
         expected: false,
       },
     ],
@@ -1352,7 +1433,7 @@ const letters = name.length;`,
     isBoss: false,
     description:
       'I ett villkor räknas varje värde som sant eller falskt. Exakt sex värden är falsy: false, 0, "", null, undefined och NaN. Allt annat är truthy, även "0", [] och {}. Därför visar {count && …} en nolla i React: 0 är falsy men renderas ändå.',
-    task: 'Uppgift: Skapa arrayen falsyValues med alla sex falsy värden.',
+    task: 'Uppgift: Skapa arrayen `falsyValues` med alla sex falsy värden.',
     starterCode: '// Skriv din kod här',
     solution: "const falsyValues = [false, 0, '', null, undefined, NaN];",
     hints: [
@@ -1386,7 +1467,7 @@ const letters = name.length;`,
     isBoss: false,
     description:
       'value ?? "reserv" ger reservvärdet bara om value är null eller undefined. Den äldre varianten value || "reserv" byter även ut 0 och "", och det är ofta fel. En volym på 0 är ett riktigt värde.',
-    task: 'Uppgift: Skriv funktionen getVolume(settings) som returnerar settings.volume, eller 50 om volume saknas. En volym på 0 ska behållas.',
+    task: 'Uppgift: Skriv funktionen `getVolume(settings)` som returnerar settings.volume, eller 50 om volume saknas. En volym på 0 ska behållas.',
     starterCode: '// Skriv din kod här',
     solution: `function getVolume(settings) {
   return settings.volume ?? 50;
@@ -1412,6 +1493,11 @@ const letters = name.length;`,
         code: 'getVolume({ volume: 0 })',
         expected: 0,
       },
+      {
+        description: 'getVolume({ volume: 15 }) returnerar 15',
+        code: 'getVolume({ volume: 15 })',
+        expected: 15,
+      },
     ],
     sourceChecks: [{ description: 'Koden använder ??', pattern: /\?\?/ }],
   },
@@ -1423,7 +1509,7 @@ const letters = name.length;`,
     isBoss: false,
     description:
       'user.address.city kraschar om user eller address saknas. Med optional chaining, user?.address?.city, blir svaret undefined i stället. Kombinera med ?? för ett reservvärde. Det är vanligt i React, där data ofta inte har hunnit laddas än.',
-    task: 'Uppgift: Skriv funktionen getCity(user) som returnerar user.address.city, eller "Okänd stad" om user, address eller city saknas.',
+    task: 'Uppgift: Skriv funktionen `getCity(user)` som returnerar user.address.city, eller "Okänd stad" om user, address eller city saknas.',
     starterCode: '// Skriv din kod här',
     solution: `function getCity(user) {
   return user?.address?.city ?? 'Okänd stad';
@@ -1449,6 +1535,17 @@ const letters = name.length;`,
         code: 'getCity(null)',
         expected: 'Okänd stad',
       },
+      {
+        description: 'getCity({ address: {} }) returnerar "Okänd stad"',
+        code: 'getCity({ address: {} })',
+        expected: 'Okänd stad',
+      },
+      {
+        description:
+          'getCity({ address: { city: \'Malmö\' } }) returnerar "Malmö"',
+        code: "getCity({ address: { city: 'Malmö' } })",
+        expected: 'Malmö',
+      },
     ],
     sourceChecks: [
       { description: 'Koden använder ?.', pattern: /\?\.\s*address/ },
@@ -1467,7 +1564,7 @@ const letters = name.length;`,
     isBoss: true,
     description:
       'Bygg logiken bakom en sökruta: städa texten, jämför utan att bry dig om stora och små bokstäver, och hantera data som saknas.',
-    task: `Uppgift: Skriv funktionen searchUsers(users, query).
+    task: `Uppgift: Skriv funktionen \`searchUsers(users, query)\`.
   Varje användare visas med sitt smeknamn (nickname),
     eller med name om nickname saknas. Använd ??.
   Ta bort mellanslag runt query med trim.
@@ -1535,7 +1632,7 @@ function searchUsers(users, query) {
     isBoss: false,
     description:
       'map anropar en funktion för varje värde och returnerar en ny array med resultaten. Den ursprungliga arrayen ändras inte.',
-    task: 'Uppgift: Skapa konstanten doubled med numbers.map och en arrow function som returnerar varje tal gånger 2.',
+    task: 'Uppgift: Skapa konstanten `doubled` med numbers.map och en arrow function som returnerar varje tal gånger 2.',
     starterCode: `const numbers = [1, 2, 3];
 
 `,
@@ -1578,7 +1675,7 @@ const doubled = numbers.map(number => number * 2);`,
     isBoss: false,
     description:
       'Med map kan du göra om en array av objekt till en array av enskilda värden. I React är det så du gör om data till en lista.',
-    task: 'Uppgift: Skapa konstanten names med users.map som returnerar name för varje användare.',
+    task: 'Uppgift: Skapa konstanten `names` med users.map som returnerar name för varje användare.',
     starterCode: `const users = [
   { name: 'Ada', age: 36 },
   { name: 'Linus', age: 28 },
@@ -1624,7 +1721,7 @@ const names = users.map(user => user.name);`,
     isBoss: false,
     description:
       'filter returnerar en ny array med de värden där funktionen returnerar true.',
-    task: 'Uppgift: Skapa konstanten bigNumbers med numbers.filter och behåll bara talen som är större än 10.',
+    task: 'Uppgift: Skapa konstanten `bigNumbers` med numbers.filter och behåll bara talen som är större än 10.',
     starterCode: `const numbers = [5, 12, 8, 20, 3];
 
 `,
@@ -1662,7 +1759,7 @@ const bigNumbers = numbers.filter(number => number > 10);`,
     isBoss: false,
     description:
       'filter fungerar lika bra på objekt. Funktionen kan läsa en egenskap och avgöra om objektet ska vara med.',
-    task: 'Uppgift: Skapa konstanten doneTodos med todos.filter och behåll bara uppgifterna där done är true.',
+    task: 'Uppgift: Skapa konstanten `doneTodos` med todos.filter och behåll bara uppgifterna där done är true.',
     starterCode: `const todos = [
   { id: 1, text: 'Handla', done: true },
   { id: 2, text: 'Träna', done: false },
@@ -1713,7 +1810,7 @@ const doneTodos = todos.filter(todo => todo.done);`,
     isBoss: false,
     description:
       'find returnerar det första värdet där funktionen returnerar true. Hittas inget blir resultatet undefined.',
-    task: 'Uppgift: Skapa konstanten todo med todos.find och hämta uppgiften som har id 2.',
+    task: 'Uppgift: Skapa konstanten `todo` med todos.find och hämta uppgiften som har id 2.',
     starterCode: `const todos = [
   { id: 1, text: 'Handla', done: true },
   { id: 2, text: 'Träna', done: false },
@@ -1759,7 +1856,7 @@ const todo = todos.find(item => item.id === 2);`,
     isBoss: false,
     description:
       'reduce slår ihop en array till ett enda värde. Funktionen får det hittills samlade värdet och nästa värde i arrayen, och returnerar det nya samlade värdet. Det andra argumentet till reduce är startvärdet.',
-    task: 'Uppgift: Skapa konstanten total med numbers.reduce som summerar alla tal. Använd 0 som startvärde.',
+    task: 'Uppgift: Skapa konstanten `total` med numbers.reduce som summerar alla tal. Använd 0 som startvärde.',
     starterCode: `const numbers = [5, 10, 15];
 
 `,
@@ -1798,10 +1895,10 @@ const total = numbers.reduce((sum, number) => sum + number, 0);`,
     isBoss: true,
     description: 'Kombinera map, filter, find och reduce.',
     task: `Uppgift: Utgå från products.
-  Skapa inStock med filter: bara produkter där inStock är true.
-  Skapa inStockNames med map på inStock: bara namnen.
-  Skapa cap med find: produkten som heter "Keps".
-  Skapa totalPrice med reduce på inStock: summan av alla priser.
+  Skapa \`inStock\` med filter: bara produkter där inStock är true.
+  Skapa \`inStockNames\` med map på inStock: bara namnen.
+  Skapa \`cap\` med find: produkten som heter "Keps".
+  Skapa \`totalPrice\` med reduce på inStock: summan av alla priser.
   Använd inga loopar.`,
     starterCode: `const products = [
   { name: 'Keps', price: 199, inStock: true },
@@ -1879,7 +1976,7 @@ const totalPrice = inStock.reduce((sum, product) => sum + product.price, 0);`,
     isBoss: false,
     description:
       'En template literal skrivs med backticks ` ` i stället för citattecken. Inuti kan du stoppa in värden med ${ }. I React bygger du ofta text och klassnamn så.',
-    task: 'Uppgift: Skapa konstanten greeting med en template literal som ger texten "Hej Ada!". Använd variabeln name, inte texten Ada direkt.',
+    task: 'Uppgift: Skapa konstanten `greeting` med en template literal som ger texten "Hej Ada!". Använd variabeln name, inte texten Ada direkt.',
     starterCode: `const name = 'Ada';
 
 `,
@@ -1916,7 +2013,7 @@ const totalPrice = inStock.reduce((sum, product) => sum + product.price, 0);`,
     isBoss: false,
     description:
       'Med destructuring plockar du ut egenskaper ur ett objekt till egna variabler på en rad: const { name } = user; skapar variabeln name med värdet user.name.',
-    task: 'Uppgift: Plocka ut name och age ur user med destructuring på en rad.',
+    task: 'Uppgift: Plocka ut `name` och `age` ur user med destructuring på en rad.',
     starterCode: `const user = { name: 'Ada', age: 36 };
 
 `,
@@ -1947,7 +2044,7 @@ const { name, age } = user;`,
     isBoss: false,
     description:
       'Destructuring fungerar också på arrayer, men med [ ] och efter position i stället för namn. Det är så du tar emot värdena från useState i React: const [count, setCount] = useState(0);',
-    task: 'Uppgift: Plocka ut de två första värdena i scores till first och second med array-destructuring på en rad.',
+    task: 'Uppgift: Plocka ut de två första värdena i scores till `first` och `second` med array-destructuring på en rad.',
     starterCode: `const scores = [90, 75, 60];
 
 `,
@@ -1977,7 +2074,7 @@ const [first, second] = scores;`,
     isBoss: false,
     description:
       'Du kan plocka isär ett objekt direkt i parameterlistan. Så tar en React-komponent emot sina props: function Greeting({ name }) { ... }',
-    task: 'Uppgift: Skriv funktionen greet som tar emot ett objekt och plockar ut name direkt i parameterlistan. Den ska returnera "Hej " följt av namnet och "!".',
+    task: 'Uppgift: Skriv funktionen `greet` som tar emot ett objekt och plockar ut name direkt i parameterlistan. Den ska returnera "Hej " följt av namnet och "!".',
     starterCode: '// Skriv din kod här',
     solution: 'function greet({ name }) {\n  return `Hej ${name}!`;\n}',
     hints: [
@@ -1997,6 +2094,11 @@ const [first, second] = scores;`,
         code: 'greet({ name: "Linus", age: 28 })',
         expected: 'Hej Linus!',
       },
+      {
+        description: 'greet({ name: \'Grace\' }) returnerar "Hej Grace!"',
+        code: "greet({ name: 'Grace' })",
+        expected: 'Hej Grace!',
+      },
     ],
     sourceChecks: [
       {
@@ -2013,7 +2115,7 @@ const [first, second] = scores;`,
     isBoss: false,
     description:
       'Spread, ..., packar upp en array till sina värden. [...todos, "Ny"] skapar en ny array med allt från todos plus ett nytt värde. I React ändrar du aldrig state direkt, du skapar en ny array så här.',
-    task: 'Uppgift: Skapa konstanten newTodos med spread: alla värden från todos följt av "Plugga React". Använd inte push, todos ska vara oförändrad.',
+    task: 'Uppgift: Skapa konstanten `newTodos` med spread: alla värden från todos följt av "Plugga React". Använd inte push, todos ska vara oförändrad.',
     starterCode: `const todos = ['Handla', 'Träna'];
 
 `,
@@ -2056,7 +2158,7 @@ const newTodos = [...todos, 'Plugga React'];`,
     isBoss: false,
     description:
       'Spread fungerar också på objekt. { ...user, age: 37 } kopierar alla egenskaper från user och skriver sedan över age. Det som står sist vinner.',
-    task: 'Uppgift: Skapa konstanten olderUser med spread: en kopia av user där age är 37. user ska vara oförändrad.',
+    task: 'Uppgift: Skapa konstanten `olderUser` med spread: en kopia av user där age är 37. user ska vara oförändrad.',
     starterCode: `const user = { name: 'Ada', age: 36 };
 
 `,
@@ -2104,7 +2206,7 @@ const olderUser = { ...user, age: 37 };`,
     isBoss: false,
     description:
       'Rest ser ut som spread men gör tvärtom: den packar ihop. Står ... till vänster om = är det rest. const [first, ...others] = numbers; ger first det första värdet och others en array med resten.',
-    task: 'Uppgift: Plocka ut första värdet i numbers till first och samla resten i arrayen others. Använd rest på en rad.',
+    task: 'Uppgift: Plocka ut första värdet i numbers till `first` och samla resten i arrayen `others`. Använd rest på en rad.',
     starterCode: `const numbers = [1, 2, 3, 4];
 
 `,
@@ -2140,7 +2242,7 @@ const [first, ...others] = numbers;`,
     isBoss: false,
     description:
       'Rest fungerar också på objekt: const { id, ...details } = user; plockar ut id och samlar alla andra egenskaper i ett nytt objekt.',
-    task: 'Uppgift: Plocka ut id ur user och samla resten av egenskaperna i objektet details. Använd rest på en rad.',
+    task: 'Uppgift: Plocka ut `id` ur user och samla resten av egenskaperna i objektet `details`. Använd rest på en rad.',
     starterCode: `const user = { id: 1, name: 'Ada', age: 36 };
 
 `,
@@ -2179,7 +2281,7 @@ const { id, ...details } = user;`,
     isBoss: false,
     description:
       'Med rest i parameterlistan tar en funktion emot hur många argument som helst. function sum(...numbers) samlar alla argument i arrayen numbers.',
-    task: 'Uppgift: Skriv funktionen sum med rest-parametern ...numbers. Den ska returnera summan av alla argument. Använd reduce.',
+    task: 'Uppgift: Skriv funktionen `sum` med rest-parametern ...numbers. Den ska returnera summan av alla argument. Använd reduce.',
     starterCode: '// Skriv din kod här',
     solution: `function sum(...numbers) {
   return numbers.reduce((total, number) => total + number, 0);
@@ -2222,7 +2324,7 @@ const { id, ...details } = user;`,
     isBoss: false,
     description:
       'Villkorsoperatorn villkor ? a : b ger a om villkoret är sant och annars b. Den är ett uttryck, så den fungerar mitt i JSX där if inte gör det.',
-    task: 'Uppgift: Skapa arrow functionen getLabel med parametern isLoggedIn. Den ska returnera "Logga ut" om isLoggedIn är true och annars "Logga in". Använd ? : och inte if.',
+    task: 'Uppgift: Skapa arrow functionen `getLabel` med parametern isLoggedIn. Den ska returnera "Logga ut" om isLoggedIn är true och annars "Logga in". Använd ? : och inte if.',
     starterCode: '// Skriv din kod här',
     solution:
       "const getLabel = isLoggedIn => (isLoggedIn ? 'Logga ut' : 'Logga in');",
@@ -2242,6 +2344,11 @@ const { id, ...details } = user;`,
         code: 'getLabel(false)',
         expected: 'Logga in',
       },
+      {
+        description: 'getLabel returnerar text och inte true eller false',
+        code: 'typeof getLabel(true)',
+        expected: 'string',
+      },
     ],
     sourceChecks: [
       { description: 'Koden använder ? :', pattern: /\?[^:]+:/ },
@@ -2260,7 +2367,7 @@ const { id, ...details } = user;`,
     isBoss: false,
     description:
       'a && b ger a om a är falskt och annars b. I React används det för att visa något bara när ett villkor är sant: {count > 0 && <Badge />}.',
-    task: 'Uppgift: Skapa arrow functionen getBadge med parametern count. Returnera count > 0 && en template literal med texten "3 nya" (med count i stället för 3). Använd varken if eller ? :.',
+    task: 'Uppgift: Skapa arrow functionen `getBadge` med parametern count. Returnera count > 0 && en template literal med texten "3 nya" (med count i stället för 3). Använd varken if eller ? :.',
     starterCode: '// Skriv din kod här',
     solution: 'const getBadge = count => count > 0 && `${count} nya`;',
     hints: [
@@ -2282,6 +2389,16 @@ const { id, ...details } = user;`,
       {
         description: 'getBadge(0) returnerar false',
         code: 'getBadge(0)',
+        expected: false,
+      },
+      {
+        description: 'getBadge(1) returnerar "1 nya"',
+        code: 'getBadge(1)',
+        expected: '1 nya',
+      },
+      {
+        description: 'getBadge(-2) returnerar false',
+        code: 'getBadge(-2)',
         expected: false,
       },
     ],
@@ -2308,11 +2425,11 @@ const { id, ...details } = user;`,
     description:
       'Blanda destructuring, rest, spread och template literals. Avgör för varje ... om det packar ihop (rest) eller packar upp (spread).',
     task: `Uppgift: Utgå från user och todos.
-  Plocka ut id ur user och samla resten i profile.
-  Skapa updatedProfile: en kopia av profile där age är 37.
-  Skapa allTodos: alla todos följt av "Plugga React".
-  Plocka ut firstTodo och samla resten av allTodos i otherTodos.
-  Skapa message med en template literal: "Ada har 3 uppgifter".
+  Plocka ut \`id\` ur user och samla resten i \`profile\`.
+  Skapa \`updatedProfile\`: en kopia av profile där age är 37.
+  Skapa \`allTodos\`: alla todos följt av "Plugga React".
+  Plocka ut \`firstTodo\` och samla resten av allTodos i \`otherTodos\`.
+  Skapa \`message\` med en template literal: "Ada har 3 uppgifter".
   Använd updatedProfile.name och allTodos.length i message.
   user och todos ska vara oförändrade.`,
     starterCode: `const user = { id: 1, name: 'Ada', age: 36 };
@@ -2395,7 +2512,7 @@ const todos = ['Handla', 'Träna'];
     isBoss: false,
     description:
       'En variabel med en array eller ett objekt innehåller inte själva datan, utan en referens till den. const b = a; ger därför två namn på samma array, och b.push(3) ändrar även a. === jämför referenser, så [1] === [1] är false men b === a är true.',
-    task: 'Uppgift: Skapa copy som en kopia av original med spread och lägg till 3 i copy med push. original ska vara oförändrad.',
+    task: 'Uppgift: Skapa `copy` som en kopia av original med spread och lägg till 3 i copy med push. original ska vara oförändrad.',
     starterCode: `const original = [1, 2];
 
 `,
@@ -2436,7 +2553,7 @@ copy.push(3);`,
     isBoss: false,
     description:
       'React avgör om något ändrats genom att jämföra referenser med ===. Ändrar du en array med push är den fortfarande samma array, och React tror att ingenting hänt. Därför skapar man alltid en ny array eller ett nytt objekt i stället.',
-    task: 'Uppgift: Skriv funktionen addItem(list, item) som returnerar en ny array med item sist. list får inte ändras.',
+    task: 'Uppgift: Skriv funktionen `addItem(list, item)` som returnerar en ny array med item sist. list får inte ändras.',
     starterCode: '// Skriv din kod här',
     solution: `function addItem(list, item) {
   return [...list, item];
@@ -2462,6 +2579,11 @@ copy.push(3);`,
         code: '(() => { const list = [1]; return addItem(list, 2) !== list; })()',
         expected: true,
       },
+      {
+        description: "addItem([], 'a') returnerar ['a']",
+        code: "addItem([], 'a')",
+        expected: ['a'],
+      },
     ],
     sourceChecks: [
       {
@@ -2479,7 +2601,7 @@ copy.push(3);`,
     isBoss: false,
     description:
       'some är true om minst ett element klarar villkoret. every är true om alla gör det. includes kollar om ett värde finns i arrayen. Inget av dem ändrar arrayen.',
-    task: 'Uppgift: Skapa allDone (är alla todos klara?), anyDone (är minst en klar?) och hasShopping (finns "Handla" bland names?).',
+    task: 'Uppgift: Skapa `allDone` (är alla todos klara?), `anyDone` (är minst en klar?) och `hasShopping` (finns "Handla" bland names?).',
     starterCode: `const todos = [
   { text: 'Handla', done: true },
   { text: 'Träna', done: false },
@@ -2533,7 +2655,7 @@ const hasShopping = names.includes('Handla');`,
     isBoss: false,
     description:
       'sort ändrar den array den anropas på, vilket i React betyder att du ändrar state direkt. Sortera därför en kopia: [...scores].sort(…) eller scores.toSorted(…). sort behöver en jämförelsefunktion för tal: (a, b) => b - a sorterar från störst till minst.',
-    task: 'Uppgift: Skapa topScores som innehåller scores sorterade från högst till lägst. scores får inte ändras.',
+    task: 'Uppgift: Skapa `topScores` som innehåller scores sorterade från högst till lägst. scores får inte ändras.',
     starterCode: `const scores = [40, 95, 72, 18];
 
 `,
@@ -2572,7 +2694,7 @@ const topScores = [...scores].sort((a, b) => b - a);`,
     isBoss: false,
     description:
       'För att ändra ett element skapar du en ny array med map. Elementet som ska ändras byts mot en kopia med det nya värdet, alla andra behålls som de är: todo.id === id ? { ...todo, done: !todo.done } : todo.',
-    task: 'Uppgift: Skriv funktionen toggleTodo(todos, id) som returnerar en ny array där done är omvänd för todon med det id:t. Inget får ändras.',
+    task: 'Uppgift: Skriv funktionen `toggleTodo(todos, id)` som returnerar en ny array där done är omvänd för todon med det id:t. Inget får ändras.',
     starterCode: '// Skriv din kod här',
     solution: `function toggleTodo(todos, id) {
   return todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo));
@@ -2601,6 +2723,11 @@ const topScores = [...scores].sort((a, b) => b - a);`,
         code: '(() => { const todos = [{ id: 1, done: false }, { id: 2, done: false }]; return toggleTodo(todos, 2)[0] === todos[0]; })()',
         expected: true,
       },
+      {
+        description: 'toggleTodo kan även bocka av en klar todo',
+        code: 'toggleTodo([{ id: 1, done: true }], 1)',
+        expected: [{ id: 1, done: false }],
+      },
     ],
     sourceChecks: [
       { description: 'Koden använder map', pattern: /\.\s*map\s*\(/ },
@@ -2614,7 +2741,7 @@ const topScores = [...scores].sort((a, b) => b - a);`,
     isBoss: false,
     description:
       'splice tar bort element men ändrar arrayen. slice(start, slut) ger en kopia av en del av arrayen och ändrar ingenting. Två slice runt elementet och spread blir en ny array utan det.',
-    task: 'Uppgift: Skriv funktionen removeAt(list, index) som returnerar en ny array utan elementet på platsen index. Använd slice, inte splice.',
+    task: 'Uppgift: Skriv funktionen `removeAt(list, index)` som returnerar en ny array utan elementet på platsen index. Använd slice, inte splice.',
     starterCode: '// Skriv din kod här',
     solution: `function removeAt(list, index) {
   return [...list.slice(0, index), ...list.slice(index + 1)];
@@ -2640,6 +2767,11 @@ const topScores = [...scores].sort((a, b) => b - a);`,
         code: "(() => { const list = ['a', 'b']; removeAt(list, 0); return list; })()",
         expected: ['a', 'b'],
       },
+      {
+        description: "removeAt(['a', 'b', 'c'], 2) returnerar ['a', 'b']",
+        code: "removeAt(['a', 'b', 'c'], 2)",
+        expected: ['a', 'b'],
+      },
     ],
     sourceChecks: [
       { description: 'Koden använder slice', pattern: /\.\s*slice\s*\(/ },
@@ -2658,7 +2790,7 @@ const topScores = [...scores].sort((a, b) => b - a);`,
     isBoss: false,
     description:
       'Heter variabeln samma som egenskapen kan du skriva { name, age } i stället för { name: name, age: age }. Med hakparenteser blir nyckeln ett värde: { [field]: value }. Det används i React-formulär där ett fält uppdateras med sitt namn: { ...form, [event.target.name]: event.target.value }.',
-    task: 'Uppgift: Skapa user med kortform av name och age. Skriv sedan funktionen updateField(form, field, value) som returnerar en kopia av form där field har fått värdet value.',
+    task: 'Uppgift: Skapa `user` med kortform av name och age. Skriv sedan funktionen `updateField(form, field, value)` som returnerar en kopia av form där field har fått värdet value.',
     starterCode: `const name = 'Ada';
 const age = 36;
 
@@ -2692,6 +2824,11 @@ function updateField(form, field, value) {
         code: "(() => { const form = { email: '' }; updateField(form, 'email', 'x'); return form.email; })()",
         expected: '',
       },
+      {
+        description: "updateField({ name: 'Ada' }, 'age', 36) lägger till age",
+        code: "updateField({ name: 'Ada' }, 'age', 36)",
+        expected: { name: 'Ada', age: 36 },
+      },
     ],
     sourceChecks: [
       {
@@ -2709,7 +2846,7 @@ function updateField(form, field, value) {
     isBoss: false,
     description:
       'Object.keys(obj) ger en array med nycklarna och Object.values(obj) med värdena. Object.entries(obj) ger par: [["keps", 199], …]. Då kan du använda map på ett objekt, till exempel för att visa det som en lista i React.',
-    task: 'Uppgift: Skapa lines med Object.entries och map, så att varje rad blir "keps: 199 kr".',
+    task: 'Uppgift: Skapa `lines` med Object.entries och map, så att varje rad blir "keps: 199 kr".',
     starterCode: `const prices = { keps: 199, mössa: 149 };
 
 `,
@@ -2743,7 +2880,7 @@ const lines = Object.entries(prices).map(([item, price]) => \`\${item}: \${price
     isBoss: false,
     description:
       'En funktion minns variablerna som fanns där den skapades, även efteråt. Det kallas closure. Varje anrop av makeCounter skapar en ny count som bara den returnerade funktionen kommer åt. I React är det därför en effekt eller ett intervall kan se ett gammalt värde: funktionen minns värdet från när den skapades.',
-    task: 'Uppgift: Skriv funktionen makeCounter som skapar let count = 0 och returnerar en arrow function. Varje anrop av den ökar count med 1 och returnerar det nya värdet.',
+    task: 'Uppgift: Skriv funktionen `makeCounter` som skapar let count = 0 och returnerar en arrow function. Varje anrop av den ökar count med 1 och returnerar det nya värdet.',
     starterCode: '// Skriv din kod här',
     solution: `function makeCounter() {
   let count = 0;
@@ -2778,7 +2915,7 @@ const lines = Object.entries(prices).map(([item, price]) => \`\${item}: \${price
     isBoss: true,
     description:
       'Uppdatera nästlad data utan att ändra något, precis som när state i React innehåller objekt i arrayer i objekt.',
-    task: `Uppgift: Skriv funktionen moveCard(board, cardId, fromId, toId).
+    task: `Uppgift: Skriv funktionen \`moveCard(board, cardId, fromId, toId)\`.
   board har columns, och varje kolumn har id och cards.
   Returnera ett nytt board där kortet med cardId har flyttats
     från kolumnen fromId till slutet av kolumnen toId.
@@ -2860,7 +2997,7 @@ function moveCard(board, cardId, fromId, toId) {
     isBoss: false,
     description:
       "I React delas koden upp i många filer, så kallade moduler. Allt i en fil är privat tills du exporterar det. Skriver du export framför en funktion kan andra filer importera den med import { add } from './math.js'. Det kallas named export.",
-    task: 'Uppgift: app.js försöker importera add från din fil math.js. Exportera add så att app.js fungerar.',
+    task: 'Uppgift: app.js försöker importera `add` från din fil math.js. Exportera add så att app.js fungerar.',
     fileName: 'math.js',
     files: {
       'app.js': `import { add } from './math.js';
@@ -2899,7 +3036,7 @@ export const result = add(2, 3);`,
     isBoss: false,
     description:
       'En fil kan ha hur många named exports som helst. export fungerar framför const också, så både vanliga värden och arrow functions kan exporteras.',
-    task: 'Uppgift: Exportera konstanten PI med värdet 3.14 och arrow functionen double, som returnerar talet gånger 2. app.js importerar båda.',
+    task: 'Uppgift: Exportera konstanten `PI` med värdet 3.14 och arrow functionen `double`, som returnerar talet gånger 2. app.js importerar båda.',
     fileName: 'math.js',
     files: {
       'app.js': `import { PI, double } from './math.js';
@@ -2930,6 +3067,11 @@ export const double = number => number * 2;`,
         code: "__require('./app.js').result",
         expected: 6.28,
       },
+      {
+        description: 'double(-4) returnerar -8',
+        code: "__require('./math.js').double(-4)",
+        expected: -8,
+      },
     ],
   },
   {
@@ -2940,7 +3082,7 @@ export const double = number => number * 2;`,
     isBoss: false,
     description:
       "För att använda något från en annan fil importerar du det: import { add, multiply } from './math.js'. Namnen inom { } måste vara exakt samma som i exporten. ./ betyder att filen ligger i samma mapp.",
-    task: 'Uppgift: Importera add och multiply från ./math.js med en import. Skapa sedan total = add(2, 3) och product = multiply(4, 5).',
+    task: 'Uppgift: Importera add och multiply från ./math.js med en import. Skapa sedan `total` = add(2, 3) och `product` = multiply(4, 5).',
     fileName: 'app.js',
     files: {
       'math.js': `export function add(a, b) {
@@ -2986,7 +3128,7 @@ const product = multiply(4, 5);`,
     isBoss: false,
     description:
       "En fil kan också ha en default export, filens huvudsak. Den importeras utan { }: import greet from './greet.js'. React-komponenter brukar exporteras så: export default function App() { … }.",
-    task: 'Uppgift: Skriv funktionen greet med parametern name. Den ska returnera "Hej Ada!" (med name i stället för Ada). Gör greet till filens default export.',
+    task: 'Uppgift: Skriv funktionen `greet` med parametern name. Den ska returnera "Hej Ada!" (med name i stället för Ada). Gör greet till filens default export.',
     fileName: 'greet.js',
     files: {
       'app.js': `import greet from './greet.js';
@@ -3028,7 +3170,7 @@ export const message = greet('Ada');`,
     isBoss: false,
     description:
       "En default export har inget fast namn när den importeras. Du väljer namnet själv: import format from './formatPrice.js' fungerar lika bra som import formatPrice from ….",
-    task: 'Uppgift: Importera default exporten från ./formatPrice.js och döp den till format. Skapa sedan price = format(99).',
+    task: 'Uppgift: Importera default exporten från ./formatPrice.js och döp den till `format`. Skapa sedan `price` = format(99).',
     fileName: 'app.js',
     files: {
       'formatPrice.js': `export default function formatPrice(amount) {
@@ -3061,7 +3203,7 @@ const price = format(99);`,
     isBoss: false,
     description:
       "En fil kan ha både en default export och named exports. Då importerar du dem tillsammans, default först: import addTodo, { MAX_TODOS } from './todos.js'. Du kommer att se samma mönster i React: import React, { useState } from 'react'. Paket skrivs utan ./.",
-    task: "Uppgift: Importera addTodo och MAX_TODOS från ./todos.js på en rad. Skapa todos = addTodo(['Handla'], 'Träna') och isFull, som är true om todos.length är minst MAX_TODOS.",
+    task: "Uppgift: Importera addTodo och MAX_TODOS från ./todos.js på en rad. Skapa `todos` = addTodo(['Handla'], 'Träna') och `isFull`, som är true om todos.length är minst MAX_TODOS.",
     fileName: 'app.js',
     files: {
       'todos.js': `export const MAX_TODOS = 3;
@@ -3113,12 +3255,12 @@ const isFull = todos.length >= MAX_TODOS;`,
     isBoss: true,
     description:
       'Nu skriver du en fil som både importerar och exporterar. Läs app.js och config.js noga. De visar vad din fil måste exportera och vad den kan importera.',
-    task: `Uppgift: Skriv todoUtils.js.
+    task: `Uppgift: Skriv \`todoUtils.js\`.
   Importera MAX_TODOS från ./config.js.
-  Default export: funktionen addTodo(todos, text).
+  Default export: funktionen \`addTodo(todos, text)\`.
   Är todos.length minst MAX_TODOS returneras todos oförändrad.
   Annars returneras en ny array med spread: todos följt av text.
-  Named export: arrow functionen countTodos(todos).
+  Named export: arrow functionen \`countTodos(todos)\`.
   Den returnerar en template literal som "2 av 3", med MAX_TODOS som sista tal.`,
     fileName: 'todoUtils.js',
     files: {
@@ -3192,7 +3334,7 @@ export const countTodos = todos => \`\${todos.length} av \${MAX_TODOS}\`;`,
     isBoss: false,
     description:
       'Vissa saker tar tid, som att hämta data från en server. Då får du inte svaret direkt utan ett Promise, ett löfte om ett värde senare. Med .then(…) säger du vad som ska hända med värdet när det kommer. .then ger själv ett nytt Promise.',
-    task: 'Uppgift: getUser() ger ett Promise med en användare. Skapa namePromise med getUser().then(…) så att det ger användarens namn.',
+    task: 'Uppgift: getUser() ger ett Promise med en användare. Skapa `namePromise` med getUser().then(…) så att det ger användarens namn.',
     starterCode: `function getUser() {
   return Promise.resolve({ id: 1, name: 'Ada' });
 }
@@ -3232,7 +3374,7 @@ const namePromise = getUser().then(user => user.name);`,
     isBoss: false,
     description:
       'Med async och await skriver du samma sak som med then, fast det läses uppifrån och ned. I en async-funktion pausar await tills löftet är uppfyllt och ger dig värdet. En async-funktion returnerar alltid ett Promise.',
-    task: 'Uppgift: Skriv async-funktionen getName som väntar på getUser() med await och returnerar användarens namn.',
+    task: 'Uppgift: Skriv async-funktionen `getName` som väntar på getUser() med await och returnerar användarens namn.',
     starterCode: `function getUser() {
   return Promise.resolve({ id: 1, name: 'Ada' });
 }
@@ -3280,7 +3422,7 @@ async function getName() {
     isBoss: false,
     description:
       'Ibland behöver ett anrop svaret från ett annat. Med await efter varandra väntar du på det första innan du gör det andra.',
-    task: 'Uppgift: Skriv async-funktionen countTodos. Hämta användaren med getUser(), sedan användarens uppgifter med getTodos(user.id), och returnera antalet uppgifter.',
+    task: 'Uppgift: Skriv async-funktionen `countTodos`. Hämta användaren med getUser(), sedan användarens uppgifter med getTodos(user.id), och returnera antalet uppgifter.',
     starterCode: `function getUser() {
   return Promise.resolve({ id: 1, name: 'Ada' });
 }
@@ -3336,7 +3478,7 @@ async function countTodos() {
     isBoss: false,
     description:
       'fetch(url) hämtar data från en server och ger ett Promise med ett svar, en response. Själva datan läser du med response.json(), som också ger ett Promise. Därför behövs två await. I övningarna finns ett låtsas-API på /api/users.',
-    task: 'Uppgift: Skriv async-funktionen loadUsers som hämtar /api/users och returnerar datan från response.json().',
+    task: 'Uppgift: Skriv async-funktionen `loadUsers` som hämtar /api/users och returnerar datan från response.json().',
     starterCode: '// Skriv din kod här',
     solution: `async function loadUsers() {
   const response = await fetch('/api/users');
@@ -3368,7 +3510,7 @@ async function countTodos() {
     isBoss: false,
     description:
       'fetch ger ett svar även när servern svarar med ett fel, som 404 när något inte finns. response.ok är true bara om allt gick bra. Kontrollera det och kasta ett eget fel annars: throw new Error("…").',
-    task: 'Uppgift: Skriv async-funktionen loadUser(id) som hämtar /api/users/ följt av id. Är response.ok false kastas ett Error med texten "Hittade inte användaren". Annars returneras datan.',
+    task: 'Uppgift: Skriv async-funktionen `loadUser(id)` som hämtar /api/users/ följt av id. Är response.ok false kastas ett Error med texten "Hittade inte användaren". Annars returneras datan.',
     starterCode: '// Skriv din kod här',
     solution: `async function loadUser(id) {
   const response = await fetch(\`/api/users/\${id}\`);
@@ -3406,7 +3548,7 @@ async function countTodos() {
     isBoss: false,
     description:
       'Med try/catch fångar du fel så att programmet inte kraschar. Det som står i try körs, och kastas ett fel där hoppar koden till catch. Med await fungerar det även för fel från Promises.',
-    task: 'Uppgift: Skriv async-funktionen safeLoad(url). Den hämtar url och returnerar datan. Är response.ok false, eller går något annat fel, returneras en tom array i stället.',
+    task: 'Uppgift: Skriv async-funktionen `safeLoad(url)`. Den hämtar url och returnerar datan. Är response.ok false, eller går något annat fel, returneras en tom array i stället.',
     starterCode: '// Skriv din kod här',
     solution: `async function safeLoad(url) {
   try {
@@ -3447,7 +3589,7 @@ async function countTodos() {
     isBoss: false,
     description:
       'Två await efter varandra väntar på det första innan det andra startar. Behövs inte svaren av varandra kan du starta båda direkt och vänta på dem tillsammans: const [a, b] = await Promise.all([first(), second()]).',
-    task: 'Uppgift: Skriv async-funktionen loadCounts. Hämta /api/users och /api/todos samtidigt med Promise.all och getJson, och returnera [antal användare, antal uppgifter].',
+    task: 'Uppgift: Skriv async-funktionen `loadCounts`. Hämta /api/users och /api/todos samtidigt med Promise.all och getJson, och returnera [antal användare, antal uppgifter].',
     starterCode: `async function getJson(url) {
   const response = await fetch(url);
   return await response.json();
@@ -3498,7 +3640,7 @@ async function loadCounts() {
     isBoss: true,
     description:
       'Kombinera fetch, response.ok, try/catch och Promise.all i en funktion som tål fel.',
-    task: `Uppgift: Skriv async-funktionen loadReport(baseUrl).
+    task: `Uppgift: Skriv async-funktionen \`loadReport(baseUrl)\`.
   Hämta baseUrl + "/users" och baseUrl + "/todos" samtidigt med Promise.all.
   Är något svar inte ok ska ett fel kastas.
   Gick allt bra returneras { users: 3, openTodos: 2 }:
@@ -3559,7 +3701,7 @@ async function loadCounts() {
     isBoss: false,
     description:
       'En React-komponent är en funktion som returnerar JSX. JSX ser ut som HTML men är JavaScript. Komponentens namn måste börja med stor bokstav, annars tror React att det är en HTML-tagg.',
-    task: 'Uppgift: Skriv komponenten App som returnerar en h1 med texten "Hej React!".',
+    task: 'Uppgift: Skriv komponenten `App` som returnerar en h1 med texten "Hej React!".',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: '// Skriv din kod här',
@@ -3587,7 +3729,7 @@ async function loadCounts() {
     isBoss: false,
     description:
       'Inom { } i JSX kan du skriva JavaScript. <p>Hej {name}!</p> visar värdet av variabeln name mitt i texten.',
-    task: 'Uppgift: Låt App returnera en p med texten "Hej Ada!". Hämta namnet från variabeln name med { }.',
+    task: 'Uppgift: Låt `App` returnera en p med texten "Hej Ada!". Hämta namnet från variabeln name med { }.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const name = 'Ada';
@@ -3629,7 +3771,7 @@ function App() {
     isBoss: false,
     description:
       'Allt som ger ett värde fungerar inom { }: uträkningar, funktionsanrop och template literals. {items * price} räknar ut summan direkt i JSX:en.',
-    task: 'Uppgift: Låt App returnera en p med texten "Totalt: 75 kr". Räkna ut summan med items * price inom { }.',
+    task: 'Uppgift: Låt `App` returnera en p med texten "Totalt: 75 kr". Räkna ut summan med items * price inom { }.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const items = 3;
@@ -3676,7 +3818,7 @@ function App() {
     isBoss: false,
     description:
       'Attribut skrivs nästan som i HTML. Några heter annorlunda: class heter className, eftersom class redan betyder något i JavaScript. Värden från variabler skrivs inom { } utan citattecken: src={logoUrl}. Taggar utan innehåll, som img, måste stängas med />.',
-    task: 'Uppgift: Låt App returnera en img med src från variabeln logoUrl, alt "Logga" och klassen "logo".',
+    task: 'Uppgift: Låt `App` returnera en img med src från variabeln logoUrl, alt "Logga" och klassen "logo".',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const logoUrl = '/favicon.svg';
@@ -3736,7 +3878,7 @@ function App() {
     isBoss: false,
     description:
       'En komponent får bara returnera ett element. Vill du returnera två element bredvid varandra lägger du dem i en Fragment: <>…</>. Den samlar ihop dem utan att lägga till något extra element på sidan, som en div skulle göra.',
-    task: 'Uppgift: Låt App returnera en h1 med "Profil" och direkt efter den en p med "Ada, 36 år". Använd user.name och user.age. Lägg dem i en Fragment, inte en div.',
+    task: 'Uppgift: Låt `App` returnera en h1 med "Profil" och direkt efter den en p med "Ada, 36 år". Använd user.name och user.age. Lägg dem i en Fragment, inte en div.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const user = { name: 'Ada', age: 36 };
@@ -3783,7 +3925,7 @@ function App() {
     isBoss: true,
     description:
       'Kombinera allt om JSX: värden och uttryck i { }, attribut, className och självstängande taggar.',
-    task: `Uppgift: Låt App returnera ett profilkort för user.
+    task: `Uppgift: Låt \`App\` returnera ett profilkort för user.
   En div med klassen "card".
   I den: en img med src från user.avatar och alt från user.name.
   Sedan en h2 med user.name.
@@ -3859,7 +4001,7 @@ function App() {
     isBoss: false,
     description:
       'En React-app byggs av komponenter i komponenter. En komponent du skrivit används som en egen tagg: <Logo />. Taggen måste börja med stor bokstav, för <logo /> tror React är en HTML-tagg.',
-    task: 'Uppgift: Låt App returnera en header med komponenten Logo inuti.',
+    task: 'Uppgift: Låt `App` returnera en header med komponenten Logo inuti.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `function Logo() {
@@ -3904,7 +4046,7 @@ function App() {
     isBoss: false,
     description:
       'Props är det som skickas in i en komponent, som attribut på taggen: <Greeting name="Ada" />. Till vänster om = står propens namn, det som komponenten tar emot. Till höger står värdet. Komponenten nedan läser props.name.',
-    task: 'Uppgift: Låt App returnera Greeting med propen name satt till "Ada".',
+    task: 'Uppgift: Låt `App` returnera Greeting med propen name satt till "Ada".',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `function Greeting(props) {
@@ -3948,7 +4090,7 @@ function App() {
     isBoss: false,
     description:
       'En komponent får alla props i ett objekt, sitt första argument. <Greeting name="Ada" /> anropar Greeting med { name: "Ada" }. Därför läser man värdet med props.name.',
-    task: 'Uppgift: Skriv komponenten Greeting med parametern props. Den ska returnera en h1 med "Hej Ada!", där namnet hämtas från props.name.',
+    task: 'Uppgift: Skriv komponenten `Greeting` med parametern props. Den ska returnera en h1 med "Hej Ada!", där namnet hämtas från props.name.',
     fileName: 'App.jsx',
     preview: '<Greeting name="Ada" />',
     starterCode: '// Skriv din kod här',
@@ -3981,7 +4123,7 @@ function App() {
     isBoss: false,
     description:
       'Oftast plockar man ut props direkt i parameterlistan med destructuring: function Badge({ label, count }). Då slipper man skriva props. framför varje namn. Det är samma destructuring som i Modern JS-banan.',
-    task: 'Uppgift: Skriv komponenten Badge som tar emot label och count med destructuring. Den ska returnera en span med texten "Nya: 3" (label, kolon, count).',
+    task: 'Uppgift: Skriv komponenten `Badge` som tar emot label och count med destructuring. Den ska returnera en span med texten "Nya: 3" (label, kolon, count).',
     fileName: 'App.jsx',
     preview: '<Badge label="Nya" count={3} />',
     starterCode: '// Skriv din kod här',
@@ -4010,6 +4152,11 @@ function App() {
         code: '__render(<Badge label="Olästa" count={12} />)',
         expected: '<span>Olästa: 12</span>',
       },
+      {
+        description: 'Badge med count 0 visar 0',
+        code: '__render(<Badge label="Klara" count={0} />)',
+        expected: '<span>Klara: 0</span>',
+      },
     ],
     sourceChecks: [
       {
@@ -4027,7 +4174,7 @@ function App() {
     isBoss: false,
     description:
       'Med citattecken blir en prop alltid text: amount="99" är strängen "99". Allt annat skickas inom { }: amount={99} är talet 99 och onSale={true} är en boolean. Skriver du bara onSale utan värde blir den också true.',
-    task: 'Uppgift: Låt App returnera Price med amount satt till talet 99 och onSale satt till true.',
+    task: 'Uppgift: Låt `App` returnera Price med amount satt till talet 99 och onSale satt till true.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `function Price({ amount, onSale }) {
@@ -4071,7 +4218,7 @@ function App() {
     isBoss: false,
     description:
       'Skickas inte en prop blir den undefined. Med ett standardvärde i destructuringen, { variant = "primary" }, får den ett värde ändå. Det är vanligt för props som oftast har samma värde.',
-    task: 'Uppgift: Skriv komponenten Button med props label och variant, där variant har standardvärdet "primary". Returnera en button med label som text och variant som className.',
+    task: 'Uppgift: Skriv komponenten `Button` med props label och variant, där variant har standardvärdet "primary". Returnera en button med label som text och variant som className.',
     fileName: 'App.jsx',
     preview:
       '<><Button label="Spara" /> <Button label="Ta bort" variant="danger" /></>',
@@ -4106,7 +4253,7 @@ function App() {
     isBoss: false,
     description:
       'Det du skriver mellan start- och sluttaggen skickas med som propen children: <Card title="Hej"><p>Text</p></Card>. På så sätt kan en komponent vara en ram runt vilket innehåll som helst.',
-    task: 'Uppgift: Skriv komponenten Card med props title och children. Returnera en section med klassen "card", med en h2 med title och sedan children.',
+    task: 'Uppgift: Skriv komponenten `Card` med props title och children. Returnera en section med klassen "card", med en h2 med title och sedan children.',
     fileName: 'App.jsx',
     preview: '<Card title="Dagens tips"><p>Props flödar nedåt.</p></Card>',
     starterCode: '// Skriv din kod här',
@@ -4146,9 +4293,9 @@ function App() {
     description:
       'Dela upp ett profilkort i små komponenter som får allt de behöver via props.',
     task: `Uppgift: Skriv tre komponenter.
-  Avatar({ src, name }): en img med src och alt satt till name.
-  Card({ children }): en div med klassen "card" runt children.
-  ProfileCard({ user, isOnline = false }):
+  \`Avatar({ src, name })\`: en img med src och alt satt till name.
+  \`Card({ children })\`: en div med klassen "card" runt children.
+  \`ProfileCard({ user, isOnline = false })\`:
     ett Card med Avatar (src från user.avatar, name från user.name),
     en h2 med user.name och en p med "Online" eller "Offline".
   ProfileCard ska använda Card och Avatar.`,
@@ -4213,7 +4360,7 @@ function ProfileCard({ user, isOnline = false }) {
     isBoss: false,
     description:
       'JSX kan visa en array av element. Därför gör man om data till element med map: fruits.map(fruit => <li>{fruit}</li>) ger ett li för varje frukt. Själva listan läggs inom { } i JSX:en.',
-    task: 'Uppgift: Låt App returnera en ul med ett li för varje frukt i fruits. Använd map.',
+    task: 'Uppgift: Låt `App` returnera en ul med ett li för varje frukt i fruits. Använd map.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const fruits = ['Äpple', 'Banan', 'Päron'];
@@ -4312,7 +4459,7 @@ function App() {
     isBoss: false,
     description:
       'Är listan en array av objekt används oftast ett id som key: <li key={todo.id}>. Använd inte platsen i arrayen (index) som key. Tas ett element bort eller byter ordning flyttas index till fel element, och då kan React blanda ihop dem.',
-    task: 'Uppgift: Låt App returnera en ul med ett li för varje todo. Visa todo.text och använd todo.id som key.',
+    task: 'Uppgift: Låt `App` returnera en ul med ett li för varje todo. Visa todo.text och använd todo.id som key.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const todos = [
@@ -4371,7 +4518,7 @@ function App() {
     isBoss: false,
     description:
       'map kan lika gärna returnera dina egna komponenter: <TodoItem key={todo.id} text={todo.text} />. key sätts på komponenten i map, inte på li:n inuti TodoItem. Det är listan i map som behöver key, och TodoItem vet inte ens att den ligger i en lista.',
-    task: 'Uppgift: Låt App returnera en ul med en TodoItem för varje todo. Skicka todo.text som propen text och använd todo.id som key.',
+    task: 'Uppgift: Låt `App` returnera en ul med en TodoItem för varje todo. Skicka todo.text som propen text och använd todo.id som key.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const todos = [
@@ -4440,7 +4587,7 @@ function App() {
     isBoss: false,
     description:
       'Vill du bara visa en del av listan filtrerar du först och renderar sedan: todos.filter(todo => !todo.done).map(…). Data ändras aldrig, du väljer bara vad som visas.',
-    task: 'Uppgift: Låt App returnera en ul med bara de todos som inte är klara (done är false). Visa todo.text och använd todo.id som key.',
+    task: 'Uppgift: Låt `App` returnera en ul med bara de todos som inte är klara (done är false). Visa todo.text och använd todo.id som key.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const todos = [
@@ -4506,7 +4653,7 @@ function App() {
     isBoss: false,
     description:
       'map skickar med platsen i arrayen som andra argument: players.map((player, index) => …). index passar bra för att visa en numrering, men key ska fortfarande vara player.id.',
-    task: 'Uppgift: Låt App returnera en ol med ett li per spelare med texten "1. Ada", där talet är index + 1. Använd player.id som key.',
+    task: 'Uppgift: Låt `App` returnera en ol med ett li per spelare med texten "1. Ada", där talet är index + 1. Använd player.id som key.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `const players = [
@@ -4572,8 +4719,8 @@ function App() {
     description:
       'Kombinera komponenter, props, filter, map och key i en riktig produktlista.',
     task: `Uppgift: Skriv två komponenter.
-  ProductRow({ name, price }): ett li med texten "Keps: 199 kr".
-  ProductList({ products }): en section med
+  \`ProductRow({ name, price })\`: ett li med texten "Keps: 199 kr".
+  \`ProductList({ products })\`: en section med
     en h2 med texten "2 i lager" (antalet produkter där inStock är true),
     och en ul med en ProductRow per produkt i lager.
   Använd filter och map, och product.id som key på ProductRow.`,
@@ -4649,7 +4796,7 @@ function ProductList({ products }) {
     isBoss: false,
     description:
       'I JSX kan du inte skriva if, men du kan använda &&: {count > 0 && <p>…</p>}. Är villkoret sant visas elementet, annars visas ingenting. React visar inte false, null eller undefined.',
-    task: 'Uppgift: Skriv komponenten Inbox({ count }). Den returnerar en div med en h2 "Inkorg" och, bara om count är större än 0, en p med "Du har 3 nya meddelanden" (med count i stället för 3).',
+    task: 'Uppgift: Skriv komponenten `Inbox({ count })`. Den returnerar en div med en h2 "Inkorg" och, bara om count är större än 0, en p med "Du har 3 nya meddelanden" (med count i stället för 3).',
     fileName: 'App.jsx',
     preview: '<><Inbox count={3} /><Inbox count={0} /></>',
     starterCode: '// Skriv din kod här',
@@ -4676,6 +4823,11 @@ function ProductList({ products }) {
         description: '<Inbox count={0} /> visar bara rubriken',
         code: '__render(<Inbox count={0} />)',
         expected: '<div><h2>Inkorg</h2></div>',
+      },
+      {
+        description: 'Inbox med count 12 visar 12',
+        code: '__render(<Inbox count={12} />)',
+        expected: '<div><h2>Inkorg</h2><p>Du har 12 nya meddelanden</p></div>',
       },
     ],
     sourceChecks: [{ description: 'Koden använder &&', pattern: /&&/ }],
@@ -4723,7 +4875,7 @@ function ProductList({ products }) {
     isBoss: false,
     description:
       'Ska något av två alternativ visas använder du ? :. Det fungerar både för text och för element: {isLoggedIn ? "Logga ut" : "Logga in"}.',
-    task: 'Uppgift: Skriv komponenten LoginButton({ isLoggedIn }) som returnerar en button med texten "Logga ut" om isLoggedIn är true och annars "Logga in".',
+    task: 'Uppgift: Skriv komponenten `LoginButton({ isLoggedIn })` som returnerar en button med texten "Logga ut" om isLoggedIn är true och annars "Logga in".',
     fileName: 'App.jsx',
     preview:
       '<><LoginButton isLoggedIn={true} /> <LoginButton isLoggedIn={false} /></>',
@@ -4758,7 +4910,7 @@ function ProductList({ products }) {
     isBoss: false,
     description:
       'Med ? : kan du välja mellan hela komponenter: {user ? <Welcome name={user.name} /> : <Login />}. Ett objekt räknas som sant och null som falskt, så du kan använda user direkt som villkor.',
-    task: 'Uppgift: Skriv komponenten Page({ user }). Finns user ska den returnera Welcome med user.name som propen name. Annars returnerar den Login.',
+    task: 'Uppgift: Skriv komponenten `Page({ user })`. Finns user ska den returnera Welcome med user.name som propen name. Annars returnerar den Login.',
     fileName: 'App.jsx',
     preview: "<><Page user={{ name: 'Ada' }} /><Page user={null} /></>",
     starterCode: `function Welcome({ name }) {
@@ -4810,7 +4962,7 @@ function Page({ user }) {
     isBoss: false,
     description:
       'Före return är komponenten vanlig JavaScript, så där kan du använda if. Ett vanligt mönster är att returnera tidigt: if (!user) return <p>Laddar…</p>; Resten av komponenten kan sedan räkna med att user finns.',
-    task: 'Uppgift: Skriv komponenten Profile({ user }). Saknas user returneras <p>Laddar…</p> med en if. Annars returneras en h2 med user.name.',
+    task: 'Uppgift: Skriv komponenten `Profile({ user })`. Saknas user returneras <p>Laddar…</p> med en if. Annars returneras en h2 med user.name.',
     fileName: 'App.jsx',
     preview: "<><Profile user={{ name: 'Grace' }} /><Profile /></>",
     starterCode: '// Skriv din kod här',
@@ -4836,6 +4988,11 @@ function Page({ user }) {
         code: "__render(<Profile user={{ name: 'Grace' }} />)",
         expected: '<h2>Grace</h2>',
       },
+      {
+        description: 'Profile visar ett annat namn',
+        code: "__render(<Profile user={{ name: 'Linus' }} />)",
+        expected: '<h2>Linus</h2>',
+      },
     ],
     sourceChecks: [{ description: 'Koden använder if', pattern: /\bif\s*\(/ }],
   },
@@ -4847,7 +5004,7 @@ function Page({ user }) {
     isBoss: false,
     description:
       'En komponent som inte ska visa något returnerar null. Det är vanligt för till exempel varningar, som bara ska synas när det finns något att varna för.',
-    task: 'Uppgift: Skriv komponenten Warning({ message }). Saknas message returneras null. Annars returneras en p med klassen "warning" och message som text.',
+    task: 'Uppgift: Skriv komponenten `Warning({ message })`. Saknas message returneras null. Annars returneras en p med klassen "warning" och message som text.',
     fileName: 'App.jsx',
     preview: '<><Warning message="Lösenordet är för kort" /><Warning /></>',
     starterCode: '// Skriv din kod här',
@@ -4886,7 +5043,7 @@ function Page({ user }) {
     isBoss: false,
     description:
       'En tom lista ger en tom ul, och det ser ut som att något är trasigt. Visa hellre ett meddelande när listan är tom: todos.length === 0 ? <p>…</p> : <ul>…</ul>.',
-    task: 'Uppgift: Skriv komponenten TodoList({ todos }). Är todos tom returneras <p>Inga uppgifter</p>. Annars en ul med ett li per todo, med todo.text som text och todo.id som key.',
+    task: 'Uppgift: Skriv komponenten `TodoList({ todos })`. Är todos tom returneras <p>Inga uppgifter</p>. Annars en ul med ett li per todo, med todo.text som text och todo.id som key.',
     fileName: 'App.jsx',
     preview:
       "<><TodoList todos={[{ id: 1, text: 'Handla' }]} /><TodoList todos={[]} /></>",
@@ -4933,7 +5090,7 @@ function Page({ user }) {
     isBoss: false,
     description:
       'Villkor fungerar i props också. Ett vanligt exempel är att byta klass beroende på data: className={done ? "todo done" : "todo"}. Då kan CSS:en till exempel stryka över klara uppgifter.',
-    task: 'Uppgift: Skriv komponenten TodoItem({ text, done }). Den returnerar ett li med text. Klassen är "todo done" om done är true och annars "todo".',
+    task: 'Uppgift: Skriv komponenten `TodoItem({ text, done })`. Den returnerar ett li med text. Klassen är "todo done" om done är true och annars "todo".',
     fileName: 'App.jsx',
     preview: `<ul>
   <style>{'.done { text-decoration: line-through; color: gray; }'}</style>
@@ -4960,6 +5117,11 @@ function Page({ user }) {
         code: '__render(<TodoItem text="Träna" done={false} />)',
         expected: '<li class="todo">Träna</li>',
       },
+      {
+        description: 'TodoItem visar en annan text',
+        code: '__render(<TodoItem text="Plugga" done={false} />)',
+        expected: '<li class="todo">Plugga</li>',
+      },
     ],
   },
   {
@@ -4970,7 +5132,7 @@ function Page({ user }) {
     isBoss: true,
     description:
       'Använd alla sätt att visa saker villkorligt: tidig return, ? :, && och tomma listor. Akta dig för 0 &&.',
-    task: `Uppgift: Skriv komponenten OrderSummary({ order }).
+    task: `Uppgift: Skriv komponenten \`OrderSummary({ order })\`.
   Saknas order: returnera <p>Ingen order vald</p>.
   Annars en section med, i den här ordningen:
     en h2 med "Order 42" (order.id i stället för 42),
@@ -5040,7 +5202,7 @@ function Page({ user }) {
     isBoss: false,
     description:
       'Med onClick talar du om vilken funktion som ska köras när någon klickar. Skicka funktionen, anropa den inte: onClick={onLike} är rätt. onClick={onLike()} anropar funktionen direkt när komponenten ritas, och sedan händer ingenting vid klick.',
-    task: 'Uppgift: Skriv komponenten LikeButton({ onLike }) som returnerar en button med texten "Gilla". onLike ska anropas när man klickar.',
+    task: 'Uppgift: Skriv komponenten `LikeButton({ onLike })` som returnerar en button med texten "Gilla". onLike ska anropas när man klickar.',
     fileName: 'App.jsx',
     preview: '<LikeButton onLike={() => {}} />',
     starterCode: '// Skriv din kod här',
@@ -5078,7 +5240,7 @@ function Page({ user }) {
     isBoss: false,
     description:
       'En vanlig variabel glöms bort varje gång komponenten ritas om, och React vet inte att den ändrats. För värden som ändras använder du state: const [count, setCount] = useState(0). count är värdet just nu och setCount(…) sparar ett nytt värde och ritar om komponenten. useState importeras från react.',
-    task: 'Uppgift: Skriv komponenten Counter. Den har state count som börjar på 0, visar count i en p och har en button "+1" som ökar count med 1.',
+    task: 'Uppgift: Skriv komponenten `Counter`. Den har state `count` som börjar på 0, visar count i en p och har en button "+1" som ökar count med 1.',
     fileName: 'App.jsx',
     preview: '<Counter />',
     starterCode: `import { useState } from 'react';
@@ -5133,7 +5295,7 @@ function Counter() {
     isBoss: false,
     description:
       'Flera knappar kan ändra samma state på olika sätt. Varje knapp får en egen liten funktion: onClick={() => setCount(count - 1)}. Pilfunktionen behövs eftersom setCount ska anropas med ett värde först när man klickar.',
-    task: 'Uppgift: Bygg ut Counter med tre knappar: "-1" minskar count, "+1" ökar count och "Nollställ" sätter count till 0.',
+    task: 'Uppgift: Bygg ut `Counter` med tre knappar: "-1" minskar count, "+1" ökar count och "Nollställ" sätter count till 0.',
     fileName: 'App.jsx',
     preview: '<Counter />',
     starterCode: `import { useState } from 'react';
@@ -5193,7 +5355,7 @@ function Counter() {
     isBoss: false,
     description:
       'State kan vara vilken typ av värde som helst. En boolean passar för saker som är på eller av. setIsOn(!isOn) byter till motsatt värde.',
-    task: 'Uppgift: Skriv komponenten Lamp med state isOn som börjar på false. En p visar "Lampan är tänd" eller "Lampan är släckt", och en button "Växla" byter isOn.',
+    task: 'Uppgift: Skriv komponenten `Lamp` med state `isOn` som börjar på false. En p visar "Lampan är tänd" eller "Lampan är släckt", och en button "Växla" byter isOn.',
     fileName: 'App.jsx',
     preview: '<Lamp />',
     starterCode: `import { useState } from 'react';
@@ -5242,7 +5404,7 @@ function Lamp() {
     isBoss: false,
     description:
       'Ett textfält kopplas till state på två sätt: value={name} visar värdet från state och onChange={event => setName(event.target.value)} sparar det man skriver. Då är state alltid det som står i fältet. Det kallas ett kontrollerat fält.',
-    task: 'Uppgift: Skriv komponenten NameForm med state name som börjar som "". Den har ett kontrollerat input och en p med texten "Hej Ada!" (med name i stället för Ada).',
+    task: 'Uppgift: Skriv komponenten `NameForm` med state `name` som börjar som "". Den har ett kontrollerat input och en p med texten "Hej Ada!" (med name i stället för Ada).',
     fileName: 'App.jsx',
     preview: '<NameForm />',
     starterCode: `import { useState } from 'react';
@@ -5296,7 +5458,7 @@ function NameForm() {
     isBoss: false,
     description:
       'State får aldrig ändras direkt. todos.push(…) ändrar arrayen men React märker inget. Skapa i stället en ny array med spread: setTodos([...todos, newTodo]). Det är därför spread var så viktigt i Modern JS-banan.',
-    task: `Uppgift: Bygg klart TodoApp.
+    task: `Uppgift: Bygg klart \`TodoApp\`.
   "Lägg till" lägger till { id: crypto.randomUUID(), text } sist i todos
   och tömmer sedan fältet. Använd spread, inte push.`,
     fileName: 'App.jsx',
@@ -5393,7 +5555,7 @@ function TodoApp() {
     isBoss: false,
     description:
       'Att ta bort görs också med en ny array, oftast med filter: setTodos(todos.filter(todo => todo.id !== id)). Alla utom den med rätt id blir kvar.',
-    task: 'Uppgift: Varje uppgift har en knapp "Ta bort". Skriv klart handleRemove(id) så att uppgiften med det id:t försvinner.',
+    task: 'Uppgift: Varje uppgift har en knapp "Ta bort". Skriv klart `handleRemove(id)` så att uppgiften med det id:t försvinner.',
     fileName: 'App.jsx',
     preview: '<TodoList />',
     starterCode: `import { useState } from 'react';
@@ -5481,7 +5643,7 @@ function TodoList() {
     isBoss: false,
     description:
       'Samma regel gäller objekt: ändra aldrig user.age direkt. Skapa en kopia med spread och skriv över det som ändras: setUser({ ...user, age: user.age + 1 }).',
-    task: 'Uppgift: Knappen "Fyll år" ska öka user.age med 1. Skriv klart handleBirthday med spread.',
+    task: 'Uppgift: Knappen "Fyll år" ska öka user.age med 1. Skriv klart `handleBirthday` med spread.',
     fileName: 'App.jsx',
     preview: '<Profile />',
     starterCode: `import { useState } from 'react';
@@ -5557,7 +5719,7 @@ function Profile() {
     isBoss: false,
     description:
       'Ett formulär skickas när man trycker Enter eller på en submit-knapp. Lyssna med onSubmit på form. Webbläsaren laddar annars om sidan, så börja alltid med event.preventDefault().',
-    task: 'Uppgift: Skriv klart handleSubmit. Det ska stoppa omladdningen och spara name i submitted, så att texten "Tack, Ada!" visas.',
+    task: 'Uppgift: Skriv klart `handleSubmit`. Det ska stoppa omladdningen och spara name i `submitted`, så att texten "Tack, Ada!" visas.',
     fileName: 'App.jsx',
     preview: '<SignupForm />',
     starterCode: `import { useState } from 'react';
@@ -5628,7 +5790,7 @@ function SignupForm() {
     isBoss: true,
     description:
       'Bygg en hel todo-app med state, formulär, kontrollerade fält, listor och villkor. Ändra aldrig state direkt.',
-    task: `Uppgift: Skriv komponenten TodoApp.
+    task: `Uppgift: Skriv komponenten \`TodoApp\`.
   Ett form med ett input och en button "Lägg till".
     Vid submit: stoppa omladdningen, lägg till { id, text, done: false }
     och töm fältet. Tom text (efter trim) läggs inte till.
@@ -5743,7 +5905,7 @@ function TodoApp() {
     isBoss: false,
     description:
       'Props går bara neråt, från förälder till barn. Vill ett barn berätta något för föräldern skickar föräldern ner en funktion, en callback, som barnet anropar med datan: onRate(3). Sådana props brukar heta on-något.',
-    task: 'Uppgift: Skriv komponenten Rating({ onRate }) med tre knappar "1", "2" och "3". Ett klick på en knapp anropar onRate med det talet.',
+    task: 'Uppgift: Skriv komponenten `Rating({ onRate })` med tre knappar "1", "2" och "3". Ett klick på en knapp anropar onRate med det talet.',
     fileName: 'App.jsx',
     preview: '<Rating onRate={() => {}} />',
     starterCode: '// Skriv din kod här',
@@ -5787,7 +5949,7 @@ function TodoApp() {
     isBoss: false,
     description:
       'När två komponenter behöver samma värde lägger man state i deras gemensamma förälder. Föräldern skickar värdet neråt som en prop och en funktion som ändrar det. Barnen har inget eget state, de visar bara och berättar.',
-    task: 'Uppgift: Skriv App. Den äger state count (börjar på 0) och renderar Display med count och IncrementButton med onIncrement, som ökar count med 1.',
+    task: 'Uppgift: Skriv `App`. Den äger state `count` (börjar på 0) och renderar Display med count och IncrementButton med onIncrement, som ökar count med 1.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `import { useState } from 'react';
@@ -5856,7 +6018,7 @@ function App() {
     isBoss: false,
     description:
       'Sökfältet och resultatlistan är syskon. Listan behöver veta vad som står i sökfältet, så query bor i föräldern. SearchBar får både värdet och en callback för att ändra det: query och onQueryChange.',
-    task: 'Uppgift: Skriv App. Den äger state query (börjar som "") och kopplar ihop SearchBar och ResultList.',
+    task: 'Uppgift: Skriv `App`. Den äger state `query` (börjar som "") och kopplar ihop SearchBar och ResultList.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `import { useState } from 'react';
@@ -5949,7 +6111,7 @@ function App() {
     isBoss: false,
     description:
       'Nu skriver du barnet själv. Ett kontrollerat barn har inget eget state: värdet kommer som en prop och ändringar skickas uppåt med en callback. Det är samma kontrollerade fält som förut, bara uppdelat på två komponenter.',
-    task: 'Uppgift: Skriv NameInput({ name, onNameChange }). Den returnerar ett input som visar name och anropar onNameChange med det nya värdet när man skriver. Använd inte useState i NameInput.',
+    task: 'Uppgift: Skriv `NameInput({ name, onNameChange })`. Den returnerar ett input som visar name och anropar onNameChange med det nya värdet när man skriver. Använd inte useState i NameInput.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `import { useState } from 'react';
@@ -6017,7 +6179,7 @@ function App() {
     isBoss: false,
     description:
       'I en lista vet barnet vilken rad det är, men föräldern äger listan. Barnet skickar därför med sitt id: onToggle(todo.id). Föräldern letar upp rätt rad och uppdaterar state.',
-    task: 'Uppgift: Skriv TodoItem({ todo, onToggle, onRemove }). Ett li med en checkbox som visar todo.done och anropar onToggle(todo.id), texten i en span och en button "Ta bort" som anropar onRemove(todo.id).',
+    task: 'Uppgift: Skriv `TodoItem({ todo, onToggle, onRemove })`. Ett li med en checkbox som visar todo.done och anropar onToggle(todo.id), texten i en span och en button "Ta bort" som anropar onRemove(todo.id).',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `import { useState } from 'react';
@@ -6134,7 +6296,7 @@ function App() {
     isBoss: false,
     description:
       'Spara inte det som går att räkna ut. Här finns både todos och left i state, och de har glidit isär: left uppdateras inte när man tar bort en uppgift. Räkna i stället ut left från todos varje gång komponenten ritas. Då kan de aldrig visa olika saker.',
-    task: 'Uppgift: Ta bort state left. Räkna ut left från todos (antalet som inte är klara) direkt i komponenten.',
+    task: 'Uppgift: Ta bort state `left`. Räkna ut left från todos (antalet som inte är klara) direkt i komponenten.',
     fileName: 'App.jsx',
     preview: '<App />',
     starterCode: `import { useState } from 'react';
@@ -6224,8 +6386,8 @@ function App() {
     isBoss: true,
     description:
       'Bygg en butik där App äger kundvagnen och barnen bara visar och berättar. Ingen data får finnas på två ställen.',
-    task: `Uppgift: ProductList är klar. Skriv Cart och App.
-  Cart({ items, onRemove }):
+    task: `Uppgift: ProductList är klar. Skriv \`Cart\` och \`App\`.
+  \`Cart({ items, onRemove })\`:
     är items tom visas <p>Kundvagnen är tom</p>,
     annars en ul med ett li per vara: namnet följt av en
     button "Ta bort" som anropar onRemove med varans cartId.
@@ -6731,7 +6893,7 @@ function PageTitle({ title }) {
     isBoss: true,
     description:
       'Bygg ett stoppur som använder allt om effekter: beroendelistor, timers med städning, document.title och localStorage.',
-    task: `Uppgift: Skriv komponenten Stopwatch.
+    task: `Uppgift: Skriv komponenten \`Stopwatch\`.
   seconds börjar med talet sparat under "seconds" i localStorage, annars 0.
   isRunning börjar som false.
   En p visar "3 s" (seconds följt av " s").
@@ -6822,7 +6984,7 @@ function Stopwatch() {
     isBoss: false,
     description:
       'Att hämta data är en sidoeffekt, så det görs i useEffect. Med [] som beroendelista hämtas datan en gång när komponenten visas. När svaret kommer sparas det i state, och då ritas listan om.',
-    task: 'Uppgift: Hämta /api/users i en effekt som bara körs en gång. Spara användarna i users och visa ett li per användare med user.name (key user.id).',
+    task: 'Uppgift: Hämta /api/users i en effekt som bara körs en gång. Spara användarna i `users` och visa ett li per användare med user.name (key user.id).',
     fileName: 'App.jsx',
     preview: '<Users />',
     starterCode: `import { useEffect, useState } from 'react';
@@ -6952,7 +7114,7 @@ function Todos() {
     isBoss: false,
     description:
       'Medan datan hämtas ska användaren se att något händer. Ett state isLoading som börjar som true och sätts till false när datan kommit räcker långt.',
-    task: 'Uppgift: Lägg till state isLoading som börjar som true. Visa <p>Laddar…</p> så länge den är true. Sätt den till false när användarna sparats.',
+    task: 'Uppgift: Lägg till state `isLoading` som börjar som true. Visa <p>Laddar…</p> så länge den är true. Sätt den till false när användarna sparats.',
     fileName: 'App.jsx',
     preview: '<Users />',
     starterCode: `import { useEffect, useState } from 'react';
@@ -7122,7 +7284,7 @@ function UserList({ url }) {
     isBoss: false,
     description:
       'Beror hämtningen på en prop ska den finnas i beroendelistan. Då hämtas ny data varje gång propen ändras, till exempel när man väljer en annan användare.',
-    task: 'Uppgift: UserCard({ userId }) hämtar /api/users/ följt av userId och visar <h2>{user.name}</h2>. Visa <p>Laddar…</p> medan user är null. Hämta igen när userId ändras.',
+    task: 'Uppgift: `UserCard({ userId })` hämtar /api/users/ följt av userId och visar <h2>{user.name}</h2>. Visa <p>Laddar…</p> medan user är null. Hämta igen när userId ändras.',
     fileName: 'App.jsx',
     preview: '<UserCard userId={3} />',
     starterCode: `import { useEffect, useState } from 'react';
@@ -7175,7 +7337,7 @@ function UserCard({ userId }) {
     isBoss: true,
     description:
       'Bygg en sökning som hämtar nya träffar när man skriver, med laddning, fel och tomt resultat.',
-    task: `Uppgift: Skriv komponenten UserSearch.
+    task: `Uppgift: Skriv komponenten \`UserSearch\`.
   State: query (""), users ([]), isLoading (true), error (null).
   Ett kontrollerat input för query.
   En effekt hämtar /api/users?q= följt av query varje gång query ändras.

@@ -331,6 +331,15 @@
   font-weight: 600;
 }
 
+.task-code {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--task-code-bg);
+  color: var(--task-code-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.95em;
+}
+
 .lesson-docs {
   margin: 0 0 16px;
   padding: 8px 12px;
