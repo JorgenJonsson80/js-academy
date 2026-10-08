@@ -144,6 +144,26 @@ const correctAnswers = [
   ],
   ['template-01', "const name = 'Ada';\nconst greeting = `Hej ${ name }!`;"],
   [
+    'template-02',
+    'const price = 25;\nconst quantity = 3;\nconst receipt = `${quantity} st för ${quantity * price} kr`;',
+  ],
+  [
+    'template-03',
+    'const formatPrice = (name, price) => `${name}: ${price} kr`;',
+  ],
+  [
+    'functions-08',
+    'const square = n => n * n;\nconst sumOfSquares = (a, b) => square(a) + square(b);',
+  ],
+  [
+    'functions-boss-01',
+    'const lineTotal = (price, quantity = 1) => price * quantity;\nconst applyDiscount = (total, percent) => total - (total * percent) / 100;\nconst checkout = (price, quantity, isMember) => {\n  const total = lineTotal(price, quantity);\n  return isMember ? applyDiscount(total, 10) : total;\n};\nconst receipt = checkout(200, 3, true);',
+  ],
+  [
+    'lists-04',
+    "const todos = [\n  { id: 1, text: 'Handla' },\n  { id: 2, text: 'Träna' },\n];\nfunction TodoItem({ text }) {\n  return <li>✅ {text}</li>;\n}\nfunction App() {\n  return (\n    <ul>\n      {todos.map(todo => {\n        return <TodoItem key={todo.id} text={todo.text} />;\n      })}\n    </ul>\n  );\n}",
+  ],
+  [
     'destructuring-01',
     "const user = { name: 'Ada', age: 36 };\nconst { age, name } = user;",
   ],
@@ -423,6 +443,22 @@ const wrongAnswers = [
   ],
   ['template-01', "const name = 'Ada';\nconst greeting = 'Hej ' + name + '!';"],
   ['template-01', "const name = 'Ada';\nconst greeting = `Hej Ada!`;"],
+  [
+    'template-02',
+    "const price = 25;\nconst quantity = 3;\nconst receipt = '3 st för 75 kr';",
+  ],
+  [
+    'template-02',
+    'const price = 25;\nconst quantity = 3;\nconst receipt = `${quantity} st för 75 kr`;',
+  ],
+  [
+    'template-03',
+    "function formatPrice(name, price) {\n  return name + ': ' + price + ' kr';\n}",
+  ],
+  [
+    'template-03',
+    'function formatPrice(name, price) {\n  return `Keps: 199 kr`;\n}',
+  ],
   [
     'destructuring-01',
     "const user = { name: 'Ada', age: 36 };\nconst name = user.name;\nconst age = user.age;",

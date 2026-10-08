@@ -53,3 +53,17 @@ describe('styleNotes', () => {
     expect(styleNotes('a()\nb()\nc()')[0]).toMatch(/^Rad 1, 2 och 3 saknar ;/);
   });
 });
+
+describe('styleNotes med flera rader och }', () => {
+  it('förklarar ; efter } när en arrow function sparas i en variabel', () => {
+    const notes = styleNotes('const add = (a, b) => {\n  return a + b;\n}');
+    expect(notes).toHaveLength(2);
+    expect(notes[1]).toMatch(/^Rad 3 slutar med }/);
+  });
+
+  it('kräver bara ; på sista raden när en sats delas upp', () => {
+    const code =
+      'const total = [1, 2]\n  .map(n => n * 2)\n  .reduce((a, b) => a + b, 0);';
+    expect(styleNotes(code)).toEqual([]);
+  });
+});

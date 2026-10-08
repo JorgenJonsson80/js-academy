@@ -68,6 +68,10 @@ export const tracks = [
         url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String',
       },
       {
+        title: 'Template literals',
+        url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals',
+      },
+      {
         title: '=== och ==',
         url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Equality_comparisons_and_sameness',
       },
@@ -113,10 +117,6 @@ export const tracks = [
     title: 'Modern JS för React',
     reward: { emoji: '☕', name: 'Kaffekopp' },
     docs: [
-      {
-        title: 'Template literals',
-        url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals',
-      },
       {
         title: 'Destructuring',
         url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring',

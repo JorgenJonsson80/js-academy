@@ -997,7 +997,7 @@ function sumOfSquares(a, b) {
     sourceChecks: [
       {
         description: 'sumOfSquares använder square',
-        pattern: /function\s+sumOfSquares[^]*square\s*\(\s*a\s*\)/,
+        pattern: /\bsumOfSquares\b[^]*\bsquare\s*\(\s*a\s*\)/,
       },
     ],
   },
@@ -1201,7 +1201,7 @@ const receipt = checkout(200, 3, true);`,
       {
         description: 'checkout använder lineTotal och applyDiscount',
         pattern:
-          /function\s+checkout(?=[^]*lineTotal\s*\()(?=[^]*applyDiscount\s*\()/,
+          /\bcheckout\b(?=[^]*\blineTotal\s*\()(?=[^]*\bapplyDiscount\s*\()/,
       },
     ],
   },
@@ -1247,6 +1247,132 @@ const letters = name.length;`,
       {
         description: 'letters skapas med name.length',
         pattern: /name\s*\.\s*length\b/,
+      },
+    ],
+  },
+  {
+    id: 'template-01',
+    title: 'Template literals',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'En template literal skrivs med backticks ` ` i stället för citattecken. Inuti kan du stoppa in värden med ${ }. I React bygger du ofta text och klassnamn så.',
+    task: 'Uppgift: Skapa konstanten `greeting` med en template literal som ger texten "Hej Ada!". Använd variabeln name, inte texten Ada direkt.',
+    starterCode: `const name = 'Ada';
+
+`,
+    solution: "const name = 'Ada';\nconst greeting = `Hej ${name}!`;",
+    hints: [
+      'Börja med const greeting = och en backtick `.',
+      'Skriv Hej följt av ett mellanslag och ${name}.',
+      'Avsluta med ! och en backtick.',
+    ],
+    tests: [
+      {
+        description: 'greeting är "Hej Ada!"',
+        code: 'greeting',
+        expected: 'Hej Ada!',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'name stoppas in med ${name} i en template literal',
+        pattern: /`[^`]*\$\{\s*name\s*\}[^`]*`/,
+      },
+      {
+        description: 'Texten slås inte ihop med +',
+        pattern: /\+/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'template-02',
+    title: 'Räkna inuti ${ }',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'Inuti ${ } kan du skriva vilket JavaScript-uttryck som helst, inte bara en variabel. ${price * quantity} räknar ut summan och stoppar in svaret i texten.',
+    task: 'Uppgift: Skapa konstanten `receipt` med en template literal som ger texten "3 st för 75 kr". Hämta antalet från quantity och räkna ut summan med price * quantity inuti ${ }.',
+    starterCode: `const price = 25;
+const quantity = 3;
+
+`,
+    solution:
+      'const price = 25;\nconst quantity = 3;\n\nconst receipt = `${quantity} st för ${price * quantity} kr`;',
+    hints: [
+      'Börja med const receipt = och en backtick `.',
+      'Antalet stoppas in med ${quantity}.',
+      'Summan räknas ut direkt i texten: ${price * quantity}.',
+    ],
+    tests: [
+      {
+        description: 'receipt är "3 st för 75 kr"',
+        code: 'receipt',
+        expected: '3 st för 75 kr',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'quantity stoppas in med ${quantity}',
+        pattern: /`[^`]*\$\{\s*quantity\s*\}[^`]*`/,
+      },
+      {
+        description: 'Summan räknas ut inuti ${ }',
+        pattern: /\$\{\s*(?:price\s*\*\s*quantity|quantity\s*\*\s*price)\s*\}/,
+      },
+      {
+        description: 'Summan 75 skrivs inte in för hand',
+        pattern: /75/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'template-03',
+    title: 'Bygg text i en funktion',
+    xp: 10,
+    track: 'strings',
+    isBoss: false,
+    description:
+      'Template literals passar bra i funktioner som bygger text. Funktionen får värdena som parametrar och returnerar färdig text. Det gör du ofta i React, till exempel för en etikett eller ett klassnamn.',
+    task: 'Uppgift: Skriv funktionen `formatPrice(name, price)` som returnerar texten "Keps: 199 kr" (med name och price i stället för Keps och 199). Använd en template literal.',
+    starterCode: '// Skriv din kod här',
+    solution:
+      'function formatPrice(name, price) {\n  return `${name}: ${price} kr`;\n}',
+    hints: [
+      'Börja med function formatPrice(name, price) { }.',
+      'Returnera en template literal: return `…`;',
+      'Inuti: ${name}, sedan ": ", sedan ${price} och " kr".',
+    ],
+    tests: [
+      {
+        description: 'formatPrice(\'Keps\', 199) returnerar "Keps: 199 kr"',
+        code: "formatPrice('Keps', 199)",
+        expected: 'Keps: 199 kr',
+      },
+      {
+        description: 'formatPrice(\'Mössa\', 149) returnerar "Mössa: 149 kr"',
+        code: "formatPrice('Mössa', 149)",
+        expected: 'Mössa: 149 kr',
+      },
+      {
+        description: 'formatPrice(\'Vante\', 0) returnerar "Vante: 0 kr"',
+        code: "formatPrice('Vante', 0)",
+        expected: 'Vante: 0 kr',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Texten byggs med en template literal',
+        pattern: /`[^`]*\$\{[^`]*`/,
+      },
+      {
+        description: 'Texten slås inte ihop med +',
+        pattern: /\+/,
+        forbidden: true,
       },
     ],
   },
@@ -1964,43 +2090,6 @@ const totalPrice = inStock.reduce((sum, product) => sum + product.price, 0);`,
       {
         description: 'Koden använder ingen loop',
         pattern: /\b(for|while)\b/,
-        forbidden: true,
-      },
-    ],
-  },
-  {
-    id: 'template-01',
-    title: 'Template literals',
-    xp: 10,
-    track: 'modern-js',
-    isBoss: false,
-    description:
-      'En template literal skrivs med backticks ` ` i stället för citattecken. Inuti kan du stoppa in värden med ${ }. I React bygger du ofta text och klassnamn så.',
-    task: 'Uppgift: Skapa konstanten `greeting` med en template literal som ger texten "Hej Ada!". Använd variabeln name, inte texten Ada direkt.',
-    starterCode: `const name = 'Ada';
-
-`,
-    solution: "const name = 'Ada';\nconst greeting = `Hej ${name}!`;",
-    hints: [
-      'Börja med const greeting = och en backtick `.',
-      'Skriv Hej följt av ett mellanslag och ${name}.',
-      'Avsluta med ! och en backtick.',
-    ],
-    tests: [
-      {
-        description: 'greeting är "Hej Ada!"',
-        code: 'greeting',
-        expected: 'Hej Ada!',
-      },
-    ],
-    sourceChecks: [
-      {
-        description: 'name stoppas in med ${name} i en template literal',
-        pattern: /`[^`]*\$\{\s*name\s*\}[^`]*`/,
-      },
-      {
-        description: 'Texten slås inte ihop med +',
-        pattern: /\+/,
         forbidden: true,
       },
     ],
@@ -4571,7 +4660,7 @@ function App() {
     sourceChecks: [
       {
         description: 'map returnerar <TodoItem',
-        pattern: /=>\s*\(?\s*<TodoItem\b/,
+        pattern: /\.map\s*\([^]*<TodoItem\b/,
       },
       {
         description: 'key sitter på TodoItem',
@@ -6166,7 +6255,8 @@ function App() {
     sourceChecks: [
       {
         description: 'NameInput har inget eget state',
-        pattern: /function\s+NameInput[^]*?useState[^]*?function\s+App/,
+        pattern:
+          /(?:function\s+NameInput|NameInput\s*=)[^]*?useState[^]*?(?:function\s+App|App\s*=)/,
         forbidden: true,
       },
     ],

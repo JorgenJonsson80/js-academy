@@ -27,15 +27,18 @@ function needsSemicolon(node, key) {
   return false;
 }
 
-// Returnerar raderna där en sats slutar utan ;, t.ex. [2, 4].
-export function findMissingSemicolons(code) {
+// Hittar satser som slutar utan ;. braceLines är de som slutar med },
+// t.ex. const add = () => { … } eller const user = { … }.
+function findMissing(code) {
   const ast = parse(code, { sourceType: 'module', plugins: ['jsx'] });
   const lines = new Set();
+  const braceLines = new Set();
 
   function visit(node, key) {
     if (!node || typeof node.type !== 'string') return;
     if (needsSemicolon(node, key) && code[node.end - 1] !== ';') {
       lines.add(node.loc.end.line);
+      if (code[node.end - 1] === '}') braceLines.add(node.loc.end.line);
     }
     for (const [childKey, value] of Object.entries(node)) {
       if (childKey === 'loc' || childKey.endsWith('Comments')) continue;
@@ -45,7 +48,13 @@ export function findMissingSemicolons(code) {
   }
 
   visit(ast.program, null);
-  return [...lines].sort((a, b) => a - b);
+  const sorted = set => [...set].sort((a, b) => a - b);
+  return { lines: sorted(lines), braceLines: sorted(braceLines) };
+}
+
+// Returnerar raderna där en sats slutar utan ;, t.ex. [2, 4].
+export function findMissingSemicolons(code) {
+  return findMissing(code).lines;
 }
 
 function listLines(lines) {
@@ -57,10 +66,17 @@ function listLines(lines) {
 }
 
 // Tips som visas efter rättningen, oavsett om svaret var rätt.
+// En sats som går över flera rader behöver bara ; på sista raden.
 export function styleNotes(code) {
-  const lines = findMissingSemicolons(code);
+  const { lines, braceLines } = findMissing(code);
   if (lines.length === 0) return [];
-  return [
-    `${listLines(lines)} saknar ; i slutet. JavaScript lägger ofta till det själv, men det är god vana att avsluta varje sats med ;.`,
+  const notes = [
+    `${listLines(lines)} saknar ; i slutet. En sats får gärna gå över flera rader, men den avslutas med ; på sista raden. JavaScript lägger ofta till det själv, men det är god vana att skriva det.`,
   ];
+  if (braceLines.length > 0) {
+    notes.push(
+      `${listLines(braceLines)} slutar med } men är en tilldelning, t.ex. const add = () => { … } eller const user = { … }. Då ska ; stå efter }. En vanlig function add() { … } behöver inget ;.`,
+    );
+  }
+  return notes;
 }
