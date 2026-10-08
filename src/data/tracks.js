@@ -213,6 +213,21 @@ export const tracks = [
     ],
   },
   {
+    id: 'debug-js',
+    title: 'Felsökning: JavaScript',
+    reward: { emoji: '🔍', name: 'Förstoringsglas' },
+    docs: [
+      {
+        title: 'Hitta och rätta fel i JavaScript',
+        url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_went_wrong',
+      },
+      {
+        title: 'Vanliga felmeddelanden',
+        url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors',
+      },
+    ],
+  },
+  {
     id: 'jsx',
     title: 'React: JSX',
     reward: { emoji: '💻', name: 'Laptop' },
@@ -338,6 +353,25 @@ export const tracks = [
       {
         title: 'Du kanske inte behöver en effekt',
         url: 'https://react.dev/learn/you-might-not-need-an-effect',
+      },
+    ],
+  },
+  {
+    id: 'debug-react',
+    title: 'Felsökning: React',
+    reward: { emoji: '🐞', name: 'Nyckelpiga' },
+    docs: [
+      {
+        title: 'Uppdatera arrayer i state',
+        url: 'https://react.dev/learn/updating-arrays-in-state',
+      },
+      {
+        title: 'Flera state-uppdateringar i rad',
+        url: 'https://react.dev/learn/queueing-a-series-of-state-updates',
+      },
+      {
+        title: 'Keys i listor',
+        url: 'https://react.dev/learn/rendering-lists',
       },
     ],
   },

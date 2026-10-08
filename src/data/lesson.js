@@ -3783,6 +3783,374 @@ async function loadCounts() {
     ],
   },
   {
+    id: 'debug-js-01',
+    title: 'Ett = för lite',
+    xp: 15,
+    track: 'debug-js',
+    isBoss: false,
+    description:
+      'I den här banan är koden redan skriven, men den har ett fel. Läs testerna som inte går igenom: de visar vad koden ger och vad den borde ge. Ett klassiskt fel är = i stället för ===. Ett = tilldelar ett värde, === jämför två värden.',
+    task: 'Uppgift: `isAdmin` säger att alla är admin, även "guest". Hitta felet och rätta det.',
+    starterCode: `function isAdmin(role) {
+  if (role = 'admin') {
+    return true;
+  }
+  return false;
+}`,
+    solution: `function isAdmin(role) {
+  if (role === 'admin') {
+    return true;
+  }
+  return false;
+}`,
+    hints: [
+      'Titta på villkoret i if-satsen.',
+      "role = 'admin' ger role ett nytt värde i stället för att jämföra.",
+      "Skriv role === 'admin'.",
+    ],
+    tests: [
+      {
+        description: "isAdmin('admin') returnerar true",
+        code: "isAdmin('admin')",
+        expected: true,
+      },
+      {
+        description: "isAdmin('guest') returnerar false",
+        code: "isAdmin('guest')",
+        expected: false,
+      },
+      {
+        description: 'isAdmin() returnerar false',
+        code: 'isAdmin()',
+        expected: false,
+      },
+    ],
+  },
+  {
+    id: 'debug-js-02',
+    title: 'Svaret som försvann',
+    xp: 15,
+    track: 'debug-js',
+    isBoss: false,
+    description:
+      'Får du undefined när du väntade dig ett värde? Då saknas ofta en return. En funktion som inte returnerar något ger alltid undefined, även om den räknar ut rätt svar inuti.',
+    task: 'Uppgift: `getTotal` ska returnera summan av priserna, men ger undefined. Hitta felet och rätta det.',
+    starterCode: `function getTotal(prices) {
+  prices.reduce((sum, price) => sum + price, 0);
+}`,
+    solution: `function getTotal(prices) {
+  return prices.reduce((sum, price) => sum + price, 0);
+}`,
+    hints: [
+      'Testet säger att funktionen ger undefined.',
+      'Summan räknas ut, men vad händer med den sedan?',
+      'Lägg till return före prices.reduce.',
+    ],
+    tests: [
+      {
+        description: 'getTotal([10, 20]) returnerar 30',
+        code: 'getTotal([10, 20])',
+        expected: 30,
+      },
+      {
+        description: 'getTotal([5, 5, 5]) returnerar 15',
+        code: 'getTotal([5, 5, 5])',
+        expected: 15,
+      },
+      {
+        description: 'getTotal([]) returnerar 0',
+        code: 'getTotal([])',
+        expected: 0,
+      },
+    ],
+  },
+  {
+    id: 'debug-js-03',
+    title: 'Klamrar som slukar svaret',
+    xp: 15,
+    track: 'debug-js',
+    isBoss: false,
+    description:
+      'En arrow function utan klamrar returnerar värdet direkt: n => n * 2. Med klamrar blir det ett block, och då måste du skriva return själv: n => { return n * 2; }. Glömmer du det blir svaret undefined.',
+    task: 'Uppgift: `doubleAll` ska dubbla varje tal, men ger bara undefined. Hitta felet och rätta det.',
+    starterCode: `const doubleAll = numbers => numbers.map(n => {
+  n * 2;
+});`,
+    solution: 'const doubleAll = numbers => numbers.map(n => n * 2);',
+    hints: [
+      'Testet visar en array full av null. Så skrivs undefined i en array som text.',
+      'Arrow functionen i map har klamrar men ingen return.',
+      'Skriv numbers.map(n => n * 2) eller lägg till return.',
+    ],
+    tests: [
+      {
+        description: 'doubleAll([1, 2, 3]) returnerar [2, 4, 6]',
+        code: 'doubleAll([1, 2, 3])',
+        expected: [2, 4, 6],
+      },
+      {
+        description: 'doubleAll([0, -5]) returnerar [0, -10]',
+        code: 'doubleAll([0, -5])',
+        expected: [0, -10],
+      },
+    ],
+  },
+  {
+    id: 'debug-js-04',
+    title: 'Ett varv för mycket',
+    xp: 15,
+    track: 'debug-js',
+    isBoss: false,
+    description:
+      'Får du NaN (Not a Number) har du räknat med något som inte är ett tal, ofta undefined. Lägg in console.log i loopen för att se vad som händer i varje varv, t.ex. console.log(i, numbers[i]). Det du skriver ut visas under Konsol.',
+    task: 'Uppgift: `sumAll` ger NaN i stället för summan. Lägg gärna in en console.log i loopen för att se varför. Hitta sedan felet och rätta det.',
+    starterCode: `function sumAll(numbers) {
+  let total = 0;
+  for (let i = 0; i <= numbers.length; i++) {
+    total = total + numbers[i];
+  }
+  return total;
+}
+
+sumAll([1, 2, 3]);`,
+    solution: `function sumAll(numbers) {
+  let total = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    total = total + numbers[i];
+  }
+  return total;
+}
+
+sumAll([1, 2, 3]);`,
+    hints: [
+      'Skriv console.log(i, numbers[i]); i loopen och kolla sista raden i konsolen.',
+      'Arrayen [1, 2, 3] har index 0, 1 och 2. Vad är numbers[3]?',
+      'Villkoret ska vara i < numbers.length, inte <=.',
+    ],
+    tests: [
+      {
+        description: 'sumAll([1, 2, 3]) returnerar 6',
+        code: 'sumAll([1, 2, 3])',
+        expected: 6,
+      },
+      {
+        description: 'sumAll([5]) returnerar 5',
+        code: 'sumAll([5])',
+        expected: 5,
+      },
+      {
+        description: 'sumAll([]) returnerar 0',
+        code: 'sumAll([])',
+        expected: 0,
+      },
+    ],
+  },
+  {
+    id: 'debug-js-05',
+    title: 'Text i stället för tal',
+    xp: 15,
+    track: 'debug-js',
+    isBoss: false,
+    description:
+      'Det man skriver i ett formulär är alltid text, även om det ser ut som ett tal. 2 + "3" ger "23", för + med text slår ihop texterna. Gör om texten till ett tal med Number("3") innan du räknar.',
+    task: 'Uppgift: `addToCart(count, input)` lägger till antalet från ett formulärfält. input är text, så 2 varor plus "3" blir "23". Rätta funktionen så att den räknar med tal.',
+    starterCode: `function addToCart(count, input) {
+  return count + input;
+}`,
+    solution: `function addToCart(count, input) {
+  return count + Number(input);
+}`,
+    hints: [
+      'Testet visar "23", alltså text och inte ett tal.',
+      'input är text. Den måste bli ett tal innan du räknar.',
+      'Skriv count + Number(input).',
+    ],
+    tests: [
+      {
+        description: "addToCart(2, '3') returnerar talet 5",
+        code: "addToCart(2, '3')",
+        expected: 5,
+      },
+      {
+        description: "addToCart(0, '10') returnerar talet 10",
+        code: "addToCart(0, '10')",
+        expected: 10,
+      },
+    ],
+  },
+  {
+    id: 'debug-js-06',
+    title: 'Läs felmeddelandet',
+    xp: 15,
+    track: 'debug-js',
+    isBoss: false,
+    description:
+      'Ett felmeddelande som "Cannot read properties of undefined (reading \'0\')" betyder att du försökte läsa [0] från något som är undefined. Leta efter var värdet kommer ifrån. Ofta är ett namn felstavat, och JavaScript skiljer på stora och små bokstäver.',
+    task: 'Uppgift: `getInitials(user)` ska returnera initialerna, t.ex. "AL" för Ada Lovelace, men kraschar. Läs felmeddelandet i testet, hitta felet och rätta det.',
+    starterCode: `const user = { firstName: 'Ada', lastName: 'Lovelace' };
+
+function getInitials(user) {
+  return user.firstname[0] + user.lastName[0];
+}`,
+    solution: `const user = { firstName: 'Ada', lastName: 'Lovelace' };
+
+function getInitials(user) {
+  return user.firstName[0] + user.lastName[0];
+}`,
+    hints: [
+      'Felet säger att något är undefined när [0] läses.',
+      'Jämför namnen i getInitials med namnen i objektet user.',
+      'firstname ska vara firstName, med stort N.',
+    ],
+    tests: [
+      {
+        description: 'getInitials(user) returnerar "AL"',
+        code: 'getInitials(user)',
+        expected: 'AL',
+      },
+      {
+        description: 'Fungerar för Grace Hopper',
+        code: "getInitials({ firstName: 'Grace', lastName: 'Hopper' })",
+        expected: 'GH',
+      },
+    ],
+  },
+  {
+    id: 'debug-js-07',
+    title: 'Originalet ändrades',
+    xp: 15,
+    track: 'debug-js',
+    isBoss: false,
+    description:
+      'Vissa array-metoder ändrar arrayen de anropas på, t.ex. sort, push och reverse. Det kan ge buggar som syns någon helt annanstans i koden, eftersom någon annan också använder samma array. Använd en metod som ger en ny array, som toSorted, eller kopiera först med [...array].',
+    task: 'Uppgift: `getTopScore` returnerar rätt tal, men den kastar om ordningen i scores som man skickar in. Rätta den så att scores inte ändras.',
+    starterCode: `function getTopScore(scores) {
+  return scores.sort((a, b) => b - a)[0];
+}`,
+    solution: `function getTopScore(scores) {
+  return scores.toSorted((a, b) => b - a)[0];
+}`,
+    hints: [
+      'Det andra testet visar att arrayen man skickar in har ändrats.',
+      'sort ändrar arrayen den anropas på.',
+      'Använd toSorted i stället för sort.',
+    ],
+    tests: [
+      {
+        description: 'getTopScore([3, 9, 5]) returnerar 9',
+        code: 'getTopScore([3, 9, 5])',
+        expected: 9,
+      },
+      {
+        description: 'scores har samma ordning efteråt',
+        code: '(() => { const scores = [3, 9, 5]; getTopScore(scores); return scores; })()',
+        expected: [3, 9, 5],
+      },
+    ],
+  },
+  {
+    id: 'debug-js-08',
+    title: 'Ett glömt await',
+    xp: 15,
+    track: 'debug-js',
+    isBoss: false,
+    description:
+      'fetch och response.json() ger Promises, alltså svar som kommer senare. Utan await får du själva Promiset i stället för värdet. Felet "response.json is not a function" betyder att response inte är ett svar än, utan ett Promise.',
+    task: 'Uppgift: `getUserName(id)` ska hämta /api/users/ följt av id och returnera namnet, men kraschar. Hitta felen och rätta dem.',
+    starterCode: `async function getUserName(id) {
+  const response = fetch(\`/api/users/\${id}\`);
+  const user = response.json();
+  return user.name;
+}`,
+    solution: `async function getUserName(id) {
+  const response = await fetch(\`/api/users/\${id}\`);
+  const user = await response.json();
+  return user.name;
+}`,
+    hints: [
+      'Felet säger att response.json inte är en funktion. Vad är response egentligen?',
+      'fetch ger ett Promise. Du måste vänta in svaret.',
+      'Lägg till await både före fetch och före response.json().',
+    ],
+    tests: [
+      {
+        description: 'getUserName(1) ger "Ada Lovelace"',
+        code: 'getUserName(1)',
+        expected: 'Ada Lovelace',
+      },
+      {
+        description: 'getUserName(3) ger "Grace Hopper"',
+        code: 'getUserName(3)',
+        expected: 'Grace Hopper',
+      },
+    ],
+  },
+  {
+    id: 'debug-js-boss-01',
+    title: 'Boss: Orderrapporten',
+    xp: 30,
+    track: 'debug-js',
+    isBoss: true,
+    description:
+      'Nu är det flera fel i samma funktion. Ta ett i taget: läs ett test som inte går igenom, hitta orsaken, rätta och kör igen. console.log är din bästa vän.',
+    task: `Uppgift: \`summarize(orders)\` ska ge en rad som "Totalt 175 kr. 2 obetalda."
+  Summan är alla ordrars price.
+  Obetalda är ordrarna där isPaid är false.
+  Finns inga obetalda ska det stå "Allt är betalt".
+  Funktionen har tre fel. Hitta och rätta dem.`,
+    starterCode: `function summarize(orders) {
+  let total = 0;
+  for (let i = 1; i < orders.length; i++) {
+    total = total + orders[i].price;
+  }
+
+  const unpaid = orders.filter(order => {
+    !order.isPaid;
+  });
+
+  const status =
+    unpaid.length = 0 ? 'Allt är betalt' : \`\${unpaid.length} obetalda\`;
+
+  return \`Totalt \${total} kr. \${status}.\`;
+}`,
+    solution: `function summarize(orders) {
+  let total = 0;
+  for (let i = 0; i < orders.length; i++) {
+    total = total + orders[i].price;
+  }
+
+  const unpaid = orders.filter(order => !order.isPaid);
+
+  const status =
+    unpaid.length === 0 ? 'Allt är betalt' : \`\${unpaid.length} obetalda\`;
+
+  return \`Totalt \${total} kr. \${status}.\`;
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Tre ordrar, två obetalda',
+        code: 'summarize([{ price: 100, isPaid: true }, { price: 50, isPaid: false }, { price: 25, isPaid: false }])',
+        expected: 'Totalt 175 kr. 2 obetalda.',
+      },
+      {
+        description: 'Alla ordrar betalda',
+        code: 'summarize([{ price: 40, isPaid: true }, { price: 60, isPaid: true }])',
+        expected: 'Totalt 100 kr. Allt är betalt.',
+      },
+      {
+        description: 'En obetald order',
+        code: 'summarize([{ price: 30, isPaid: false }])',
+        expected: 'Totalt 30 kr. 1 obetalda.',
+      },
+      {
+        description: 'Inga ordrar alls',
+        code: 'summarize([])',
+        expected: 'Totalt 0 kr. Allt är betalt.',
+      },
+    ],
+  },
+  {
     id: 'jsx-01',
     title: 'Din första komponent',
     xp: 10,
@@ -7522,6 +7890,564 @@ function UserSearch() {
         pattern: /,\s*\[\s*query\s*\]\s*\)/,
       },
       { description: 'Koden kontrollerar response.ok', pattern: /\.\s*ok\b/ },
+    ],
+  },
+  {
+    id: 'debug-react-01',
+    title: 'Funktionen som körs för tidigt',
+    xp: 15,
+    track: 'debug-react',
+    isBoss: false,
+    description:
+      'onClick ska få en funktion som React anropar vid klick. Skriver du onClick={onLike()} anropas funktionen direkt när komponenten ritas, och onClick får det funktionen returnerar. Skicka funktionen utan parenteser: onClick={onLike}.',
+    task: 'Uppgift: `LikeButton` anropar onLike en gång direkt, och sedan inte när man klickar. Hitta felet och rätta det.',
+    fileName: 'App.jsx',
+    preview: '<LikeButton onLike={() => {}} />',
+    starterCode: `function LikeButton({ onLike }) {
+  return <button onClick={onLike()}>Gilla</button>;
+}`,
+    solution: `function LikeButton({ onLike }) {
+  return <button onClick={onLike}>Gilla</button>;
+}`,
+    hints: [
+      'Första testet visar att onLike anropas innan någon klickat.',
+      'onLike() med parenteser anropar funktionen direkt.',
+      'Skriv onClick={onLike}.',
+    ],
+    tests: [
+      {
+        description: 'onLike anropas inte innan man klickat',
+        code: '(() => { let clicks = 0; try { __mount(<LikeButton onLike={() => clicks++} />); } catch {} return clicks; })()',
+        expected: 0,
+      },
+      {
+        description: 'Tre klick anropar onLike tre gånger',
+        code: "(() => { let clicks = 0; __mount(<LikeButton onLike={() => clicks++} />).click('Gilla').click('Gilla').click('Gilla'); return clicks; })()",
+        expected: 3,
+      },
+    ],
+  },
+  {
+    id: 'debug-react-02',
+    title: 'Ett objekt där det ska vara text',
+    xp: 15,
+    track: 'debug-react',
+    isBoss: false,
+    description:
+      'onChange får ett event-objekt, inte texten. Själva texten ligger i event.target.value. Sparar du hela eventet i state och försöker visa det får du felet "Objects are not valid as a React child", för React kan inte visa ett objekt som text.',
+    task: 'Uppgift: `NameForm` kraschar när man skriver i fältet. Läs felmeddelandet, hitta felet och rätta det.',
+    fileName: 'App.jsx',
+    preview: '<NameForm />',
+    starterCode: `import { useState } from 'react';
+
+function NameForm() {
+  const [name, setName] = useState('');
+
+  return (
+    <div>
+      <input value={name} onChange={event => setName(event)} />
+      <p>Hej {name}!</p>
+    </div>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function NameForm() {
+  const [name, setName] = useState('');
+
+  return (
+    <div>
+      <input value={name} onChange={event => setName(event.target.value)} />
+      <p>Hej {name}!</p>
+    </div>
+  );
+}`,
+    hints: [
+      'Felet säger att ett objekt visas som text.',
+      'Vad är event? Var finns texten man skrev?',
+      'Skriv setName(event.target.value).',
+    ],
+    tests: [
+      {
+        description: 'Det man skriver visas',
+        code: "__mount(<NameForm />).type('Ada').text('p')",
+        expected: 'Hej Ada!',
+      },
+      {
+        description: 'Fältet visar det man skrev',
+        code: "__mount(<NameForm />).type('Linus').html().includes('value=\"Linus\"')",
+        expected: true,
+      },
+    ],
+  },
+  {
+    id: 'debug-react-03',
+    title: 'State som ändrades i smyg',
+    xp: 15,
+    track: 'debug-react',
+    isBoss: false,
+    description:
+      'React ritar bara om när du ger state ett nytt värde. push ändrar arrayen som redan finns, och setTodos(todos) skickar samma array igen. Då ser React ingen ändring och ritar inte om. Skapa alltid en ny array, t.ex. med spread.',
+    task: 'Uppgift: Knappen "Lägg till" ska lägga till en uppgift i listan, men ingenting händer. Hitta felet och rätta det.',
+    fileName: 'App.jsx',
+    preview: '<TodoList />',
+    starterCode: `import { useState } from 'react';
+
+function TodoList() {
+  const [todos, setTodos] = useState([{ id: 1, text: 'Handla' }]);
+
+  function handleAdd() {
+    todos.push({ id: todos.length + 1, text: 'Ny uppgift' });
+    setTodos(todos);
+  }
+
+  return (
+    <div>
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
+      </ul>
+      <button onClick={handleAdd}>Lägg till</button>
+    </div>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function TodoList() {
+  const [todos, setTodos] = useState([{ id: 1, text: 'Handla' }]);
+
+  function handleAdd() {
+    setTodos([...todos, { id: todos.length + 1, text: 'Ny uppgift' }]);
+  }
+
+  return (
+    <div>
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
+      </ul>
+      <button onClick={handleAdd}>Lägg till</button>
+    </div>
+  );
+}`,
+    hints: [
+      'Listan ritas inte om. Vad skickar du till setTodos?',
+      'push ändrar den gamla arrayen. React behöver en ny.',
+      "Skriv setTodos([...todos, { id: todos.length + 1, text: 'Ny uppgift' }]);",
+    ],
+    tests: [
+      {
+        description: 'Ett klick ger två uppgifter',
+        code: "__mount(<TodoList />).click('Lägg till').count('li')",
+        expected: 2,
+      },
+      {
+        description: 'Tre klick ger fyra uppgifter',
+        code: "__mount(<TodoList />).click('Lägg till').click('Lägg till').click('Lägg till').count('li')",
+        expected: 4,
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'Ingen push på state',
+        pattern: /todos\.push\(/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
+    id: 'debug-react-04',
+    title: 'Två med samma key',
+    xp: 15,
+    track: 'debug-react',
+    isBoss: false,
+    description:
+      'En key måste vara unik i listan, annars blandar React ihop elementen när listan ändras. Text är en dålig key, för två saker kan heta likadant. Ett id är alltid unikt.',
+    task: 'Uppgift: Listan visas, men React varnar för att två element har samma key. Hitta felet och rätta det.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `const todos = [
+  { id: 1, text: 'Handla' },
+  { id: 2, text: 'Träna' },
+  { id: 3, text: 'Handla' },
+];
+
+function App() {
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.text}>{todo.text}</li>
+      ))}
+    </ul>
+  );
+}`,
+    solution: `const todos = [
+  { id: 1, text: 'Handla' },
+  { id: 2, text: 'Träna' },
+  { id: 3, text: 'Handla' },
+];
+
+function App() {
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>{todo.text}</li>
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Två uppgifter heter "Handla".',
+      'Vad finns i varje todo som alltid är unikt?',
+      'Skriv key={todo.id}.',
+    ],
+    tests: [
+      {
+        description: 'Alla tre uppgifter visas',
+        code: '__render(<App />)',
+        expected: '<ul><li>Handla</li><li>Träna</li><li>Handla</li></ul>',
+      },
+      {
+        description: 'Alla keys är unika',
+        code: '(__render(<App />), __keyProblems)',
+        expected: [],
+      },
+    ],
+  },
+  {
+    id: 'debug-react-05',
+    title: 'Fel namn på propen',
+    xp: 15,
+    track: 'debug-react',
+    isBoss: false,
+    description:
+      'En prop heter det föräldern skriver. Skickar App onDelete men TodoItem plockar ut onRemove, så blir onRemove undefined. Felet "onRemove is not a function" betyder att du försöker anropa något som inte är en funktion.',
+    task: 'Uppgift: Knappen "Ta bort" kraschar med ett fel. Läs felmeddelandet, jämför App och `TodoItem` och rätta felet.',
+    fileName: 'App.jsx',
+    preview: '<App />',
+    starterCode: `import { useState } from 'react';
+
+function TodoItem({ todo, onRemove }) {
+  return (
+    <li>
+      {todo.text} <button onClick={() => onRemove(todo.id)}>Ta bort</button>
+    </li>
+  );
+}
+
+function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Handla' },
+    { id: 2, text: 'Träna' },
+  ]);
+
+  function handleRemove(id) {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem key={todo.id} todo={todo} onDelete={handleRemove} />
+      ))}
+    </ul>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function TodoItem({ todo, onRemove }) {
+  return (
+    <li>
+      {todo.text} <button onClick={() => onRemove(todo.id)}>Ta bort</button>
+    </li>
+  );
+}
+
+function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Handla' },
+    { id: 2, text: 'Träna' },
+  ]);
+
+  function handleRemove(id) {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem key={todo.id} todo={todo} onRemove={handleRemove} />
+      ))}
+    </ul>
+  );
+}`,
+    hints: [
+      'Felet säger att onRemove inte är en funktion.',
+      'Vilket namn har propen när App skickar den?',
+      'Byt onDelete mot onRemove i App, så att namnen stämmer.',
+    ],
+    tests: [
+      {
+        description: 'Ett klick tar bort en uppgift',
+        code: "__mount(<App />).click('Ta bort').count('li')",
+        expected: 1,
+      },
+      {
+        description: 'Rätt uppgift tas bort',
+        code: "__mount(<App />).click('Ta bort').text('li').startsWith('Träna')",
+        expected: true,
+      },
+    ],
+  },
+  {
+    id: 'debug-react-06',
+    title: '+2 som bara ger +1',
+    xp: 15,
+    track: 'debug-react',
+    isBoss: false,
+    description:
+      'setCount(count + 1) ändrar inte count direkt. Det ber React om ett nytt värde vid nästa ritning, så count har kvar sitt gamla värde resten av funktionen. Vill du räkna vidare på det senaste värdet skickar du en funktion: setCount(c => c + 1). Då får c alltid det senaste värdet.',
+    task: 'Uppgift: Knappen "+2" ökar bara count med 1. Rätta `handleAddTwo` så att den ökar med 2. Behåll två anrop av setCount.',
+    fileName: 'App.jsx',
+    preview: '<Counter />',
+    starterCode: `import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleAddTwo() {
+    setCount(count + 1);
+    setCount(count + 1);
+  }
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={handleAddTwo}>+2</button>
+    </div>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleAddTwo() {
+    setCount(c => c + 1);
+    setCount(c => c + 1);
+  }
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={handleAddTwo}>+2</button>
+    </div>
+  );
+}`,
+    hints: [
+      'Båda anropen räknar med samma gamla count.',
+      'Skicka en funktion till setCount i stället för ett värde.',
+      'Skriv setCount(c => c + 1); två gånger.',
+    ],
+    tests: [
+      {
+        description: 'Ett klick ger 2',
+        code: "__mount(<Counter />).click('+2').text('p')",
+        expected: '2',
+      },
+      {
+        description: 'Två klick ger 4',
+        code: "__mount(<Counter />).click('+2').click('+2').text('p')",
+        expected: '4',
+      },
+    ],
+    sourceChecks: [
+      {
+        description: 'setCount anropas två gånger',
+        pattern: /setCount\s*\([^]*setCount\s*\(/,
+      },
+    ],
+  },
+  {
+    id: 'debug-react-07',
+    title: 'Klockan som fastnar',
+    xp: 15,
+    track: 'debug-react',
+    isBoss: false,
+    description:
+      'En effekt med [] körs bara en gång, så funktionen i setInterval ser alltid seconds som 0. Då blir setSeconds(seconds + 1) alltid 1. Med setSeconds(s => s + 1) får du det senaste värdet varje gång. Glöm inte heller att stoppa intervallet när komponenten tas bort.',
+    task: 'Uppgift: `Timer` fastnar på "1 sekunder", och intervallet fortsätter efter att Timer tagits bort. Hitta de två felen och rätta dem.',
+    fileName: 'App.jsx',
+    preview: '<Timer />',
+    starterCode: `import { useEffect, useState } from 'react';
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      setSeconds(seconds + 1);
+    }, 1000);
+  }, []);
+
+  return <p>{seconds} sekunder</p>;
+}`,
+    solution: `import { useEffect, useState } from 'react';
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSeconds(s => s + 1);
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return <p>{seconds} sekunder</p>;
+}`,
+    hints: [
+      'seconds är alltid 0 inuti intervallet. Använd en funktion i setSeconds.',
+      'Spara id:t från setInterval i en konstant.',
+      'Returnera () => clearInterval(id) från effekten.',
+    ],
+    tests: [
+      {
+        description: 'Efter 3 sekunder visas "3 sekunder"',
+        code: "__mount(<Timer />).tick(3000).text('p')",
+        expected: '3 sekunder',
+      },
+      {
+        description: 'Intervallet stoppas när Timer tas bort',
+        code: '(__mount(<Timer />).tick(1000).unmount(), __clock.active())',
+        expected: 0,
+      },
+    ],
+  },
+  {
+    id: 'debug-react-boss-01',
+    title: 'Boss: Inköpslistan',
+    xp: 30,
+    track: 'debug-react',
+    isBoss: true,
+    description:
+      'Flera fel i en hel komponent. Ta ett test i taget, läs vad som går fel och rätta en sak innan du går vidare till nästa.',
+    task: `Uppgift: \`ShoppingList\` har tre fel.
+  Vid submit ska sidan inte laddas om,
+    och varan ska läggas till i listan.
+  Två varor med samma namn ska kunna finnas i listan.
+  Kryssrutan bockar av en vara, och "2 kvar att köpa" ska stämma.
+  Hitta och rätta felen.`,
+    fileName: 'App.jsx',
+    preview: '<ShoppingList />',
+    starterCode: `import { useState } from 'react';
+
+function ShoppingList() {
+  const [items, setItems] = useState([]);
+  const [text, setText] = useState('');
+
+  function handleSubmit() {
+    items.push({ id: crypto.randomUUID(), text, bought: false });
+    setItems(items);
+    setText('');
+  }
+
+  function handleToggle(id) {
+    setItems(
+      items.map(item =>
+        item.id === id ? { ...item, bought: !item.bought } : item,
+      ),
+    );
+  }
+
+  const left = items.filter(item => !item.bought).length;
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={text} onChange={event => setText(event.target.value)} />
+      <button>Lägg till</button>
+      <ul>
+        {items.map(item => (
+          <li key={item.text}>
+            <input
+              type="checkbox"
+              checked={item.bought}
+              onChange={() => handleToggle(item.id)}
+            />
+            {item.text}
+          </li>
+        ))}
+      </ul>
+      <p>{left} kvar att köpa</p>
+    </form>
+  );
+}`,
+    solution: `import { useState } from 'react';
+
+function ShoppingList() {
+  const [items, setItems] = useState([]);
+  const [text, setText] = useState('');
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setItems([...items, { id: crypto.randomUUID(), text, bought: false }]);
+    setText('');
+  }
+
+  function handleToggle(id) {
+    setItems(
+      items.map(item =>
+        item.id === id ? { ...item, bought: !item.bought } : item,
+      ),
+    );
+  }
+
+  const left = items.filter(item => !item.bought).length;
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={text} onChange={event => setText(event.target.value)} />
+      <button>Lägg till</button>
+      <ul>
+        {items.map(item => (
+          <li key={item.id}>
+            <input
+              type="checkbox"
+              checked={item.bought}
+              onChange={() => handleToggle(item.id)}
+            />
+            {item.text}
+          </li>
+        ))}
+      </ul>
+      <p>{left} kvar att köpa</p>
+    </form>
+  );
+}`,
+    hints: [],
+    tests: [
+      {
+        description: 'Submit stoppar omladdningen',
+        code: "__mount(<ShoppingList />).type('Mjölk').submit()",
+        expected: true,
+      },
+      {
+        description: 'Varan läggs till i listan',
+        code: "(() => { const app = __mount(<ShoppingList />); app.type('Mjölk'); app.submit(); return [app.count('li'), app.text('li')]; })()",
+        expected: [1, 'Mjölk'],
+      },
+      {
+        description: 'Två varor med samma namn ger unika keys',
+        code: "(() => { const app = __mount(<ShoppingList />); app.type('Mjölk'); app.submit(); app.type('Mjölk'); app.submit(); return [app.count('li'), __keyProblems]; })()",
+        expected: [2, []],
+      },
+      {
+        description: 'En avbockad vara räknas inte som kvar',
+        code: "(() => { const app = __mount(<ShoppingList />); app.type('Mjölk'); app.submit(); app.type('Bröd'); app.submit(); app.type('Ost'); app.submit(); app.check(1); return app.text('p'); })()",
+        expected: '2 kvar att köpa',
+      },
     ],
   },
 ];

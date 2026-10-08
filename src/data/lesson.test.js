@@ -99,6 +99,26 @@ describe('rättning av lektionerna', () => {
 
 // Andra sätt att lösa uppgifterna som ska godkännas.
 const correctAnswers = [
+  [
+    'debug-js-03',
+    'const doubleAll = numbers => numbers.map(n => {\n  return n * 2;\n});',
+  ],
+  [
+    'debug-js-05',
+    'function addToCart(count, input) {\n  return count + parseInt(input);\n}',
+  ],
+  [
+    'debug-js-07',
+    'function getTopScore(scores) {\n  return Math.max(...scores);\n}',
+  ],
+  [
+    'debug-js-07',
+    'function getTopScore(scores) {\n  return [...scores].sort((a, b) => b - a)[0];\n}',
+  ],
+  [
+    'debug-react-06',
+    "import { useState } from 'react';\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  function handleAddTwo() {\n    setCount(previous => previous + 1);\n    setCount(previous => previous + 1);\n  }\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={handleAddTwo}>+2</button>\n    </div>\n  );\n}",
+  ],
   ['js-const-01', "const language = 'JavaScript' // kommentar"],
   ['js-let-01', 'let score = 0\nscore = 10'],
   ['js-let-02', 'let score = 10;\nscore += 5;'],
@@ -364,6 +384,26 @@ const correctAnswers = [
 
 // Vanliga fel och genvägar som ska underkännas.
 const wrongAnswers = [
+  // Bara loopen är rättad, filter och = är kvar.
+  [
+    'debug-js-boss-01',
+    "function summarize(orders) {\n  let total = 0;\n  for (let i = 0; i < orders.length; i++) {\n    total = total + orders[i].price;\n  }\n  const unpaid = orders.filter(order => {\n    !order.isPaid;\n  });\n  const status = unpaid.length = 0 ? 'Allt är betalt' : `${unpaid.length} obetalda`;\n  return `Totalt ${total} kr. ${status}.`;\n}",
+  ],
+  // Två av tre fel rättade, key är fortfarande item.text.
+  [
+    'debug-react-boss-01',
+    "import { useState } from 'react';\nfunction ShoppingList() {\n  const [items, setItems] = useState([]);\n  const [text, setText] = useState('');\n  function handleSubmit(event) {\n    event.preventDefault();\n    setItems([...items, { id: crypto.randomUUID(), text, bought: false }]);\n    setText('');\n  }\n  const left = items.filter(item => !item.bought).length;\n  return (\n    <form onSubmit={handleSubmit}>\n      <input value={text} onChange={event => setText(event.target.value)} />\n      <ul>\n        {items.map(item => (\n          <li key={item.text}>{item.text}</li>\n        ))}\n      </ul>\n      <p>{left} kvar att köpa</p>\n    </form>\n  );\n}",
+  ],
+  // Rätt svar men med ett anrop i stället för två.
+  [
+    'debug-react-06',
+    "import { useState } from 'react';\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  function handleAddTwo() {\n    setCount(count + 2);\n  }\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={handleAddTwo}>+2</button>\n    </div>\n  );\n}",
+  ],
+  // Räknar rätt men glömmer att stoppa intervallet.
+  [
+    'debug-react-07',
+    "import { useEffect, useState } from 'react';\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n  useEffect(() => {\n    setInterval(() => {\n      setSeconds(s => s + 1);\n    }, 1000);\n  }, []);\n  return <p>{seconds} sekunder</p>;\n}",
+  ],
   ['js-const-01', 'let language = "JavaScript";'],
   ['js-let-01', 'let score = 10;'],
   ['js-let-02', 'let score = 15;'],
