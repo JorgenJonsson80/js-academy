@@ -11,6 +11,8 @@ import HeroCard from './components/HeroCard';
 import LevelUp from './components/LevelUp';
 import { getGrowth } from './data/stages';
 import { runTests } from './runner/runTests';
+import AccountPanel from './components/AccountPanel';
+import { useCloudProgress } from './lib/useCloudProgress';
 
 function App() {
   const [lessonIndex, setLessonIndex] = useState(0);
@@ -58,6 +60,23 @@ function App() {
   useEffect(() => {
     localStorage.setItem('academy-drafts', JSON.stringify(drafts));
   }, [drafts]);
+
+  const account = useCloudProgress({
+    completedIds,
+    setCompletedIds,
+    drafts,
+    setDrafts,
+  });
+
+  // Efter utloggning töms webbläsaren, så att nästa person som loggar in
+  // här inte får med sig dina framsteg. De finns kvar i ditt konto.
+  async function handleSignOut() {
+    await account.signOut();
+    setCompletedIds([]);
+    setDrafts({});
+    setCode(lesson.starterCode);
+    setFeedback(null);
+  }
 
   const totalXp = lessons
     .filter(lesson => completedIds.includes(lesson.id))
@@ -245,6 +264,7 @@ function App() {
       <main>
         <div className="academy-layout">
           <aside aria-label="Banor och progression">
+            <AccountPanel account={account} onSignOut={handleSignOut} />
             <HeroCard
               growth={growth}
               totalXp={totalXp}

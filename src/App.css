@@ -584,3 +584,34 @@
 .level-up form {
   margin-top: 16px;
 }
+
+.account-panel {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.account-panel h2,
+.account-panel p {
+  margin: 0;
+}
+
+.account-panel form {
+  display: grid;
+  gap: 8px;
+}
+
+.account-panel input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  color: var(--text);
+  font: inherit;
+}
+
+.account-email {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
