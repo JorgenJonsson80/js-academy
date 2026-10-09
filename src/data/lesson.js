@@ -24,6 +24,10 @@ export const lessons = [
     isBoss: false,
     description:
       'console.log skriver ut ett värde i konsolen. Det är programmerarens viktigaste verktyg för att se vad koden gör. Text skrivs inom citattecken. Det du skriver ut visas under Konsol när du klickar på Kolla lösning.',
+    explain:
+      'console betyder konsol. Det är ett fönster där programmet kan skriva meddelanden till dig som programmerar. Användaren av en app ser det aldrig.\n\nParenteserna efter log är där du lägger det som ska skrivas ut. Text måste stå inom citattecken, enkla \' \' eller dubbla " ". Annars tror JavaScript att det är namnet på något. Semikolonet ; sist avslutar raden, ungefär som en punkt i en mening.',
+    example:
+      'console.log(\'Godmorgon!\');\nconsole.log("Det här är också text");',
     task: 'Uppgift: Skriv ut texten "Hej världen!" med console.log.',
     starterCode: '// Skriv din kod här',
     solution: "console.log('Hej världen!');",
@@ -48,6 +52,10 @@ export const lessons = [
     isBoss: false,
     description:
       'console.log kan skriva ut variabler, och flera värden på en gång med komma emellan: console.log("Poäng:", score) visar Poäng: 42. Lägg in console.log när du undrar vad en variabel innehåller. Det är det snabbaste sättet att hitta fel.',
+    explain:
+      "const name = 'Ada'; skapar en variabel. Tänk på den som en etikett med namnet name som sitter på värdet 'Ada'. Du lär dig mer om variabler i nästa övningar.\n\nNär du skriver variabelns namn utan citattecken hämtar JavaScript värdet den pekar på. Med citattecken blir det bara texten \"name\". Flera värden i samma console.log skiljs åt med komma, och de skrivs ut med ett mellanslag emellan.",
+    example:
+      "const city = 'Lund';\nconst year = 2026;\n\nconsole.log(city);\nconsole.log('År:', year);",
     task: 'Uppgift: Skriv först ut name. Skriv sedan ut texten "Ålder:" och age i samma console.log, med komma emellan.',
     starterCode: `const name = 'Ada';
 const age = 36;
@@ -89,6 +97,9 @@ console.log('Ålder:', age);`,
     track: 'js-basics',
     description:
       ' Med const skapar du en variabel som inte kan tilldelas ett nytt värde.',
+    explain:
+      'En variabel är ett namn på ett värde, så att du kan använda värdet igen senare. Du skapar den med const, ett namn, ett likhetstecken och värdet.\n\nLikhetstecknet = betyder här "får värdet", inte "är lika med" som i matte. Variabelnamn skrivs oftast med liten bokstav först och utan mellanslag, till exempel firstName.',
+    example: "const city = 'Göteborg';\nconst favoriteColor = 'grön';",
     task: 'Uppgift: Skapa en variabel som heter `language` med värdet "JavaScript".',
     starterCode: '// Skriv din kod här',
     solution: 'const language = "JavaScript";',
@@ -113,6 +124,9 @@ console.log('Ålder:', age);`,
     track: 'js-basics',
     isBoss: false,
     description: 'Tal skrivs utan citattecken.',
+    explain:
+      "Tal skrivs utan citattecken. 25 är ett tal som du kan räkna med, medan '25' är text som bara råkar se ut som ett tal.\n\nDecimaltal skrivs med punkt, inte komma: 3.5.",
+    example: 'const year = 2026;\nconst price = 99.5;',
     task: 'Uppgift: Skapa en konstant som heter `age` med värdet 25.',
     starterCode: '// Skriv din kod här',
     solution: 'const age = 25;',
@@ -134,6 +148,9 @@ console.log('Ålder:', age);`,
     isBoss: false,
     description:
       'Med let kan en variabel tilldelas ett nytt värde efter att den skapats.',
+    explain:
+      'Med let skapar du en variabel som får ändras senare. Första gången skriver du let. När du ger den ett nytt värde skriver du bara namnet, ett = och det nya värdet, utan let.\n\nSkriver du let en gång till med samma namn blir det ett fel, eftersom variabeln redan finns.',
+    example: 'let level = 1;\nlevel = 2;',
     task: 'Uppgift: Skapa `score` med let och startvärdet 0. Tilldela sedan score värdet 10.',
     starterCode: '// Skriv din kod här',
     solution: `let score = 0;
@@ -162,6 +179,9 @@ console.log('Ålder:', age);`,
     isBoss: false,
     description:
       'Du kan använda variabelns nuvarande värde för att beräkna dess nästa värde.',
+    explain:
+      'score = score + 5 läses från höger till vänster. Först räknar JavaScript ut score + 5 med det gamla värdet. Sedan sparas svaret i score.\n\nDet här är ett av de vanligaste mönstren i programmering. Det används för poäng, räknare och summor.',
+    example: 'let coins = 3;\ncoins = coins + 2;\n// coins är nu 5',
     task: 'Skapa `score` med let och värdet 10. Öka sedan värdet med 5 genom att skriva score = score + 5.',
     starterCode: '// Skriv din kod här',
     solution: `let score = 10;
@@ -193,6 +213,9 @@ console.log('Ålder:', age);`,
     track: 'js-basics',
     isBoss: false,
     description: 'En if-sats kör sitt kodblock bara när villkoret är sant.',
+    explain:
+      'En if-sats ser ut så här: if (villkor) { kod }. Villkoret inom parenteserna blir antingen sant eller falskt. Är det sant körs koden mellan klamrarna { }. Annars hoppas den över.\n\n>= betyder "större än eller lika med". Andra jämförelser är > (större än), < (mindre än), <= och === (lika med).',
+    example: 'let lives = 3;\nif (lives < 5) {\n  lives = lives + 1;\n}',
     task: 'Skapa `score` med let och värdet 10. Om score >= 10 ska du öka värdet med score = score + 5.',
     starterCode: '// Skriv din kod här',
     solution: `let score = 10;
@@ -224,6 +247,10 @@ if (score >= 10) {
     isBoss: false,
     description:
       'Ett if/else-statement väljer ett av två kodblock beroende på om villkoret är sant eller falskt.',
+    explain:
+      'else betyder "annars". Koden i else-blocket körs bara när villkoret i if är falskt. Exakt ett av blocken körs, aldrig båda.\n\nHela if/else-satsen skrivs i ett svep: if (villkor) { … } else { … }.',
+    example:
+      'let temperature = 12;\nif (temperature >= 20) {\n  temperature = temperature - 1;\n} else {\n  temperature = temperature + 1;\n}',
     task: 'Skapa `points` med let och värdet 4. Om points >= 5 ska du tilldela points värdet points + 10, annars points + 2. Använd if och else.',
     starterCode: '// Skriv din kod här',
     solution: `let points = 4;
@@ -259,6 +286,10 @@ if (points >= 5) {
     isBoss: false,
     description:
       'En for-loop upprepar ett kodblock så länge dess villkor är sant.',
+    explain:
+      'En for-loop har tre delar inom parenteserna, åtskilda med semikolon. Först let i = 0, som är startvärdet. Sedan i < 3, villkoret för att köra ett varv till. Sist i++, som ökar i med 1 efter varje varv.\n\nMed i = 0 och i < 3 blir det tre varv: i är 0, 1 och 2. Lägg gärna in console.log(i) i loopen för att se det.',
+    example:
+      'let stars = 0;\nfor (let i = 0; i < 4; i++) {\n  stars = stars + 1;\n}\n// stars är nu 4',
     task: 'Skapa `total` med let och värdet 0. Använd en for-loop med let i = 0, villkoret i < 3 och ökningen i++. Lägg till 2 i total varje varv med total = total + 2.',
     starterCode: '// Skriv din kod här',
     solution: `let total = 0;
@@ -284,6 +315,10 @@ for (let i = 0; i < 3; i++) {
     isBoss: false,
     description:
       'En variabel utanför loopen behåller sitt värde mellan varven. Därför kan den samla en summa.',
+    explain:
+      'i ändras för varje varv i loopen, och du kan använda den i koden inuti. Börjar loopen på 1 och går till och med 3 får du talen 1, 2 och 3.\n\ntotal skapas före loopen. Skapar du den inuti loopen börjar den om på 0 varje varv.',
+    example:
+      'let sum = 0;\nfor (let i = 1; i <= 3; i++) {\n  sum = sum + i;\n}\n// sum är 1 + 2 + 3 = 6',
     task: 'Skapa `total` med let och värdet 0. Använd en for-loop med let i = 1, villkoret i <= 4 och ökningen i++. Lägg till i i total varje varv med total = total + i.',
     starterCode: '// Skriv din kod här',
     solution: `let total = 0;
@@ -311,6 +346,9 @@ for (let i = 1; i <= 4; i++) {
     isBoss: false,
     description:
       'En boolean har värdet true eller false och kan beskriva om något är på eller av.',
+    explain:
+      "En boolean har bara två möjliga värden: true (sant) och false (falskt). De skrivs utan citattecken. 'true' med citattecken är text och inte en boolean.\n\nBooleans används för saker som är av eller på: är användaren inloggad, är uppgiften klar, är lampan tänd.",
+    example: 'const isLoggedIn = false;\nconst hasCoffee = true;',
     task: 'Uppgift: Skapa konstanten `isReady` med det booleska värdet true.',
     starterCode: '// Skriv din kod här',
     solution: 'const isReady = true;',
@@ -336,6 +374,9 @@ for (let i = 1; i <= 4; i++) {
     isBoss: false,
     description:
       'Operatorn >= kontrollerar om vänstra värdet är större än eller lika med det högra. Resultatet är en boolean.',
+    explain:
+      'En jämförelse som 10 > 3 ger en boolean som svar. Du kan spara svaret direkt i en variabel, utan if.\n\nNamn på booleans börjar ofta med is eller has, så att det låter som en ja/nej-fråga: isAdult, hasTicket.',
+    example: 'const isTall = 190 >= 180;\n// isTall är true',
     task: 'Uppgift: Skapa konstanten `isAdult` och tilldela den resultatet av jämförelsen 20 >= 18.',
     starterCode: '// Skriv din kod här',
     solution: 'const isAdult = 20 >= 18;',
@@ -363,6 +404,10 @@ for (let i = 1; i <= 4; i++) {
     track: 'arrays',
     isBoss: false,
     description: 'En array samlar flera värden i en ordnad lista.',
+    explain:
+      'En array är en lista med värden inom hakparenteser [ ], åtskilda med komma. Värdena kan vara tal, text eller något annat.\n\nEn tom array skrivs [].',
+    example:
+      "const colors = ['röd', 'grön', 'blå'];\nconst ages = [12, 15, 18];",
     task: 'Uppgift: Skapa en konstant som heter `numbers` med arrayen [1, 2, 3].',
     starterCode: '// Skriv din kod här',
     solution: 'const numbers = [1, 2, 3];',
@@ -387,6 +432,10 @@ for (let i = 1; i <= 4; i++) {
     track: 'arrays',
     isBoss: false,
     description: 'Egenskapen length anger hur många värden en array innehåller',
+    explain:
+      'length skrivs efter arrayen med en punkt: colors.length. Det ger antalet värden i arrayen.\n\nlength har inga parenteser efter sig. Den är en egenskap, ett värde som arrayen har, och inte en funktion som ska anropas.',
+    example:
+      "const colors = ['röd', 'grön'];\nconst amount = colors.length;\n// amount är 2",
     task: 'Uppgift: Skapa konstanten `count` och tilldela den längden av [10, 20, 30] med .length.',
     starterCode: '// Skriv din kod här',
     solution: 'const count = [10, 20, 30].length;',
@@ -407,6 +456,10 @@ for (let i = 1; i <= 4; i++) {
     track: 'arrays',
     isBoss: false,
     description: 'Arrayens positioner kallas index. Första värdet har index 0.',
+    explain:
+      'Varje värde i en array har ett nummer, ett index. Räkningen börjar på 0, så första värdet har index 0, andra index 1 och så vidare.\n\nDu hämtar ett värde med arrayens namn och index inom hakparenteser: colors[0].',
+    example:
+      "const colors = ['röd', 'grön', 'blå'];\nconst second = colors[1];\n// second är 'grön'",
     task: 'Uppgift: Skapa konstanten `first` och hämta första värdet ur [10, 20, 30] med indexering.',
     starterCode: '// Skriv din kod här',
     solution: 'const first = [10, 20, 30][0];',
@@ -430,6 +483,10 @@ for (let i = 1; i <= 4; i++) {
     isBoss: false,
     description:
       'Metoden push lägger till ett värde sist i en array. Det fungerar även med const, eftersom push ändrar innehållet och inte vilken array variabeln pekar på.',
+    explain:
+      'push är en metod, en funktion som hör till arrayen. Den anropas med punkt och parenteser: lista.push(värde).\n\nVärdet läggs till sist i arrayen. Du skriver inte = framför, för push ändrar arrayen direkt.',
+    example:
+      "const pets = ['katt'];\npets.push('hund');\n// pets är ['katt', 'hund']",
     task: 'Uppgift: Lägg till "päron" sist i arrayen fruits med push.',
     starterCode: `const fruits = ['äpple', 'banan'];
 
@@ -503,6 +560,9 @@ fruits.push('päron');`,
     isBoss: false,
     description:
       'Ett objekt samlar värden under namn, så kallade egenskaper. Det skrivs inuti { } med namn: värde, separerade med kommatecken.',
+    explain:
+      'En array håller värden i ordning med nummer. Ett objekt håller värden med namn. Varje egenskap skrivs som namn: värde, och egenskaperna skiljs åt med komma.\n\nNamnen skrivs utan citattecken. Värdena följer samma regler som vanligt, alltså text med citattecken och tal utan.',
+    example: "const book = {\n  title: 'Pippi',\n  pages: 120,\n};",
     task: 'Uppgift: Skapa konstanten `user` som ett objekt med egenskapen name som har värdet "Ada" och egenskapen age som har värdet 36.',
     starterCode: '// Skriv din kod här',
     solution: `const user = { name: 'Ada', age: 36 };`,
@@ -530,6 +590,10 @@ fruits.push('päron');`,
     isBoss: false,
     description:
       'Med punktnotation, objekt.egenskap, läser du värdet av en egenskap.',
+    explain:
+      'Punkten betyder ungefär "dess". book.title läses som "bokens titel".\n\nFinns inte egenskapen får du undefined. Det är JavaScripts sätt att säga att det inte finns något värde där.',
+    example:
+      "const book = { title: 'Pippi', pages: 120 };\nconst bookTitle = book.title;",
     task: 'Uppgift: Skapa konstanten `userName` och hämta värdet av name ur user med punktnotation.',
     starterCode: `const user = { name: 'Ada', age: 36 };
 
@@ -563,6 +627,10 @@ const userName = user.name;`,
     isBoss: false,
     description:
       'I React får du ofta data som en array av objekt, till exempel en lista med användare. Kombinera index och punktnotation för att nå ett värde.',
+    explain:
+      'Läs koden steg för steg från vänster. books[0] är första objektet i arrayen. books[0].title är titeln på det objektet.\n\nKom ihåg att index börjar på 0, så andra objektet har index 1.',
+    example:
+      "const books = [\n  { title: 'Pippi' },\n  { title: 'Emil' },\n];\nconst firstTitle = books[0].title;",
     task: 'Uppgift: Skapa konstanten `secondName` och hämta name från andra användaren i users.',
     starterCode: `const users = [
   { name: 'Ada', age: 36 },
@@ -671,6 +739,9 @@ const secondAge = users[1].age;`,
     isBoss: false,
     description:
       'En parameter tar emot ett värde. Med return skickar funktionen tillbaka ett resultat.',
+    explain:
+      'En funktion är kod som har ett namn och kan köras många gånger. Den skrivs med function, ett namn, parametrar inom ( ) och koden inom { }.\n\nEn parameter är som en variabel som får sitt värde när funktionen anropas. return skickar tillbaka svaret. Koden inuti körs först när någon anropar funktionen.',
+    example: 'function addTen(number) {\n  return number + 10;\n}',
     task: 'Skriv funktionen `addBonus` med parametern points. Använd function och returnera points + 5. Du ska bara definiera funktionen, inte anropa den.',
     starterCode: '// Skriv din kod här',
     solution: `function addBonus(points) {
@@ -713,6 +784,10 @@ const secondAge = users[1].age;`,
     isBoss: false,
     description:
       'När du anropar en funktion skickar du in ett argument. Returvärdet kan sparas i en variabel.',
+    explain:
+      'Att anropa en funktion betyder att köra den. Du skriver namnet följt av parenteser, och lägger värdet du skickar in mellan dem: addTen(5).\n\nVärdet du skickar in kallas argument. Det hamnar i parametern. Svaret från return kan du spara i en variabel.',
+    example:
+      'function addTen(number) {\n  return number + 10;\n}\n\nconst answer = addTen(5);\n// answer är 15',
     task: 'Behåll funktionen `addBonus`. Anropa den med argumentet 10 och spara returvärdet i konstanten `result`.',
     starterCode: `function addBonus(points) {
   return points + 5;
@@ -751,6 +826,10 @@ const secondAge = users[1].age;`,
     isBoss: false,
     description:
       'En funktion kan ta emot flera parametrar. Argumenten kopplas till dem i samma ordning som de skickas in.',
+    explain:
+      'Flera parametrar skiljs åt med komma, både när du skriver funktionen och när du anropar den.\n\nOrdningen avgör vilket värde som hamnar var. I subtract(10, 4) blir a 10 och b 4.',
+    example:
+      'function subtract(a, b) {\n  return a - b;\n}\n\nconst difference = subtract(10, 4);',
     task: 'Skriv funktionen `multiply` som tar emot två tal och returnerar produkten av dem. Anropa sedan funktionen med 3 och 4 och spara returvärdet i konstanten `result`.',
     starterCode: '// Skriv din kod här',
     solution: `function multiply(a, b) {
@@ -790,6 +869,10 @@ const result = multiply(3, 4);`,
     isBoss: false,
     description:
       'Return avslutar funktionsanropet. Därför kan du returnera ett värde inuti if och ett annat efter blocket.',
+    explain:
+      'När return körs är funktionen klar direkt, och ingen kod efter den körs.\n\nDärför behövs ingen else. Om villkoret är sant returnerar funktionen inuti if. Annars fortsätter den till nästa return.',
+    example:
+      'function getShipping(total) {\n  if (total >= 500) {\n    return 0;\n  }\n  return 49;\n}',
     task: 'Skriv funktionen `getDiscount` med parametern price. Om price >= 100 ska den returnera 20. Efter if-blocket ska den returnera 0. Använd inte else.',
     starterCode: '// Skriv din kod här',
     solution: `function getDiscount(price){
@@ -839,6 +922,10 @@ const result = multiply(3, 4);`,
     isBoss: false,
     description:
       'En arrow function med ett uttryck utan klamrar returnerar uttryckets värde automatiskt.',
+    explain:
+      'En arrow function är ett kortare sätt att skriva en funktion. Den sparas i en variabel med const, och pilen => står mellan parametrarna och svaret.\n\nUtan klamrar returneras det som står efter pilen automatiskt, så du skriver varken { } eller return.',
+    example:
+      'const subtract = (a, b) => a - b;\n\n// Samma sak som:\n// function subtract(a, b) {\n//   return a - b;\n// }',
     task: 'Skapa konstanten `multiply` som en arrow function med parametrarna a och b inom parenteser. Returnera a * b utan klamrar eller return. Du ska inte anropa funktionen.',
     starterCode: '// Skriv din kod här',
     solution: 'const multiply = (a, b) => a * b;',
@@ -877,6 +964,10 @@ const result = multiply(3, 4);`,
     isBoss: false,
     description:
       'console.log visar ett värde i konsolen, men funktionen ger inte tillbaka något. Utan return blir resultatet av ett anrop undefined. Vill du använda värdet efteråt måste funktionen returnera det.',
+    explain:
+      'console.log och return liknar varandra men gör helt olika saker. console.log visar ett värde för dig i konsolen. return ger tillbaka värdet till koden som anropade funktionen.\n\nTänk dig en kalkylator. console.log visar svaret på skärmen, men bara return låter dig räkna vidare med det.',
+    example:
+      'function triple(number) {\n  return number * 3;\n}\n\nconst big = triple(5);\nconsole.log(big); // 15',
     task: 'Uppgift: `double` skriver ut svaret i stället för att returnera det, så result blir undefined. Rätta `double` så att result blir 8.',
     starterCode: `function double(number) {
   console.log(number * 2);
@@ -911,6 +1002,10 @@ const result = double(4);`,
     isBoss: false,
     description:
       'Skickas inget argument blir parametern undefined. Med ett standardvärde, function greet(name = "du"), får den ett värde ändå. Samma sak används för props i React.',
+    explain:
+      'Ett standardvärde skrivs med = direkt i parameterlistan. Det används bara när inget argument skickas in.\n\nSkickar du in ett värde vinner det alltid över standardvärdet.',
+    example:
+      "function welcome(city = 'Stockholm') {\n  return 'Välkommen till ' + city;\n}\n\nwelcome(); // 'Välkommen till Stockholm'\nwelcome('Malmö'); // 'Välkommen till Malmö'",
     task: 'Uppgift: Skriv funktionen `greet` med parametern name som har standardvärdet "du". Den returnerar "Hej " + name + "!".',
     starterCode: '// Skriv din kod här',
     solution: `function greet(name = 'du') {
@@ -953,6 +1048,10 @@ const result = double(4);`,
     isBoss: false,
     description:
       'Små funktioner som gör en sak var är lättare att förstå och testa. Sedan kan större funktioner bygga på dem. Precis så byggs React-appar av små komponenter.',
+    explain:
+      'En funktion kan anropa en annan funktion. Då körs den inre funktionen först, och svaret används i den yttre.\n\nGe funktionerna namn som säger vad de gör. Då går koden nästan att läsa som en mening.',
+    example:
+      'function half(n) {\n  return n / 2;\n}\n\nfunction halfOfBoth(a, b) {\n  return half(a) + half(b);\n}',
     task: 'Uppgift: Skriv funktionen `square(n)` som returnerar n * n. Skriv sedan `sumOfSquares(a, b)` som returnerar square(a) + square(b). Använd square inuti sumOfSquares.',
     starterCode: '// Skriv din kod här',
     solution: `function square(n) {
@@ -1009,6 +1108,10 @@ function sumOfSquares(a, b) {
     isBoss: false,
     description:
       'Behöver en arrow function flera rader använder du klamrar. Då måste du skriva return själv, precis som i en vanlig funktion. Utan return blir resultatet undefined.',
+    explain:
+      'Med klamrar efter pilen blir arrow functionen ett kodblock, precis som en vanlig funktion. Då kan du ha flera rader och if-satser inuti.\n\nSkillnaden är att inget returneras automatiskt längre. Du måste skriva return själv.',
+    example:
+      "const getSize = cm => {\n  if (cm >= 180) return 'Lång';\n  if (cm >= 150) return 'Mellan';\n  return 'Kort';\n};",
     task: 'Uppgift: Skapa arrow functionen `getGrade` med parametern points. Den returnerar "A" om points är minst 90, "B" om points är minst 50 och annars "C". Använd klamrar och if.',
     starterCode: '// Skriv din kod här',
     solution: `const getGrade = points => {
@@ -1068,6 +1171,10 @@ function sumOfSquares(a, b) {
     isBoss: false,
     description:
       'En funktion är ett värde, precis som ett tal. Den kan sparas i en variabel och skickas in i en annan funktion, som sedan anropar den. En sådan funktion kallas callback. Det är så map, filter och onClick i React fungerar.',
+    explain:
+      'När du skickar in en funktion som argument skriver du bara namnet, utan parenteser. Med parenteser körs funktionen direkt, och då skickar du in svaret i stället för funktionen.\n\nFunktionen som tar emot den kan sedan anropa den när den vill, så många gånger den vill.',
+    example:
+      "function runTwice(fn) {\n  fn();\n  fn();\n}\n\nconst sayHi = () => console.log('Hej!');\nrunTwice(sayHi); // Hej! Hej!",
     task: 'Uppgift: Skapa arrow functionen `addThree` som returnerar talet plus 3. Anropa sedan applyTwice med addThree och 10, och spara svaret i `result`.',
     starterCode: `function applyTwice(fn, value) {
   return fn(fn(value));

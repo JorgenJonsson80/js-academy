@@ -10,6 +10,8 @@ export function useCloudProgress({
   setCompletedIds,
   drafts,
   setDrafts,
+  passedTrackIds,
+  setPassedTrackIds,
 }) {
   const [session, setSession] = useState(null);
   const [status, setStatus] = useState('synced');
@@ -33,7 +35,7 @@ export function useCloudProgress({
     let ignore = false;
     supabase
       .from('progress')
-      .select('completed_ids, drafts')
+      .select('completed_ids, drafts, passed_track_ids')
       .eq('user_id', userId)
       .maybeSingle()
       .then(({ data, error }) => {
@@ -44,13 +46,16 @@ export function useCloudProgress({
         }
         setCompletedIds(local => mergeCompleted(local, data?.completed_ids));
         setDrafts(local => mergeDrafts(local, data?.drafts));
+        setPassedTrackIds(local =>
+          mergeCompleted(local, data?.passed_track_ids),
+        );
         setLoadedUserId(userId);
         setStatus('synced');
       });
     return () => {
       ignore = true;
     };
-  }, [userId, setCompletedIds, setDrafts]);
+  }, [userId, setCompletedIds, setDrafts, setPassedTrackIds]);
 
   // Spara en sekund efter senaste ändringen, så att inte varje
   // tangenttryckning skickas.
@@ -62,12 +67,13 @@ export function useCloudProgress({
         user_id: userId,
         completed_ids: completedIds,
         drafts,
+        passed_track_ids: passedTrackIds,
         updated_at: new Date().toISOString(),
       });
       setStatus(error ? 'error' : 'synced');
     }, 1000);
     return () => clearTimeout(timer);
-  }, [userId, loadedUserId, completedIds, drafts]);
+  }, [userId, loadedUserId, completedIds, drafts, passedTrackIds]);
 
   async function signIn(email) {
     const { error } = await supabase.auth.signInWithOtp({

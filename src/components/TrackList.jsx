@@ -9,6 +9,8 @@ export default function TrackList({
   onSelectLesson,
   activeLessonId,
   drafts,
+  canTestOut,
+  onTestOut,
 }) {
   return (
     <>
@@ -56,6 +58,15 @@ export default function TrackList({
                 max={items.length}
                 aria-label={item.title}
               />
+              {canTestOut(item.id) && (
+                <button
+                  className="test-out-button"
+                  type="button"
+                  onClick={() => onTestOut(item.id)}
+                >
+                  ⚡ Kan du redan detta? Testa dig förbi
+                </button>
+              )}
               {isActive && (
                 <ol className="lesson-list">
                   {items.map(lesson => (

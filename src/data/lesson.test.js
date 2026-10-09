@@ -58,6 +58,14 @@ describe('lektionsdata', () => {
     expect(lesson.tests.length).toBeGreaterThan(0);
   });
 
+  it.each(lessons.filter(lesson => lesson.explain))(
+    '$id har ett exempel som inte är lösningen',
+    lesson => {
+      expect(lesson.example).toBeTruthy();
+      expect(lesson.example).not.toBe(lesson.solution);
+    },
+  );
+
   it.each(lessons.filter(lesson => !lesson.isBoss))(
     '$id har tre ledtrådar',
     async lesson => {

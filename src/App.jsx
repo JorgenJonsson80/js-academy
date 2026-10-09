@@ -13,9 +13,20 @@ import { getGrowth } from './data/stages';
 import { runTests } from './runner/runTests';
 import AccountPanel from './components/AccountPanel';
 import { useCloudProgress } from './lib/useCloudProgress';
+import Quiz from './components/Quiz';
+import { quiz } from './data/quiz';
 
 function App() {
-  const [lessonIndex, setLessonIndex] = useState(0);
+  // Öppna övningen man senast arbetade med.
+  const [lessonIndex, setLessonIndex] = useState(() => {
+    try {
+      const savedId = localStorage.getItem('academy-current-lesson');
+      const index = lessons.findIndex(item => item.id === savedId);
+      return index === -1 ? 0 : index;
+    } catch {
+      return 0;
+    }
+  });
 
   const lesson = lessons[lessonIndex];
   const track = tracks.find(track => track.id === lesson.track);
@@ -60,12 +71,42 @@ function App() {
   useEffect(() => {
     localStorage.setItem('academy-drafts', JSON.stringify(drafts));
   }, [drafts]);
+  useEffect(() => {
+    localStorage.setItem('academy-current-lesson', lesson.id);
+  }, [lesson.id]);
+
+  // Banor man klarat i nivåtestet eller med "Testa dig förbi".
+  // De låser upp nästa bana men räknas inte som klara.
+  const [passedTrackIds, setPassedTrackIds] = useState(() => {
+    try {
+      const parsed = JSON.parse(
+        localStorage.getItem('academy-passed-tracks') ?? '[]',
+      );
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem(
+      'academy-passed-tracks',
+      JSON.stringify(passedTrackIds),
+    );
+  }, [passedTrackIds]);
+
+  // null när inget quiz visas, annars { trackId } för en bana eller {}
+  // för nivåtestet.
+  const [activeQuiz, setActiveQuiz] = useState(null);
+  // Koden innan man tryckte på Återställ kod, så att det går att ångra.
+  const [undoCode, setUndoCode] = useState(null);
 
   const account = useCloudProgress({
     completedIds,
     setCompletedIds,
     drafts,
     setDrafts,
+    passedTrackIds,
+    setPassedTrackIds,
   });
 
   // Efter utloggning töms webbläsaren, så att nästa person som loggar in
@@ -74,6 +115,7 @@ function App() {
     await account.signOut();
     setCompletedIds([]);
     setDrafts({});
+    setPassedTrackIds([]);
     setCode(lesson.starterCode);
     setFeedback(null);
   }
@@ -110,6 +152,7 @@ function App() {
     if (hasReached) return true;
 
     const previousTrack = tracks[index - 1];
+    if (passedTrackIds.includes(previousTrack.id)) return true;
     const previousLessons = lessons.filter(
       item => item.track === previousTrack.id,
     );
@@ -202,6 +245,7 @@ function App() {
     setFeedback(null);
     setFailedAttempts(0);
     setShowSolution(false);
+    setUndoCode(null);
   }
 
   function handleNext() {
@@ -244,8 +288,47 @@ function App() {
     selectLesson(nextUncompletedIndex);
   }
 
+  function handleEditCode(newCode) {
+    setUndoCode(null);
+    handleCodeChange(newCode);
+  }
+
   function handleResetCode() {
+    if (code === lesson.starterCode) return;
+    setUndoCode(code);
     handleCodeChange(lesson.starterCode);
+  }
+
+  function handleUndoReset() {
+    handleCodeChange(undoCode);
+    setUndoCode(null);
+  }
+
+  // Man kan testa sig förbi den bana man står på, om nästa bana är låst.
+  function canTestOut(trackId) {
+    const index = tracks.findIndex(item => item.id === trackId);
+    const nextTrack = tracks[index + 1];
+    return (
+      Boolean(quiz[trackId]) &&
+      Boolean(nextTrack) &&
+      isTrackUnlocked(trackId) &&
+      !isTrackUnlocked(nextTrack.id)
+    );
+  }
+
+  function handleQuizFinish(passed) {
+    setPassedTrackIds(previous => [...new Set([...previous, ...passed])]);
+  }
+
+  // Efter ett godkänt test hoppar man till banan efter den sista man klarat.
+  function handleQuizClose(passed) {
+    setActiveQuiz(null);
+    if (!passed?.length) return;
+    const lastIndex = tracks.findIndex(item => item.id === passed.at(-1));
+    const nextTrack = tracks[lastIndex + 1];
+    if (!nextTrack) return;
+    const firstIndex = lessons.findIndex(item => item.track === nextTrack.id);
+    if (firstIndex !== -1) selectLesson(firstIndex);
   }
 
   const allCompleted = lessons.every(item => completedIds.includes(item.id));
@@ -279,6 +362,13 @@ function App() {
             >
               Fortsätt träna →
             </button>
+            <button
+              className="quiz-start"
+              type="button"
+              onClick={() => setActiveQuiz({})}
+            >
+              🎯 Kan du redan lite? Gör nivåtestet och hoppa fram
+            </button>
             <Collection tracks={tracks} completedTrackIds={completedTrackIds} />
             <TrackList
               title="Dina banor"
@@ -291,6 +381,8 @@ function App() {
               onSelectLesson={handleSelectLesson}
               activeLessonId={lesson.id}
               drafts={drafts}
+              canTestOut={canTestOut}
+              onTestOut={trackId => setActiveQuiz({ trackId })}
             />
             {allCompleted && (
               <p className="feedback-success">
@@ -300,10 +392,12 @@ function App() {
           </aside>
           <LessonPanel
             code={code}
-            onCodeChange={handleCodeChange}
+            onCodeChange={handleEditCode}
             onCheck={handleCheck}
             isChecking={isChecking}
             onResetCode={handleResetCode}
+            canUndoReset={undoCode !== null}
+            onUndoReset={handleUndoReset}
             showSolution={showSolution}
             onShowSolution={() => setShowSolution(true)}
             feedback={feedback}
@@ -326,6 +420,14 @@ function App() {
           />
         </div>
       </main>
+      {activeQuiz && (
+        <Quiz
+          tracks={tracks}
+          trackId={activeQuiz.trackId}
+          onFinish={handleQuizFinish}
+          onClose={handleQuizClose}
+        />
+      )}
       {celebration && (
         <LevelUp
           celebration={celebration}

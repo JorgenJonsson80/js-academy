@@ -33,6 +33,8 @@ export default function LessonPanel({
   onCheck,
   isChecking,
   onResetCode,
+  canUndoReset,
+  onUndoReset,
   feedback,
   failedAttempts,
   showSolution,
@@ -60,6 +62,22 @@ export default function LessonPanel({
         {lesson.title}
       </h2>
       <p className="lesson-description">{lesson.description}</p>
+      {lesson.explain && (
+        <details className="lesson-explain">
+          <summary>📖 Ny på det här? Läs mer och se ett exempel</summary>
+          {lesson.explain.split('\n\n').map(paragraph => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+          {lesson.example && (
+            <figure>
+              <figcaption>Exempel, med andra värden än i uppgiften:</figcaption>
+              <pre>
+                <code>{lesson.example}</code>
+              </pre>
+            </figure>
+          )}
+        </details>
+      )}
       <p className="lesson-task">
         <TaskText text={lesson.task} />
       </p>
@@ -101,12 +119,18 @@ export default function LessonPanel({
         <button type="button" onClick={onResetCode}>
           Återställ kod
         </button>
+        {canUndoReset && (
+          <button type="button" onClick={onUndoReset}>
+            ↩ Ångra återställning
+          </button>
+        )}
       </div>
       <FeedbackPanel feedback={feedback} />
       {feedback?.isCorrect && !showSolution && (
         <SolutionCompare code={code} solution={lesson.solution} />
       )}
       <HintPanel
+        key={lesson.id}
         hints={lesson.hints}
         failedAttempts={failedAttempts}
         isBoss={lesson.isBoss}
