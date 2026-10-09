@@ -9,7 +9,7 @@ import Avatar from './components/Avatar';
 import Collection from './components/Collection';
 import HeroCard from './components/HeroCard';
 import LevelUp from './components/LevelUp';
-import { getGrowth } from './data/stages';
+import { getGrowth, trackProgress } from './data/stages';
 import { runTests } from './runner/runTests';
 import AccountPanel from './components/AccountPanel';
 import { useCloudProgress } from './lib/useCloudProgress';
@@ -124,13 +124,44 @@ function App() {
     .filter(lesson => completedIds.includes(lesson.id))
     .reduce((sum, lesson) => sum + lesson.xp, 0);
 
-  const growth = getGrowth(tracks, lessons, completedIds);
+  const growth = getGrowth(tracks, lessons, completedIds, passedTrackIds);
+  const trackStatusById = Object.fromEntries(
+    tracks.map(item => [
+      item.id,
+      trackProgress(item, lessons, completedIds, passedTrackIds),
+    ]),
+  );
   const completedTrackIds = tracks
-    .filter(item => {
-      const items = lessons.filter(lesson => lesson.track === item.id);
-      return items.every(lesson => completedIds.includes(lesson.id));
-    })
+    .filter(item => trackStatusById[item.id].isComplete)
     .map(item => item.id);
+  const testedOutTrackIds = tracks
+    .filter(item => trackStatusById[item.id].viaTest)
+    .map(item => item.id);
+
+  // Banorna som blir klara när framstegen ändras, för att kunna fira dem.
+  function newlyCompletedTracks(newCompletedIds, newPassedTrackIds) {
+    return tracks.filter(
+      item =>
+        !trackStatusById[item.id].isComplete &&
+        trackProgress(item, lessons, newCompletedIds, newPassedTrackIds)
+          .isComplete,
+    );
+  }
+
+  function celebrate(doneTracks, newCompletedIds, newPassedTrackIds) {
+    if (doneTracks.length === 0) return;
+    const newGrowth = getGrowth(
+      tracks,
+      lessons,
+      newCompletedIds,
+      newPassedTrackIds,
+    );
+    setCelebration({
+      tracks: doneTracks,
+      stage: newGrowth.stage,
+      hasGrown: newGrowth.stageIndex > growth.stageIndex,
+    });
+  }
 
   const trackLessons = lessons.filter(item => item.track === track.id);
   const completedInTrack = trackLessons.filter(item =>
@@ -226,15 +257,11 @@ function App() {
       setCompletedIds(newIds);
 
       // Blev banan klar nu? Då firar vi och visar hur figuren växt.
-      const isTrackDone = trackLessons.every(item => newIds.includes(item.id));
-      if (isTrackDone) {
-        const newGrowth = getGrowth(tracks, lessons, newIds);
-        setCelebration({
-          track,
-          stage: newGrowth.stage,
-          hasGrown: newGrowth.stageIndex > growth.stageIndex,
-        });
-      }
+      celebrate(
+        newlyCompletedTracks(newIds, passedTrackIds),
+        newIds,
+        passedTrackIds,
+      );
     }
   }
   function selectLesson(index) {
@@ -316,8 +343,15 @@ function App() {
     );
   }
 
+  // Banor utan boss blir klara direkt. Övriga när bossen är klar.
   function handleQuizFinish(passed) {
-    setPassedTrackIds(previous => [...new Set([...previous, ...passed])]);
+    const newPassed = [...new Set([...passedTrackIds, ...passed])];
+    setPassedTrackIds(newPassed);
+    celebrate(
+      newlyCompletedTracks(completedIds, newPassed),
+      completedIds,
+      newPassed,
+    );
   }
 
   // Efter ett godkänt test hoppar man till banan efter den sista man klarat.
@@ -369,7 +403,11 @@ function App() {
             >
               🎯 Kan du redan lite? Gör nivåtestet och hoppa fram
             </button>
-            <Collection tracks={tracks} completedTrackIds={completedTrackIds} />
+            <Collection
+              tracks={tracks}
+              completedTrackIds={completedTrackIds}
+              testedOutTrackIds={testedOutTrackIds}
+            />
             <TrackList
               title="Dina banor"
               tracks={tracks}
@@ -382,6 +420,8 @@ function App() {
               activeLessonId={lesson.id}
               drafts={drafts}
               canTestOut={canTestOut}
+              trackStatusById={trackStatusById}
+              passedTrackIds={passedTrackIds}
               onTestOut={trackId => setActiveQuiz({ trackId })}
             />
             {allCompleted && (
@@ -428,7 +468,7 @@ function App() {
           onClose={handleQuizClose}
         />
       )}
-      {celebration && (
+      {celebration && !activeQuiz && (
         <LevelUp
           celebration={celebration}
           onClose={() => setCelebration(null)}

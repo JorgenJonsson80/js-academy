@@ -1,4 +1,4 @@
-// Frågor för nivåtestet och för "Testa dig förbi". Två frågor per bana.
+// Frågor för nivåtestet och för "Testa dig förbi". Fyra frågor per bana.
 // Det rätta svaret står alltid först i options. Ordningen blandas när
 // frågan visas.
 export const quiz = {
@@ -23,6 +23,23 @@ if (age >= 18) {
       options: ['Ung', 'Vuxen', 'Både Vuxen och Ung', 'Ingenting'],
       explain: '15 >= 18 är false, så koden i else körs.',
     },
+    {
+      question: 'Vad skrivs ut?',
+      code: `let total = 0;
+for (let i = 0; i < 3; i++) {
+  total = total + 2;
+}
+console.log(total);`,
+      options: ['6', '2', '3', '8'],
+      explain: 'Loopen går tre varv, i är 0, 1 och 2. Varje varv läggs 2 till.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const isOpen = 10 > 20;
+console.log(isOpen);`,
+      options: ['false', 'true', '10', 'Ett felmeddelande'],
+      explain: 'En jämförelse ger en boolean. 10 är inte större än 20.',
+    },
   ],
   arrays: [
     {
@@ -39,6 +56,21 @@ console.log(numbers.length);`,
 console.log(users[1].name);`,
       options: ['Linus', 'Ada', 'undefined', 'name'],
       explain: 'Index börjar på 0, så users[1] är det andra objektet.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const colors = ['röd', 'grön', 'blå'];
+console.log(colors[3]);`,
+      options: ['undefined', 'blå', 'röd', 'Ett felmeddelande'],
+      explain:
+        'Tre värden har index 0, 1 och 2. Index 3 finns inte, så du får undefined.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const user = { name: 'Ada', age: 36 };
+console.log(user.email);`,
+      options: ['undefined', 'null', 'Ett felmeddelande', '""'],
+      explain: 'En egenskap som inte finns ger undefined, inget fel.',
     },
   ],
   functions: [
@@ -59,6 +91,25 @@ console.log(greet());`,
       options: ['Hej du', 'Hej ', 'Hej undefined', 'Ett felmeddelande'],
       explain: 'Inget argument skickas, så name får standardvärdet "du".',
     },
+    {
+      question: 'Vad skrivs ut?',
+      code: `function check(n) {
+  if (n > 10) {
+    return 'stor';
+  }
+  return 'liten';
+}
+console.log(check(10));`,
+      options: ['liten', 'stor', 'undefined', '10'],
+      explain: '10 > 10 är false, så funktionen fortsätter till sista return.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const double = n => { n * 2 };
+console.log(double(4));`,
+      options: ['undefined', '8', '4', 'Ett felmeddelande'],
+      explain: 'Med klamrar måste du skriva return själv. Här saknas det.',
+    },
   ],
   strings: [
     {
@@ -75,6 +126,21 @@ console.log(volume ?? 50);`,
       options: ['0', '50', 'null', 'undefined'],
       explain:
         '?? använder bara reservvärdet när värdet är null eller undefined. 0 behålls.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const name = 'Ada';
+console.log(\`Hej \${name}!\`);`,
+      options: ['Hej Ada!', 'Hej ${name}!', 'Hej name!', 'Ett felmeddelande'],
+      explain: 'I en template literal ersätts ${name} med variabelns värde.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const user = null;
+console.log(user?.name ?? 'Okänd');`,
+      options: ['Okänd', 'null', 'undefined', 'Ett felmeddelande'],
+      explain:
+        '?. ger undefined i stället för ett fel när user är null. Sedan tar ?? över.',
     },
   ],
   'array-methods': [
@@ -94,6 +160,26 @@ console.log(total);`,
       explain:
         'reduce börjar på 0 och lägger till varje pris: 0 + 10 + 20 + 30.',
     },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const names = ['ada', 'linus'];
+console.log(names.map(name => name.toUpperCase()));`,
+      options: [
+        '["ADA", "LINUS"]',
+        '["ada", "linus"]',
+        '"ADA LINUS"',
+        'undefined',
+      ],
+      explain:
+        'map ger en ny array med det funktionen returnerar för varje värde.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const users = [{ id: 1 }, { id: 2 }];
+console.log(users.find(user => user.id === 3));`,
+      options: ['undefined', 'null', '[]', 'Ett felmeddelande'],
+      explain: 'find ger undefined när inget värde matchar.',
+    },
   ],
   'modern-js': [
     {
@@ -111,6 +197,21 @@ const b = [...a, 3];
 console.log(a.length, b.length);`,
       options: ['2 3', '3 3', '2 2', '3 2'],
       explain: 'Spread skapar en ny array. a ändras inte.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const [first, ...rest] = [1, 2, 3];
+console.log(rest);`,
+      options: ['[2, 3]', '[1, 2, 3]', '3', '[1]'],
+      explain: 'first får 1 och ...rest samlar resten i en ny array.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const user = { name: 'Ada', age: 36 };
+const older = { ...user, age: 37 };
+console.log(user.age, older.age);`,
+      options: ['36 37', '37 37', '36 36', '37 36'],
+      explain: 'Spread gör en kopia. Bara kopian får age 37.',
     },
   ],
   immutable: [
@@ -139,6 +240,21 @@ console.log(next());`,
       explain:
         'Funktionen minns count mellan anropen. Det är en closure. Andra anropet ger 2.',
     },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const todos = [{ done: true }, { done: false }];
+console.log(todos.some(t => t.done), todos.every(t => t.done));`,
+      options: ['true false', 'false true', 'true true', 'false false'],
+      explain: 'some: är minst en klar? Ja. every: är alla klara? Nej.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const prices = { keps: 199 };
+console.log(Object.entries(prices));`,
+      options: ['[["keps", 199]]', '["keps", 199]', '{ keps: 199 }', '[199]'],
+      explain:
+        'Object.entries ger en array med ett [namn, värde]-par per egenskap.',
+    },
   ],
   modules: [
     {
@@ -166,6 +282,22 @@ export function double(n) {
       ],
       explain: 'Named exports importeras inom { } med exakt samma namn.',
     },
+    {
+      question: 'Du glömmer export framför en funktion i math.js. Vad händer?',
+      options: [
+        'Den kan inte importeras från andra filer',
+        'Den exporteras ändå automatiskt',
+        'Hela filen slutar fungera',
+        'Den blir en default export',
+      ],
+      explain: 'Allt i en modul är privat tills du exporterar det.',
+    },
+    {
+      question: 'Hur många default exports kan en fil ha?',
+      options: ['En', 'Hur många som helst', 'Ingen', 'Två'],
+      explain:
+        'En fil har högst en default export, men hur många named exports som helst.',
+    },
   ],
   async: [
     {
@@ -188,6 +320,25 @@ console.log(getNumber() instanceof Promise);`,
       explain:
         'response.json() ger ett Promise med datan. Vänta in det med await.',
     },
+    {
+      question: 'I vilken ordning skrivs bokstäverna ut?',
+      code: `console.log('A');
+Promise.resolve().then(() => console.log('B'));
+console.log('C');`,
+      options: ['A C B', 'A B C', 'B A C', 'C B A'],
+      explain: 'Koden i then körs först när den vanliga koden är klar.',
+    },
+    {
+      question: 'Hur fångar du ett fel från await?',
+      options: [
+        'Med try/catch runt await',
+        'Med en if-sats efter await',
+        'Med console.log',
+        'Det går inte att fånga',
+      ],
+      explain:
+        'Ett fel från await kastas som vanligt och fångas med try/catch.',
+    },
   ],
   'debug-js': [
     {
@@ -206,6 +357,23 @@ for (let i = 0; i <= items.length; i++) {
 }`,
       options: ['undefined', 'c', 'Ett felmeddelande', 'a'],
       explain: 'Med <= går loopen ett varv för långt. items[3] finns inte.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const scores = [3, 1, 2];
+const top = scores.sort((a, b) => b - a)[0];
+console.log(scores);`,
+      options: ['[3, 2, 1]', '[3, 1, 2]', '[1, 2, 3]', '3'],
+      explain:
+        'sort ändrar arrayen den anropas på. Använd toSorted för att slippa det.',
+    },
+    {
+      question: 'Vad skrivs ut?',
+      code: `const user = { firstName: 'Ada' };
+console.log(user.firstname);`,
+      options: ['undefined', 'Ada', 'Ett felmeddelande', 'firstName'],
+      explain:
+        'JavaScript skiljer på stora och små bokstäver. firstname finns inte.',
     },
   ],
   jsx: [
@@ -235,6 +403,26 @@ for (let i = 0; i <= items.length; i++) {
       ],
       explain: 'Lägg h1 och p i en Fragment <>…</> eller en div.',
     },
+    {
+      question: 'Vilket attribut ger ett element en CSS-klass i JSX?',
+      options: ['className', 'class', 'css', 'style'],
+      explain:
+        'class är ett reserverat ord i JavaScript, så JSX använder className.',
+    },
+    {
+      question: 'Vad visas?',
+      code: `const items = 3;
+const price = 25;
+
+<p>Totalt: {items * price} kr</p>`,
+      options: [
+        'Totalt: 75 kr',
+        'Totalt: {items * price} kr',
+        'Totalt: 3 * 25 kr',
+        'Totalt:  kr',
+      ],
+      explain: 'Det som står inom { } räknas ut innan det visas.',
+    },
   ],
   props: [
     {
@@ -256,6 +444,32 @@ for (let i = 0; i <= items.length; i++) {
         '<Price {amount: 99} />',
       ],
       explain: 'Citattecken ger text. Tal och andra värden skrivs inom { }.',
+    },
+    {
+      question: 'Vad är children här?',
+      code: `function Card({ title, children }) {
+  return <section><h2>{title}</h2>{children}</section>;
+}
+
+<Card title="Hej"><p>Text</p></Card>`,
+      options: [
+        '<p>Text</p>',
+        '"Hej"',
+        'Ingenting, children måste skickas som en vanlig prop',
+        'Hela Card',
+      ],
+      explain: 'Det som står mellan start- och sluttaggen blir children.',
+    },
+    {
+      question: 'Får en komponent ändra sina egna props?',
+      options: [
+        'Nej, props är bara till för att läsas',
+        'Ja, med props.namn = värde',
+        'Ja, men bara text',
+        'Bara om den använder let',
+      ],
+      explain:
+        'Props kommer från föräldern. Vill du ändra något använder du state.',
     },
   ],
   lists: [
@@ -280,6 +494,22 @@ for (let i = 0; i <= items.length; i++) {
       explain:
         'Ett id är unikt och ändras inte. Text kan finnas två gånger, och index ändras när listan ändras.',
     },
+    {
+      question: 'Vad ger map här?',
+      code: `{fruits.map(fruit => <li key={fruit}>{fruit}</li>)}`,
+      options: [
+        'En array med li-element som React visar',
+        'En sträng med alla frukter',
+        'Ingenting, map ändrar fruits',
+        'Bara första li-elementet',
+      ],
+      explain: 'React visar varje element i arrayen som map returnerar.',
+    },
+    {
+      question: 'Du vill bara visa klara uppgifter. Vad använder du före map?',
+      options: ['filter', 'find', 'reduce', 'push'],
+      explain: 'todos.filter(todo => todo.done).map(…)',
+    },
   ],
   conditionals: [
     {
@@ -299,6 +529,27 @@ for (let i = 0; i <= items.length; i++) {
       options: ['Offline', 'Online', 'Ingenting', 'Ett felmeddelande'],
       explain:
         'isOnline skickas inte, så den är undefined, och undefined är falsy.',
+    },
+    {
+      question: 'Vad visas?',
+      code: `function Warning({ message }) {
+  if (!message) return null;
+  return <p>{message}</p>;
+}
+
+<Warning />`,
+      options: ['Ingenting', 'null', '<p></p>', 'Ett felmeddelande'],
+      explain: 'En komponent som returnerar null visar ingenting.',
+    },
+    {
+      question: 'Hur visar du en p bara när isOpen är true?',
+      options: [
+        '{isOpen && <p>Öppet</p>}',
+        '{if (isOpen) <p>Öppet</p>}',
+        '<p if={isOpen}>Öppet</p>',
+        '{isOpen ? <p>Öppet</p>}',
+      ],
+      explain: 'if fungerar inte inuti { } i JSX. Använd && eller ? :.',
     },
   ],
   state: [
@@ -325,6 +576,28 @@ setTodos(todos);`,
       explain:
         'setCount ändrar inte count direkt. Det nya värdet finns först vid nästa ritning.',
     },
+    {
+      question: 'Vad ger useState(0)?',
+      options: [
+        'Ett värde och en funktion som ändrar det: [count, setCount]',
+        'Bara talet 0',
+        'En funktion som returnerar 0',
+        'Ett objekt { value: 0 }',
+      ],
+      explain:
+        'useState ger en array med två saker, som man brukar plocka ut med destructuring.',
+    },
+    {
+      question: 'Vad kallas ett sådant input?',
+      code: `<input value={name} onChange={event => setName(event.target.value)} />`,
+      options: [
+        'Ett kontrollerat input',
+        'Ett okontrollerat input',
+        'Ett låst input',
+        'Ett formulär',
+      ],
+      explain: 'Värdet styrs av state, och state uppdateras vid varje ändring.',
+    },
   ],
   lifting: [
     {
@@ -348,6 +621,29 @@ setTodos(todos);`,
       ],
       explain:
         'Barnet anropar funktionen, och föräldern uppdaterar sitt state.',
+    },
+    {
+      question:
+        'Antalet kvar kan räknas ut från todos. Ska det ligga i eget state?',
+      options: [
+        'Nej, räkna ut det direkt i komponenten',
+        'Ja, allt ska ligga i state',
+        'Ja, och uppdatera det i en useEffect',
+        'Ja, i localStorage',
+      ],
+      explain:
+        'Det som kan räknas ut från annat state ska inte sparas en gång till.',
+    },
+    {
+      question: 'Vem äger state query här?',
+      code: `<SearchBar query={query} onQueryChange={setQuery} />`,
+      options: [
+        'Komponenten som renderar SearchBar',
+        'SearchBar',
+        'Både SearchBar och föräldern',
+        'Ingen, det är en prop',
+      ],
+      explain: 'Föräldern har useState och skickar ner värdet och funktionen.',
     },
   ],
   effects: [
@@ -375,6 +671,29 @@ setTodos(todos);`,
       explain:
         'Städfunktionen körs innan effekten körs igen och när komponenten tas bort.',
     },
+    {
+      question: 'När körs effekten?',
+      code: `useEffect(() => {
+  console.log('Körs');
+});`,
+      options: [
+        'Efter varje ritning',
+        'Bara första gången',
+        'Aldrig',
+        'Bara när komponenten tas bort',
+      ],
+      explain: 'Utan beroendelista körs effekten efter varje ritning.',
+    },
+    {
+      question: 'Vad ska stå i beroendelistan?',
+      options: [
+        'Alla värden från komponenten som effekten använder',
+        'Bara state, inte props',
+        'Alltid en tom array',
+        'Funktionen setState',
+      ],
+      explain: 'Glömmer du ett värde körs effekten inte när värdet ändras.',
+    },
   ],
   data: [
     {
@@ -397,6 +716,28 @@ setTodos(todos);`,
       ],
       explain:
         'fetch kastar bara fel om nätverket inte svarar. response.ok är false vid 404 och 500.',
+    },
+    {
+      question: 'Var hämtar du data med fetch i en komponent?',
+      options: [
+        'I en useEffect',
+        'Direkt i komponentens kropp',
+        'I return',
+        'I en onClick på body',
+      ],
+      explain:
+        'Komponentens kropp körs vid varje ritning. En effekt styr när hämtningen sker.',
+    },
+    {
+      question:
+        'UserCard hämtar /api/users/ följt av userId. Vad behöver effekten?',
+      options: [
+        'userId i beroendelistan, så att den hämtar igen när den ändras',
+        'En tom beroendelista',
+        'Ett setInterval',
+        'Inget, fetch sköter det själv',
+      ],
+      explain: 'Med [userId] körs effekten igen när propen ändras.',
     },
   ],
   'debug-react': [
@@ -422,28 +763,63 @@ setTodos(todos);`,
       ],
       explain: 'Skriv setName(event.target.value).',
     },
+    {
+      question: 'count är 0. Vad blir count efter klicket?',
+      code: `function handleClick() {
+  setCount(count + 1);
+  setCount(count + 1);
+}`,
+      options: ['1', '2', '0', 'Ett felmeddelande'],
+      explain:
+        'Båda räknar med samma gamla count. Skriv setCount(c => c + 1) för att räkna vidare.',
+    },
+    {
+      question: 'Vad saknas?',
+      code: `useEffect(() => {
+  setInterval(tick, 1000);
+}, []);`,
+      options: [
+        'En städfunktion som stoppar intervallet',
+        'tick i beroendelistan',
+        'async framför funktionen',
+        'Inget, det är rätt',
+      ],
+      explain:
+        'Returnera () => clearInterval(id), annars fortsätter intervallet efter att komponenten tagits bort.',
+    },
   ],
 };
 
-// Frågorna i nivåtestet, bana för bana i kursens ordning.
-export function placementQuestions(tracks) {
-  return tracks.flatMap(track =>
-    (quiz[track.id] ?? []).map(question => ({
-      ...question,
-      trackId: track.id,
-    })),
+// Frågorna för en bana. Med perTrack väljs så många slumpvis, men de
+// står kvar i samma ordning som i frågebanken.
+export function trackQuestions(trackId, perTrack, random = Math.random) {
+  const all = (quiz[trackId] ?? []).map(question => ({ ...question, trackId }));
+  if (!perTrack || perTrack >= all.length) return all;
+  const keep = new Set(
+    all
+      .map((_, index) => ({ index, sort: random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .slice(0, perTrack)
+      .map(item => item.index),
   );
+  return all.filter((_, index) => keep.has(index));
 }
 
-// Banorna man klarat i ett nivåtest: alla banor före den första där man
-// svarade fel. answers är trackId och om svaret var rätt, i ordning.
-export function passedTracks(tracks, answers) {
+// Nivåtestet: tre frågor per bana, bana för bana i kursens ordning.
+export function placementQuestions(tracks, random = Math.random) {
+  return tracks.flatMap(track => trackQuestions(track.id, 3, random));
+}
+
+// Banorna man klarat: alla banor före den första där man svarade fel
+// eller inte hann svara på alla frågor. answers är trackId och om svaret
+// var rätt, i ordning. questions är frågorna som ställdes.
+export function passedTracks(tracks, answers, questions) {
   const passed = [];
   for (const track of tracks) {
+    const asked = questions.filter(question => question.trackId === track.id);
     const forTrack = answers.filter(answer => answer.trackId === track.id);
-    if (forTrack.length === 0) break;
+    if (asked.length === 0 || forTrack.length < asked.length) break;
     if (forTrack.some(answer => !answer.correct)) break;
-    if (forTrack.length < (quiz[track.id]?.length ?? 0)) break;
     passed.push(track.id);
   }
   return passed;

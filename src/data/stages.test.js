@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getGrowth, stages } from './stages';
+import { getGrowth, stages, trackProgress } from './stages';
 
 const tracks = [
   { id: 'a', title: 'A', reward: { emoji: '🧸', name: 'Nalle' } },
@@ -7,7 +7,7 @@ const tracks = [
 ];
 const lessons = [
   { id: 'a1', track: 'a' },
-  { id: 'a2', track: 'a' },
+  { id: 'a2', track: 'a', isBoss: true },
   { id: 'b1', track: 'b' },
 ];
 
@@ -47,5 +47,29 @@ describe('getGrowth', () => {
     );
     expect(growth.stage.title).toBe('Mästare');
     expect(growth.nextStage).toBeNull();
+  });
+});
+
+describe('trackProgress via quiz och boss', () => {
+  it('räknar banan som klar när quizet och bossen är klara', () => {
+    const status = trackProgress(tracks[0], lessons, ['a2'], ['a']);
+    expect(status).toMatchObject({ isComplete: true, viaTest: true });
+  });
+
+  it('kräver bossen även när quizet är klart', () => {
+    const status = trackProgress(tracks[0], lessons, [], ['a']);
+    expect(status.isComplete).toBe(false);
+    expect(status.bossesLeft.map(lesson => lesson.id)).toEqual(['a2']);
+  });
+
+  it('räknar en bana utan boss som klar direkt efter quizet', () => {
+    const status = trackProgress(tracks[1], lessons, [], ['b']);
+    expect(status).toMatchObject({ isComplete: true, viaTest: true });
+  });
+
+  it('låter figuren växa av banor klarade via quiz', () => {
+    expect(getGrowth(tracks, lessons, ['a2'], ['a']).stage.title).toBe(
+      'Småbarn',
+    );
   });
 });

@@ -11,6 +11,8 @@ export default function TrackList({
   drafts,
   canTestOut,
   onTestOut,
+  trackStatusById,
+  passedTrackIds,
 }) {
   return (
     <>
@@ -21,8 +23,11 @@ export default function TrackList({
           const completed = items.filter(lesson =>
             completedIds.includes(lesson.id),
           ).length;
-          const isTrackCompleted =
-            items.length > 0 && completed === items.length;
+          const status = trackStatusById[item.id];
+          const isPassed = passedTrackIds.includes(item.id);
+          // Klarat quizet men inte bossen än.
+          const needsBoss =
+            isPassed && !status.isComplete && status.bossesLeft.length > 0;
           const isUnlocked = isTrackUnlocked(item.id);
           const isActive = item.id === activeTrackId;
           return (
@@ -38,11 +43,13 @@ export default function TrackList({
                 aria-current={isActive ? 'true' : undefined}
               >
                 <span className="track-icon" aria-hidden="true">
-                  {isTrackCompleted
+                  {status.isComplete
                     ? item.reward.emoji
-                    : isUnlocked
-                      ? '▶'
-                      : '🔒'}
+                    : isPassed
+                      ? '⚡'
+                      : isUnlocked
+                        ? '▶'
+                        : '🔒'}
                 </span>
                 <span className="track-title">{item.title}</span>
                 <span className="track-count">
@@ -58,6 +65,15 @@ export default function TrackList({
                 max={items.length}
                 aria-label={item.title}
               />
+              {needsBoss && (
+                <button
+                  className="test-out-button"
+                  type="button"
+                  onClick={() => onSelectLesson(status.bossesLeft[0].id)}
+                >
+                  👑 Klara bossen och få {item.reward.emoji} {item.reward.name}
+                </button>
+              )}
               {canTestOut(item.id) && (
                 <button
                   className="test-out-button"

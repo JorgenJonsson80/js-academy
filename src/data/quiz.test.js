@@ -1,10 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { passedTracks, placementQuestions, quiz, shuffleOptions } from './quiz';
+import {
+  passedTracks,
+  placementQuestions,
+  quiz,
+  shuffleOptions,
+  trackQuestions,
+} from './quiz';
 import { tracks } from './tracks';
 
 describe('quizfrågorna', () => {
   it.each(tracks)('$id har frågor', track => {
-    expect(quiz[track.id]?.length).toBeGreaterThanOrEqual(2);
+    expect(quiz[track.id]?.length).toBeGreaterThanOrEqual(4);
   });
 
   it('har bara frågor för banor som finns', () => {
@@ -29,15 +35,33 @@ describe('placementQuestions', () => {
       .filter((id, index, all) => id !== all[index - 1]);
     expect(order).toEqual(tracks.map(track => track.id));
   });
+
+  it('ställer tre frågor per bana', () => {
+    const questions = placementQuestions(tracks);
+    expect(questions).toHaveLength(tracks.length * 3);
+  });
+});
+
+describe('trackQuestions', () => {
+  it('ger alla frågor för en bana utan perTrack', () => {
+    expect(trackQuestions('arrays')).toHaveLength(quiz.arrays.length);
+  });
+
+  it('behåller frågebankens ordning när den väljer ut några', () => {
+    const picked = trackQuestions('arrays', 3).map(q => q.question + q.code);
+    const all = quiz.arrays.map(q => q.question + q.code);
+    expect(picked).toEqual(all.filter(text => picked.includes(text)));
+  });
 });
 
 describe('passedTracks', () => {
   const two = tracks.slice(0, 2);
   const [a, b] = two.map(track => track.id);
+  const questions = [a, a, b, b].map(trackId => ({ trackId }));
 
   it('godkänner banor där alla svar var rätt', () => {
     const answers = [a, a, b, b].map(trackId => ({ trackId, correct: true }));
-    expect(passedTracks(two, answers)).toEqual([a, b]);
+    expect(passedTracks(two, answers, questions)).toEqual([a, b]);
   });
 
   it('stannar vid första banan med ett fel svar', () => {
@@ -46,11 +70,12 @@ describe('passedTracks', () => {
       { trackId: a, correct: true },
       { trackId: b, correct: false },
     ];
-    expect(passedTracks(two, answers)).toEqual([a]);
+    expect(passedTracks(two, answers, questions)).toEqual([a]);
   });
 
   it('godkänner inte en bana där bara en del frågor besvarats', () => {
-    expect(passedTracks(two, [{ trackId: a, correct: true }])).toEqual([]);
+    const answers = [{ trackId: a, correct: true }];
+    expect(passedTracks(two, answers, questions)).toEqual([]);
   });
 });
 

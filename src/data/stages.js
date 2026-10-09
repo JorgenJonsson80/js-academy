@@ -116,18 +116,36 @@ export const stages = [
   },
 ];
 
+// Hur långt eleven kommit i en bana. En bana är klar när alla övningar
+// är klara, eller när man klarat banans quiz och alla dess bossar.
+// viaTest säger att banan blev klar på det senare sättet.
+export function trackProgress(track, lessons, completedIds, passedTrackIds) {
+  const items = lessons.filter(lesson => lesson.track === track.id);
+  const done = items.filter(lesson => completedIds.includes(lesson.id));
+  const allDone = items.length > 0 && done.length === items.length;
+  const bossesLeft = items.filter(
+    lesson => lesson.isBoss && !completedIds.includes(lesson.id),
+  );
+  const viaTest =
+    !allDone &&
+    items.length > 0 &&
+    passedTrackIds.includes(track.id) &&
+    bossesLeft.length === 0;
+  return {
+    track,
+    done: done.length,
+    total: items.length,
+    isComplete: allDone || viaTest,
+    viaTest,
+    bossesLeft,
+  };
+}
+
 // Räknar ut var eleven är: ålder, nästa ålder och hur långt det är kvar.
-export function getGrowth(tracks, lessons, completedIds) {
-  const trackStatus = tracks.map(track => {
-    const items = lessons.filter(lesson => lesson.track === track.id);
-    const done = items.filter(lesson => completedIds.includes(lesson.id));
-    return {
-      track,
-      done: done.length,
-      total: items.length,
-      isComplete: items.length > 0 && done.length === items.length,
-    };
-  });
+export function getGrowth(tracks, lessons, completedIds, passedTrackIds = []) {
+  const trackStatus = tracks.map(track =>
+    trackProgress(track, lessons, completedIds, passedTrackIds),
+  );
 
   const completedTracks = trackStatus.filter(status => status.isComplete);
   const stageIndex = Math.min(completedTracks.length, stages.length - 1);

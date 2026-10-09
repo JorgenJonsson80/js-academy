@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import {
   passedTracks,
   placementQuestions,
-  quiz,
   shuffleOptions,
+  trackQuestions,
 } from '../data/quiz';
 
 // Nivåtestet går igenom banorna i ordning och slutar vid första fel
@@ -13,9 +13,7 @@ import {
 export default function Quiz({ tracks, trackId, onFinish, onClose }) {
   const dialogRef = useRef(null);
   const [questions] = useState(() => {
-    const list = trackId
-      ? quiz[trackId].map(question => ({ ...question, trackId }))
-      : placementQuestions(tracks);
+    const list = trackId ? trackQuestions(trackId) : placementQuestions(tracks);
     return list.map(question => ({
       ...question,
       ...shuffleOptions(question.options),
@@ -47,7 +45,7 @@ export default function Quiz({ tracks, trackId, onFinish, onClose }) {
   function handleNext() {
     const isWrong = chosen !== question.answer;
     if (isWrong || index === questions.length - 1) {
-      const passed = passedTracks(quizTracks, answers);
+      const passed = passedTracks(quizTracks, answers, questions);
       setResult(passed);
       onFinish(passed);
       return;
@@ -145,8 +143,8 @@ function QuizResult({ tracks, trackId, passed }) {
   if (trackId) {
     return passed.length > 0 ? (
       <p className="feedback-success">
-        Snyggt! Nästa bana är upplåst. Övningarna här finns kvar om du vill
-        träna mer.
+        Snyggt! Nästa bana är upplåst. Klara banans boss, så växer figuren och
+        du får prylen. Övningarna finns kvar om du vill träna mer.
       </p>
     ) : (
       <p>
@@ -173,8 +171,9 @@ function QuizResult({ tracks, trackId, passed }) {
       {passed.length === 1 ? 'bana' : 'banor'}.{' '}
       {nextTrack ? (
         <>
-          Du fortsätter med <strong>{nextTrack.title}</strong>. Banorna du
-          hoppade över finns kvar om du vill repetera.
+          Du fortsätter med <strong>{nextTrack.title}</strong>. Klara bossen i
+          banorna du hoppade över, så växer figuren och du får prylarna. De är
+          markerade med ⚡.
         </>
       ) : (
         'Alla banor är upplåsta!'

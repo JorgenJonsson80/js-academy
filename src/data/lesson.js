@@ -398,6 +398,65 @@ for (let i = 1; i <= 4; i++) {
     ],
   },
   {
+    id: 'js-basics-boss-01',
+    title: 'Boss: Poängräknaren',
+    xp: 30,
+    track: 'js-basics',
+    isBoss: true,
+    description:
+      'Nu använder du allt från banan på en gång: variabler med const och let, en loop, en jämförelse, if och else och console.log.',
+    task: `Uppgift: Bygg en poängräknare.
+  1. Skapa \`score\` med let och startvärdet 0.
+  2. Använd en for-loop som går 5 varv och lägger till 10 i score varje varv.
+  3. Skapa konstanten \`hasWon\` som är resultatet av jämförelsen score >= 40.
+  4. Skapa \`level\` med let och värdet 1.
+     Om hasWon är true ska level få värdet 2, annars 0. Använd if och else.
+  5. Skriv ut texten "Poäng:" och score med console.log.`,
+    starterCode: '// Skriv din kod här',
+    solution: `let score = 0;
+for (let i = 0; i < 5; i++) {
+  score = score + 10;
+}
+
+const hasWon = score >= 40;
+
+let level = 1;
+if (hasWon) {
+  level = 2;
+} else {
+  level = 0;
+}
+
+console.log('Poäng:', score);`,
+    hints: [],
+    tests: [
+      { description: 'score är 50', code: 'score', expected: 50 },
+      isLet('score'),
+      { description: 'hasWon är true', code: 'hasWon', expected: true },
+      isConst('hasWon'),
+      { description: 'level är 2', code: 'level', expected: 2 },
+      isLet('level'),
+      {
+        description: 'Konsolen visar "Poäng: 50"',
+        code: '__logs',
+        expected: ['Poäng: 50'],
+      },
+    ],
+    sourceChecks: [
+      { description: 'Poängen räknas i en for-loop', pattern: /for\s*\(/ },
+      {
+        description: 'hasWon räknas ut med en jämförelse',
+        pattern: /hasWon\s*=\s*score\s*>=\s*40/,
+      },
+      { description: 'level sätts med if och else', pattern: /\belse\b/ },
+      {
+        description: 'score skrivs inte in som 50 för hand',
+        pattern: /score\s*=\s*50\b/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
     id: 'arrays-01',
     xp: 10,
     title: 'Skapa en array',

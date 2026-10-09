@@ -181,6 +181,7 @@
 }
 
 .collection-item {
+  position: relative;
   display: grid;
   place-items: center;
   aspect-ratio: 1;
@@ -190,6 +191,13 @@
   color: var(--muted);
   font-size: 1.4rem;
   font-weight: 800;
+}
+
+.collection-bolt {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  font-size: 0.8rem;
 }
 
 .collection-item.earned {
