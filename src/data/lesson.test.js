@@ -100,6 +100,18 @@ describe('rättning av lektionerna', () => {
     expect(findMissingSemicolons(lesson.solution)).toEqual([]);
   });
 
+  it('godkänner inte "skapad med const" när variabeln saknas', async () => {
+    const lesson = findLesson('js-basics-boss-01');
+    const { results } = await evaluate(
+      'let score = 0;\nfor (let i = 0; i < 5; i++) {\n  score = score + 10;\n}',
+      lesson.tests,
+    );
+    const constTest = results.find(
+      result => result.description === 'hasWon är skapad med const',
+    );
+    expect(constTest.passed).toBe(false);
+  });
+
   it.each(lessons)('$id underkänner startkoden', async lesson => {
     expect((await check(lesson, lesson.starterCode)).passed).toBe(false);
   });

@@ -1,8 +1,10 @@
-// Att tilldela en const igen kastar ett fel, det gör inte let.
+// Att tilldela en const igen kastar ett TypeError, det gör inte let.
+// Finns variabeln inte alls blir det ett ReferenceError, och då ska
+// testet inte gå igenom.
 function isConst(name) {
   return {
     description: `${name} är skapad med const`,
-    code: `(() => { try { ${name} = ${name}; return false; } catch { return true; } })()`,
+    code: `(() => { try { ${name} = ${name}; return false; } catch (error) { return error.name === 'TypeError'; } })()`,
     expected: true,
   };
 }
