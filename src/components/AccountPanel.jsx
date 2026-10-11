@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 const statusText = {
   loading: 'Hämtar dina framsteg…',
-  saving: 'Sparar…',
   synced: '✓ Sparat i ditt konto',
   error: 'Kunde inte spara. Försöker igen vid nästa ändring.',
 };

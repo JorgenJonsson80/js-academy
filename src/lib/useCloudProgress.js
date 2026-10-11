@@ -3,8 +3,9 @@ import { mergeCompleted, mergeDrafts } from './progress';
 import { supabase } from './supabase';
 
 // Håller koll på inloggningen och synkar framstegen med Supabase.
-// status: 'loading' när kontot hämtas, 'saving' när något sparas,
-// 'synced' när allt är sparat och 'error' om något gick fel.
+// status: 'loading' när kontot hämtas, 'synced' när allt är sparat och
+// 'error' om något gick fel. Själva sparandet visas inte, eftersom det
+// sker hela tiden och annars får sidan att flimra.
 export function useCloudProgress({
   completedIds,
   setCompletedIds,
@@ -62,7 +63,6 @@ export function useCloudProgress({
   useEffect(() => {
     if (!supabase || !userId || loadedUserId !== userId) return;
     const timer = setTimeout(async () => {
-      setStatus('saving');
       const { error } = await supabase.from('progress').upsert({
         user_id: userId,
         completed_ids: completedIds,
