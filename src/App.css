@@ -754,3 +754,17 @@
   justify-content: flex-end;
   margin-top: 16px;
 }
+
+.test-out-banner {
+  display: block;
+  width: 100%;
+  margin: 0 0 12px;
+  border: 1px dashed var(--xp);
+  background: #292515;
+  color: #fde68a;
+  text-align: left;
+}
+
+.test-out-banner:hover {
+  background: #3a3418;
+}

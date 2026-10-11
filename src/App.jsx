@@ -331,16 +331,21 @@ function App() {
     setUndoCode(null);
   }
 
-  // Man kan testa sig förbi den bana man står på, om nästa bana är låst.
+  // Man kan testa sig på en upplåst bana som inte är klar och vars test
+  // man inte redan klarat.
   function canTestOut(trackId) {
-    const index = tracks.findIndex(item => item.id === trackId);
-    const nextTrack = tracks[index + 1];
     return (
       Boolean(quiz[trackId]) &&
-      Boolean(nextTrack) &&
       isTrackUnlocked(trackId) &&
-      !isTrackUnlocked(nextTrack.id)
+      !trackStatusById[trackId].isComplete &&
+      !passedTrackIds.includes(trackId)
     );
+  }
+
+  // Första bossen som är kvar i en bana man klarat testet för.
+  function bossLeftIn(trackId) {
+    if (!passedTrackIds.includes(trackId)) return null;
+    return trackStatusById[trackId].bossesLeft[0] ?? null;
   }
 
   // Banor utan boss blir klara direkt. Övriga när bossen är klar.
@@ -354,10 +359,22 @@ function App() {
     );
   }
 
-  // Efter ett godkänt test hoppar man till banan efter den sista man klarat.
-  function handleQuizClose(passed) {
+  // Efter ett godkänt test hoppar man till banans boss, om man valde det,
+  // eller till banan efter den sista man klarat.
+  function handleQuizClose(passed, choice) {
     setActiveQuiz(null);
     if (!passed?.length) return;
+    if (choice === 'boss') {
+      const boss = lessons.find(
+        item =>
+          item.track === passed.at(-1) &&
+          item.isBoss &&
+          !completedIds.includes(item.id),
+      );
+      const bossIndex = lessons.indexOf(boss);
+      if (bossIndex !== -1) selectLesson(bossIndex);
+      return;
+    }
     const lastIndex = tracks.findIndex(item => item.id === passed.at(-1));
     const nextTrack = tracks[lastIndex + 1];
     if (!nextTrack) return;
@@ -419,10 +436,8 @@ function App() {
               onSelectLesson={handleSelectLesson}
               activeLessonId={lesson.id}
               drafts={drafts}
-              canTestOut={canTestOut}
               trackStatusById={trackStatusById}
               passedTrackIds={passedTrackIds}
-              onTestOut={trackId => setActiveQuiz({ trackId })}
             />
             {allCompleted && (
               <p className="feedback-success">
@@ -436,6 +451,10 @@ function App() {
             onCheck={handleCheck}
             isChecking={isChecking}
             onResetCode={handleResetCode}
+            canTestOut={canTestOut(lesson.track)}
+            onTestOut={() => setActiveQuiz({ trackId: lesson.track })}
+            bossLeft={bossLeftIn(lesson.track)}
+            onGoToBoss={boss => handleSelectLesson(boss.id)}
             canUndoReset={undoCode !== null}
             onUndoReset={handleUndoReset}
             showSolution={showSolution}
@@ -464,6 +483,10 @@ function App() {
         <Quiz
           tracks={tracks}
           trackId={activeQuiz.trackId}
+          hasBoss={
+            Boolean(activeQuiz.trackId) &&
+            trackStatusById[activeQuiz.trackId].bossesLeft.length > 0
+          }
           onFinish={handleQuizFinish}
           onClose={handleQuizClose}
         />

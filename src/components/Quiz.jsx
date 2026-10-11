@@ -10,7 +10,7 @@ import {
 // svar. Med trackId testar man sig förbi en enda bana.
 // onFinish får id:n på banorna man klarat. onClose får samma lista,
 // eller null om man stängde innan testet var klart.
-export default function Quiz({ tracks, trackId, onFinish, onClose }) {
+export default function Quiz({ tracks, trackId, hasBoss, onFinish, onClose }) {
   const dialogRef = useRef(null);
   const [questions] = useState(() => {
     const list = trackId ? trackQuestions(trackId) : placementQuestions(tracks);
@@ -60,7 +60,7 @@ export default function Quiz({ tracks, trackId, onFinish, onClose }) {
     <dialog
       ref={dialogRef}
       className="quiz"
-      onClose={() => onClose(result)}
+      onClose={() => onClose(result, dialogRef.current?.returnValue)}
       aria-labelledby="quiz-title"
     >
       <h2 id="quiz-title">
@@ -68,7 +68,12 @@ export default function Quiz({ tracks, trackId, onFinish, onClose }) {
       </h2>
 
       {result ? (
-        <QuizResult tracks={tracks} trackId={trackId} passed={result} />
+        <QuizResult
+          tracks={tracks}
+          trackId={trackId}
+          passed={result}
+          hasBoss={hasBoss}
+        />
       ) : (
         <>
           <p className="muted">
@@ -131,20 +136,43 @@ export default function Quiz({ tracks, trackId, onFinish, onClose }) {
       )}
 
       <form method="dialog" className="quiz-close">
-        <button type="submit" className={result ? 'primary-button' : ''}>
-          {result ? 'Fortsätt' : 'Avbryt'}
-        </button>
+        {!result && (
+          <button type="submit" value="cancel">
+            Avbryt
+          </button>
+        )}
+        {result && trackId && result.length > 0 && hasBoss && (
+          <button type="submit" value="boss" className="primary-button">
+            👑 Ta bossen nu
+          </button>
+        )}
+        {result && (
+          <button
+            type="submit"
+            value="next"
+            className={
+              trackId && result.length > 0 && hasBoss ? '' : 'primary-button'
+            }
+          >
+            {trackId && result.length > 0
+              ? 'Hoppa till nästa bana →'
+              : 'Fortsätt'}
+          </button>
+        )}
       </form>
     </dialog>
   );
 }
 
-function QuizResult({ tracks, trackId, passed }) {
+function QuizResult({ tracks, trackId, passed, hasBoss }) {
   if (trackId) {
     return passed.length > 0 ? (
       <p className="feedback-success">
-        Snyggt! Nästa bana är upplåst. Klara banans boss, så växer figuren och
-        du får prylen. Övningarna finns kvar om du vill träna mer.
+        Snyggt, du kan det här! Nästa bana är upplåst.{' '}
+        {hasBoss
+          ? 'Klara banans boss, så växer figuren och du får prylen. '
+          : ''}
+        Övningarna finns kvar om du vill träna mer.
       </p>
     ) : (
       <p>

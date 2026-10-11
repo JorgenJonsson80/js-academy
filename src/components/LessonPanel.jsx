@@ -33,6 +33,10 @@ export default function LessonPanel({
   onCheck,
   isChecking,
   onResetCode,
+  canTestOut,
+  onTestOut,
+  bossLeft,
+  onGoToBoss,
   canUndoReset,
   onUndoReset,
   feedback,
@@ -58,6 +62,21 @@ export default function LessonPanel({
         {lesson.isBoss && <span className="chip chip-boss">👑 Boss</span>}
         {isCompleted && <span className="chip chip-done">✓ Klar</span>}
       </p>
+      {canTestOut && (
+        <button type="button" className="test-out-banner" onClick={onTestOut}>
+          ⚡ Kan du redan {trackTitle}? Testa dig på banan och hoppa vidare
+        </button>
+      )}
+      {bossLeft && bossLeft.id !== lesson.id && (
+        <button
+          type="button"
+          className="test-out-banner"
+          onClick={() => onGoToBoss(bossLeft)}
+        >
+          ⚡ Du klarade testet. 👑 Ta bossen{' '}
+          {bossLeft.title.replace('Boss: ', '')} för att få prylen
+        </button>
+      )}
       <h2 id="lesson-title" className="lesson-title">
         {lesson.title}
       </h2>

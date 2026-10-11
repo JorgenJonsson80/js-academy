@@ -9,8 +9,6 @@ export default function TrackList({
   onSelectLesson,
   activeLessonId,
   drafts,
-  canTestOut,
-  onTestOut,
   trackStatusById,
   passedTrackIds,
 }) {
@@ -72,15 +70,6 @@ export default function TrackList({
                   onClick={() => onSelectLesson(status.bossesLeft[0].id)}
                 >
                   👑 Klara bossen och få {item.reward.emoji} {item.reward.name}
-                </button>
-              )}
-              {canTestOut(item.id) && (
-                <button
-                  className="test-out-button"
-                  type="button"
-                  onClick={() => onTestOut(item.id)}
-                >
-                  ⚡ Kan du redan detta? Testa dig förbi
                 </button>
               )}
               {isActive && (
