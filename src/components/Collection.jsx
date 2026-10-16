@@ -1,4 +1,4 @@
-import { isProjectComplete } from '../data/projects';
+import { isProjectComplete, noHintsId } from '../data/projects';
 
 // Hyllan med föremål. Varje bana ger ett föremål när den är klar, och
 // varje projekt ett pris på en egen hylla.
@@ -77,6 +77,9 @@ export default function Collection({
           <ul className="collection">
             {shownProjects.map(project => {
               const isEarned = doneProjects.includes(project);
+              const noHints = completedIds.includes(noHintsId(project))
+                ? ' (🔥 utan ledtrådar)'
+                : '';
               return (
                 <li
                   key={project.id}
@@ -85,16 +88,21 @@ export default function Collection({
                   }
                   title={
                     isEarned
-                      ? `${project.reward.name} – från projektet ${project.title}`
+                      ? `${project.reward.name} – från projektet ${project.title}${noHints}`
                       : `Bygg projektet ${project.title}`
                   }
                 >
                   <span aria-hidden="true">
                     {isEarned ? project.reward.emoji : '?'}
                   </span>
+                  {noHints && (
+                    <span className="collection-bolt" aria-hidden="true">
+                      🔥
+                    </span>
+                  )}
                   <span className="visually-hidden">
                     {isEarned
-                      ? `${project.reward.name}, från projektet ${project.title}`
+                      ? `${project.reward.name}, från projektet ${project.title}${noHints}`
                       : `Låst: bygg projektet ${project.title}`}
                   </span>
                 </li>

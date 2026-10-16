@@ -99,8 +99,16 @@ if (total >= 200) {
   hasDiscount = true;
 }`,
         tests: [
-          { description: 'total är 198 efter rabatten', code: 'total', expected: 198 },
-          { description: 'hasDiscount är true', code: 'hasDiscount', expected: true },
+          {
+            description: 'total är 198 efter rabatten',
+            code: 'total',
+            expected: 198,
+          },
+          {
+            description: 'hasDiscount är true',
+            code: 'hasDiscount',
+            expected: true,
+          },
           isLet('hasDiscount'),
         ],
         sourceChecks: [
@@ -121,7 +129,7 @@ if (total >= 200) {
   1. Skriv ut texten "Att betala:" och total med console.log.
   2. Om hasDiscount är true ska du också skriva ut "Du fick 10 % rabatt!". Annars skriver du ut "Ingen rabatt den här gången.".`,
         hints: [
-          'Text och variabel med komma emellan: console.log(\'Att betala:\', total);',
+          "Text och variabel med komma emellan: console.log('Att betala:', total);",
           'Du kan skriva if (hasDiscount) i stället för if (hasDiscount === true).',
           'Använd if och else med en console.log i varje del.',
         ],
@@ -146,7 +154,8 @@ if (hasDiscount) {
 }`,
         tests: [
           {
-            description: 'Konsolen visar "Att betala: 198" och "Du fick 10 % rabatt!"',
+            description:
+              'Konsolen visar "Att betala: 198" och "Du fick 10 % rabatt!"',
             code: '__logs',
             expected: ['Att betala: 198', 'Du fick 10 % rabatt!'],
           },
@@ -156,7 +165,10 @@ if (hasDiscount) {
             description: 'Totalen hämtas från variabeln total',
             pattern: /console\s*\.\s*log\s*\([^)]*,\s*total\s*\)/,
           },
-          { description: 'Rabatttexten väljs med if och else', pattern: /\belse\b/ },
+          {
+            description: 'Rabatttexten väljs med if och else',
+            pattern: /\belse\b/,
+          },
         ],
       },
     ],
@@ -166,7 +178,8 @@ if (hasDiscount) {
     track: 'js-basics',
     title: 'Termostaten',
     reward: { emoji: '🧣', name: 'Halsduk' },
-    summary: 'Läs av temperaturen, värm upp rummet och kolla om det blev lagom.',
+    summary:
+      'Läs av temperaturen, värm upp rummet och kolla om det blev lagom.',
     steps: [
       {
         title: 'Läs av temperaturen',
@@ -194,11 +207,21 @@ if (temp < 18) {
         tests: [
           { description: 'temp är 14', code: 'temp', expected: 14 },
           isLet('temp'),
-          { description: 'Konsolen visar "För kallt"', code: '__logs', expected: ['För kallt'] },
+          {
+            description: 'Konsolen visar "För kallt"',
+            code: '__logs',
+            expected: ['För kallt'],
+          },
         ],
         sourceChecks: [
-          { description: 'Texten väljs med else if', pattern: /\belse\s+if\s*\(/ },
-          { description: 'Det finns ett else för "Lagom"', pattern: /\belse\s*\{/ },
+          {
+            description: 'Texten väljs med else if',
+            pattern: /\belse\s+if\s*\(/,
+          },
+          {
+            description: 'Det finns ett else för "Lagom"',
+            pattern: /\belse\s*\{/,
+          },
         ],
       },
       {
@@ -227,15 +250,23 @@ for (let i = 0; i < 3; i++) {
   console.log('Temp:', temp);
 }`,
         tests: [
-          { description: 'temp är 20 efter uppvärmningen', code: 'temp', expected: 20 },
           {
-            description: 'Konsolen visar "För kallt" och sedan varje ny temperatur',
+            description: 'temp är 20 efter uppvärmningen',
+            code: 'temp',
+            expected: 20,
+          },
+          {
+            description:
+              'Konsolen visar "För kallt" och sedan varje ny temperatur',
             code: '__logs',
             expected: ['För kallt', 'Temp: 16', 'Temp: 18', 'Temp: 20'],
           },
         ],
         sourceChecks: [
-          { description: 'Uppvärmningen sker i en for-loop', pattern: /\bfor\s*\(/ },
+          {
+            description: 'Uppvärmningen sker i en for-loop',
+            pattern: /\bfor\s*\(/,
+          },
           {
             description: 'temp skrivs inte in som 20 för hand',
             pattern: /temp\s*=\s*20\b/,
@@ -291,7 +322,10 @@ if (isDone) {
             description: 'isDone räknas ut med en jämförelse',
             pattern: /isDone\s*=\s*temp\s*>=\s*18/,
           },
-          { description: 'Meddelandet väljs med if och else', pattern: /\bif\s*\(\s*isDone\b/ },
+          {
+            description: 'Meddelandet väljs med if och else',
+            pattern: /\bif\s*\(\s*isDone\b/,
+          },
         ],
       },
     ],
@@ -325,11 +359,18 @@ for (let day = 1; day <= 7; day++) {
   totalMinutes = totalMinutes + minutes;
 }`,
         tests: [
-          { description: 'totalMinutes är 245', code: 'totalMinutes', expected: 245 },
+          {
+            description: 'totalMinutes är 245',
+            code: 'totalMinutes',
+            expected: 245,
+          },
           isLet('totalMinutes'),
         ],
         sourceChecks: [
-          { description: 'Minuterna summeras i en for-loop', pattern: /\bfor\s*\(/ },
+          {
+            description: 'Minuterna summeras i en for-loop',
+            pattern: /\bfor\s*\(/,
+          },
           {
             description: 'totalMinutes skrivs inte in som 245 för hand',
             pattern: /totalMinutes\s*=\s*245\b/,
@@ -361,10 +402,17 @@ for (let day = 1; day <= 7; day++) {
         tests: [
           { description: 'longDays är 4', code: 'longDays', expected: 4 },
           isLet('longDays'),
-          { description: 'totalMinutes är fortfarande 245', code: 'totalMinutes', expected: 245 },
+          {
+            description: 'totalMinutes är fortfarande 245',
+            code: 'totalMinutes',
+            expected: 245,
+          },
         ],
         sourceChecks: [
-          { description: 'De långa passen räknas med if', pattern: /\bif\s*\(/ },
+          {
+            description: 'De långa passen räknas med if',
+            pattern: /\bif\s*\(/,
+          },
           {
             description: 'longDays skrivs inte in som 4 för hand',
             pattern: /longDays\s*=\s*4\b/,
@@ -406,7 +454,11 @@ if (goalReached) {
   console.log('Fortsätt kämpa!');
 }`,
         tests: [
-          { description: 'goalReached är true', code: 'goalReached', expected: true },
+          {
+            description: 'goalReached är true',
+            code: 'goalReached',
+            expected: true,
+          },
           isConst('goalReached'),
           {
             description: 'Konsolen visar sammanfattningen',
@@ -419,7 +471,1065 @@ if (goalReached) {
             description: 'goalReached räknas ut med en jämförelse',
             pattern: /goalReached\s*=\s*totalMinutes\s*>=\s*150/,
           },
-          { description: 'Slutorden väljs med if och else', pattern: /\belse\b/ },
+          {
+            description: 'Slutorden väljs med if och else',
+            pattern: /\belse\b/,
+          },
+        ],
+      },
+    ],
+  },
+  // Från och med Arrays & Objects säger uppgifterna mest vad som ska
+  // bli resultatet, och ledtrådarna pekar åt rätt håll utan färdig kod.
+  {
+    id: 'proj-packing',
+    track: 'arrays',
+    title: 'Packlistan',
+    reward: { emoji: '🧳', name: 'Resväska' },
+    summary: 'Packa inför resan, skriv ut listan och kolla att passet är med.',
+    steps: [
+      {
+        title: 'Packa väskan',
+        xp: 20,
+        description:
+          'Du ska ut och resa och gör en packlista i kod. Några saker har du redan skrivit upp, och sedan kommer du på två till.',
+        task: `Uppgift:
+  1. Skapa konstanten \`packList\` med "tandborste", "laddare" och "bok".
+  2. Lägg till "solkräm" och sedan "badbyxor" sist i listan, utan att ändra raden där listan skapas.`,
+        starterCode: '// Steg 1: packa väskan\n',
+        hints: [
+          'En array kan ändras med push även om den är skapad med const.',
+          'Varje push lägger till ett värde sist.',
+        ],
+        solution: `const packList = ['tandborste', 'laddare', 'bok'];
+packList.push('solkräm');
+packList.push('badbyxor');`,
+        tests: [
+          {
+            description: 'packList har de fem sakerna i rätt ordning',
+            code: 'packList',
+            expected: ['tandborste', 'laddare', 'bok', 'solkräm', 'badbyxor'],
+          },
+          isConst('packList'),
+        ],
+        sourceChecks: [
+          {
+            description: 'De två nya sakerna läggs till med push',
+            pattern: /\.push\s*\([^]*\.push\s*\(/,
+          },
+        ],
+      },
+      {
+        title: 'Skriv ut listan',
+        xp: 20,
+        description:
+          'Nu vill du se hela listan, med nummer framför varje sak. Koden ska fungera hur lång listan än är, så du kan inte skriva en console.log per sak.',
+        task: `Uppgift:
+  1. Skriv ut varje sak på en egen rad med nummer framför: "1. tandborste", "2. laddare" och så vidare.
+  2. Skriv sist ut "Antal saker:" och hur många saker listan har.`,
+        hints: [
+          'En for-loop kan gå från 0 till packList.length, och packList[i] är saken i varvet.',
+          'Numret är ett mer än i. console.log skriver ut flera värden med mellanslag emellan, så punkten kan sitta ihop med numret som text.',
+        ],
+        solution: `const packList = ['tandborste', 'laddare', 'bok'];
+packList.push('solkräm');
+packList.push('badbyxor');
+
+for (let i = 0; i < packList.length; i++) {
+  console.log(i + 1 + '.', packList[i]);
+}
+console.log('Antal saker:', packList.length);`,
+        tests: [
+          {
+            description: 'Konsolen visar listan med nummer och sedan antalet',
+            code: '__logs',
+            expected: [
+              '1. tandborste',
+              '2. laddare',
+              '3. bok',
+              '4. solkräm',
+              '5. badbyxor',
+              'Antal saker: 5',
+            ],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Listan skrivs ut i en for-loop',
+            pattern: /\bfor\s*\(/,
+          },
+          { description: 'Antalet hämtas med .length', pattern: /\.length\b/ },
+          {
+            description: 'Raderna skrivs inte ut en och en för hand',
+            pattern: /['"]2\./,
+            forbidden: true,
+          },
+        ],
+      },
+      {
+        title: 'Har du passet?',
+        xp: 30,
+        description:
+          'Det värsta som kan hända är att glömma passet. Koden ska själv leta igenom listan, så att den fungerar även när du ändrar i listan.',
+        task: `Uppgift:
+  1. Skapa \`hasPassport\` med let. Den ska bli true om "pass" finns i packList och annars false. Leta med en loop.
+  2. Skriv sist ut "Passet är packat." om passet finns, annars "Glöm inte passet!".`,
+        hints: [
+          'Börja med att anta att passet saknas, och ändra om du hittar det.',
+          'Jämför varje sak i loopen med "pass" med ===.',
+        ],
+        solution: `const packList = ['tandborste', 'laddare', 'bok'];
+packList.push('solkräm');
+packList.push('badbyxor');
+
+for (let i = 0; i < packList.length; i++) {
+  console.log(i + 1 + '.', packList[i]);
+}
+console.log('Antal saker:', packList.length);
+
+let hasPassport = false;
+for (let i = 0; i < packList.length; i++) {
+  if (packList[i] === 'pass') {
+    hasPassport = true;
+  }
+}
+
+if (hasPassport) {
+  console.log('Passet är packat.');
+} else {
+  console.log('Glöm inte passet!');
+}`,
+        tests: [
+          {
+            description: 'hasPassport är false',
+            code: 'hasPassport',
+            expected: false,
+          },
+          isLet('hasPassport'),
+          {
+            description: 'Konsolen slutar med "Glöm inte passet!"',
+            code: '__logs.at(-1)',
+            expected: 'Glöm inte passet!',
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Koden letar efter "pass" med ===',
+            pattern: /===\s*['"]pass['"]|['"]pass['"]\s*===/,
+          },
+          {
+            description: 'Meddelandet väljs med if och else',
+            pattern: /\belse\b/,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-playlist',
+    track: 'arrays',
+    title: 'Spellistan',
+    reward: { emoji: '📻', name: 'Radio' },
+    summary:
+      'Lägg till din egen låt, räkna ut speltiden och hitta den längsta.',
+    steps: [
+      {
+        title: 'Din låt',
+        xp: 20,
+        description:
+          'Spellistan är en array med låtar. Varje låt är ett objekt med title, artist och seconds, alltså låtens längd i sekunder. Nu ska din favoritlåt in.',
+        task: 'Uppgift: Lägg till en låt du gillar sist i `songs`. Den ska ha samma tre egenskaper som de andra låtarna. Ändra inte de tre låtarna som redan finns.',
+        starterCode: `const songs = [
+  { title: 'Dancing Queen', artist: 'ABBA', seconds: 231 },
+  { title: 'Levitating', artist: 'Dua Lipa', seconds: 203 },
+  { title: 'Bohemian Rhapsody', artist: 'Queen', seconds: 355 },
+];
+
+// Steg 1: lägg till din låt
+`,
+        hints: [
+          'push fungerar för objekt precis som för text och tal.',
+          "Ett objekt skrivs med { } och egenskaper som title: '...', med komma emellan.",
+        ],
+        solution: `const songs = [
+  { title: 'Dancing Queen', artist: 'ABBA', seconds: 231 },
+  { title: 'Levitating', artist: 'Dua Lipa', seconds: 203 },
+  { title: 'Bohemian Rhapsody', artist: 'Queen', seconds: 355 },
+];
+
+songs.push({ title: 'Hey Jude', artist: 'The Beatles', seconds: 431 });`,
+        tests: [
+          {
+            description: 'songs har fyra låtar',
+            code: 'songs.length',
+            expected: 4,
+          },
+          {
+            description: 'De tre första låtarna är kvar',
+            code: 'songs.slice(0, 3).map(song => song.title)',
+            expected: ['Dancing Queen', 'Levitating', 'Bohemian Rhapsody'],
+          },
+          {
+            description: 'Din låt har en title och en artist som är text',
+            code: "typeof songs[3]?.title === 'string' && typeof songs[3]?.artist === 'string'",
+            expected: true,
+          },
+          {
+            description: 'Din låt har seconds som ett tal större än 0',
+            code: "typeof songs[3]?.seconds === 'number' && songs[3].seconds > 0",
+            expected: true,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Låten läggs till med push',
+            pattern: /songs\s*\.\s*push\s*\(/,
+          },
+        ],
+      },
+      {
+        title: 'Hur länge spelar den?',
+        xp: 20,
+        description:
+          'Hur lång tid tar hela spellistan? Summera sekunderna och gör om dem till minuter och sekunder. Två nya verktyg: Math.floor(x) avrundar nedåt till ett heltal, och x % 60 ger det som blir över när x delas med 60.',
+        task: `Uppgift:
+  1. Skapa \`totalSeconds\` med let och summera alla låtars seconds i den med en loop.
+  2. Skriv ut speltiden så här: "Speltid: 20 min 20 s", fast med rätt tal för din spellista.`,
+        hints: [
+          'songs[i].seconds är längden på låten i varvet.',
+          'Hela minuter är Math.floor(totalSeconds / 60). console.log kan få flera värden: text, tal, text och så vidare.',
+        ],
+        solution: `const songs = [
+  { title: 'Dancing Queen', artist: 'ABBA', seconds: 231 },
+  { title: 'Levitating', artist: 'Dua Lipa', seconds: 203 },
+  { title: 'Bohemian Rhapsody', artist: 'Queen', seconds: 355 },
+];
+
+songs.push({ title: 'Hey Jude', artist: 'The Beatles', seconds: 431 });
+
+let totalSeconds = 0;
+for (let i = 0; i < songs.length; i++) {
+  totalSeconds = totalSeconds + songs[i].seconds;
+}
+
+const minutes = Math.floor(totalSeconds / 60);
+const rest = totalSeconds % 60;
+console.log('Speltid:', minutes, 'min', rest, 's');`,
+        tests: [
+          {
+            description: 'totalSeconds är summan av alla låtars sekunder',
+            code: 'totalSeconds === songs.reduce((sum, song) => sum + song.seconds, 0)',
+            expected: true,
+          },
+          isLet('totalSeconds'),
+          {
+            description: 'Konsolen visar speltiden i minuter och sekunder',
+            code: "(() => { const t = songs.reduce((sum, song) => sum + song.seconds, 0); return __logs.at(-1) === 'Speltid: ' + Math.floor(t / 60) + ' min ' + (t % 60) + ' s'; })()",
+            expected: true,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Sekunderna summeras i en for-loop',
+            pattern: /\bfor\s*\(/,
+          },
+        ],
+      },
+      {
+        title: 'Den längsta låten',
+        xp: 30,
+        description:
+          'Vilken låt i spellistan är längst? Koden ska hitta den själv, så att svaret blir rätt vilken låt du än lade till.',
+        task: `Uppgift:
+  1. Skapa \`longest\` med let. Efter din kod ska den vara objektet för den längsta låten.
+  2. Skriv sist ut till exempel "Längst: Hey Jude av The Beatles".`,
+        hints: [
+          'Börja med att anta att första låten är längst, och byt när du hittar en som är längre.',
+          'Jämför songs[i].seconds med longest.seconds.',
+        ],
+        solution: `const songs = [
+  { title: 'Dancing Queen', artist: 'ABBA', seconds: 231 },
+  { title: 'Levitating', artist: 'Dua Lipa', seconds: 203 },
+  { title: 'Bohemian Rhapsody', artist: 'Queen', seconds: 355 },
+];
+
+songs.push({ title: 'Hey Jude', artist: 'The Beatles', seconds: 431 });
+
+let totalSeconds = 0;
+for (let i = 0; i < songs.length; i++) {
+  totalSeconds = totalSeconds + songs[i].seconds;
+}
+
+const minutes = Math.floor(totalSeconds / 60);
+const rest = totalSeconds % 60;
+console.log('Speltid:', minutes, 'min', rest, 's');
+
+let longest = songs[0];
+for (let i = 1; i < songs.length; i++) {
+  if (songs[i].seconds > longest.seconds) {
+    longest = songs[i];
+  }
+}
+console.log('Längst:', longest.title, 'av', longest.artist);`,
+        tests: [
+          {
+            description: 'longest är den längsta låten',
+            code: 'longest === songs.reduce((max, song) => (song.seconds > max.seconds ? song : max))',
+            expected: true,
+          },
+          isLet('longest'),
+          {
+            description: 'Konsolen slutar med den längsta låten och artisten',
+            code: "__logs.at(-1) === 'Längst: ' + longest?.title + ' av ' + longest?.artist",
+            expected: true,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Låtarnas längder jämförs med if',
+            pattern: /\bif\s*\(/,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-leaderboard',
+    track: 'arrays',
+    title: 'Topplistan',
+    reward: { emoji: '🏆', name: 'Pokal' },
+    summary:
+      'Ställ upp dig själv i tävlingen, räkna snittet och kora vinnaren.',
+    steps: [
+      {
+        title: 'Ställ upp',
+        xp: 20,
+        description:
+          'Fyra spelare har redan tävlat, och nu är det din tur. Varje spelare är ett objekt med name och score.',
+        task: 'Uppgift: Lägg till dig själv sist i `players`, med ditt namn och ett score mellan 0 och 100. Ändra inte de andra spelarna.',
+        starterCode: `const players = [
+  { name: 'Ada', score: 42 },
+  { name: 'Linus', score: 35 },
+  { name: 'Grace', score: 51 },
+  { name: 'Alan', score: 28 },
+];
+
+// Steg 1: ställ upp i tävlingen
+`,
+        hints: [
+          'Samma sätt som när du lade till saker i en array, fast med ett objekt.',
+          'Objektet behöver egenskaperna name och score.',
+        ],
+        solution: `const players = [
+  { name: 'Ada', score: 42 },
+  { name: 'Linus', score: 35 },
+  { name: 'Grace', score: 51 },
+  { name: 'Alan', score: 28 },
+];
+
+players.push({ name: 'Kim', score: 47 });`,
+        tests: [
+          {
+            description: 'players har fem spelare',
+            code: 'players.length',
+            expected: 5,
+          },
+          {
+            description: 'De fyra första spelarna är kvar',
+            code: 'players.slice(0, 4).map(player => player.score)',
+            expected: [42, 35, 51, 28],
+          },
+          {
+            description: 'Du har ett name som är text',
+            code: "typeof players[4]?.name === 'string' && players[4].name.length > 0",
+            expected: true,
+          },
+          {
+            description: 'Ditt score är ett tal mellan 0 och 100',
+            code: "typeof players[4]?.score === 'number' && players[4].score >= 0 && players[4].score <= 100",
+            expected: true,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Du läggs till med push',
+            pattern: /players\s*\.\s*push\s*\(/,
+          },
+        ],
+      },
+      {
+        title: 'Snittet',
+        xp: 20,
+        description:
+          'Hur bra gick det i snitt? Snittet är summan av alla poäng delat med antalet spelare.',
+        task: `Uppgift:
+  1. Skapa konstanten \`average\` med snittpoängen för alla spelare. Räkna ut summan med en loop.
+  2. Skriv ut "Snitt:" och snittet.`,
+        hints: [
+          'Du behöver en summa som börjar på 0 och växer i loopen.',
+          'Antalet spelare får du med .length.',
+        ],
+        solution: `const players = [
+  { name: 'Ada', score: 42 },
+  { name: 'Linus', score: 35 },
+  { name: 'Grace', score: 51 },
+  { name: 'Alan', score: 28 },
+];
+
+players.push({ name: 'Kim', score: 47 });
+
+let total = 0;
+for (let i = 0; i < players.length; i++) {
+  total = total + players[i].score;
+}
+const average = total / players.length;
+console.log('Snitt:', average);`,
+        tests: [
+          {
+            description: 'average är snittet av alla spelares poäng',
+            code: 'average === players.reduce((sum, player) => sum + player.score, 0) / players.length',
+            expected: true,
+          },
+          isConst('average'),
+          {
+            description: 'Konsolen visar snittet',
+            code: "__logs.at(-1) === 'Snitt: ' + average",
+            expected: true,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Poängen summeras i en for-loop',
+            pattern: /\bfor\s*\(/,
+          },
+          {
+            description: 'Antalet spelare hämtas med .length',
+            pattern: /\.length\b/,
+          },
+        ],
+      },
+      {
+        title: 'Vinnaren',
+        xp: 30,
+        description:
+          'Dags för prisutdelning. Vem vann, och hur många spelade bättre än snittet?',
+        task: `Uppgift:
+  1. Skapa \`winner\` med let. Efter din kod ska den vara objektet för spelaren med högst score. Blir det lika vinner den som står först.
+  2. Skapa \`aboveAverage\` med let: antalet spelare med mer poäng än snittet.
+  3. Skriv ut "Vinnare:" och vinnarens namn, och sist "Över snittet:" och antalet.`,
+        hints: [
+          'Båda kan räknas ut i samma loop, eller i var sin.',
+          'För att den som står först ska vinna vid lika poäng byter du bara vinnare när någon har mer, inte lika mycket.',
+        ],
+        solution: `const players = [
+  { name: 'Ada', score: 42 },
+  { name: 'Linus', score: 35 },
+  { name: 'Grace', score: 51 },
+  { name: 'Alan', score: 28 },
+];
+
+players.push({ name: 'Kim', score: 47 });
+
+let total = 0;
+for (let i = 0; i < players.length; i++) {
+  total = total + players[i].score;
+}
+const average = total / players.length;
+console.log('Snitt:', average);
+
+let winner = players[0];
+let aboveAverage = 0;
+for (let i = 0; i < players.length; i++) {
+  if (players[i].score > winner.score) {
+    winner = players[i];
+  }
+  if (players[i].score > average) {
+    aboveAverage = aboveAverage + 1;
+  }
+}
+console.log('Vinnare:', winner.name);
+console.log('Över snittet:', aboveAverage);`,
+        tests: [
+          {
+            description: 'winner är spelaren med högst score',
+            code: 'winner === players.reduce((best, player) => (player.score > best.score ? player : best))',
+            expected: true,
+          },
+          isLet('winner'),
+          {
+            description: 'aboveAverage är antalet spelare över snittet',
+            code: 'aboveAverage === players.filter(player => player.score > average).length',
+            expected: true,
+          },
+          isLet('aboveAverage'),
+          {
+            description:
+              'Konsolen slutar med vinnaren och antalet över snittet',
+            code: "__logs.slice(-2).join('|') === 'Vinnare: ' + winner?.name + '|Över snittet: ' + aboveAverage",
+            expected: true,
+          },
+        ],
+        sourceChecks: [
+          { description: 'Poängen jämförs med if', pattern: /\bif\s*\(/ },
+        ],
+      },
+    ],
+  },
+  // Från och med Functions säger uppgiften bara vad funktionerna ska
+  // göra. Testerna anropar dem med många olika värden, så det spelar
+  // ingen roll hur de är skrivna.
+  {
+    id: 'proj-change',
+    track: 'functions',
+    title: 'Växelautomaten',
+    reward: { emoji: '🐷', name: 'Spargris' },
+    summary: 'Räkna ut växel med så få mynt som möjligt.',
+    steps: [
+      {
+        title: 'Hur många mynt?',
+        xp: 25,
+        description:
+          'Du bygger en automat som ger växel i mynt på 20, 10, 5 och 1 kr. Först behöver den veta hur många hela mynt av en sort som ryms i ett belopp. Math.floor(x) avrundar ett tal nedåt.',
+        task: 'Uppgift: Skriv funktionen `coinsOf(amount, coin)` som returnerar hur många hela mynt värda coin som ryms i amount. coinsOf(37, 10) ger 3 och coinsOf(9, 10) ger 0.',
+        starterCode: '// Steg 1: hur många mynt ryms?\n',
+        hints: [
+          'Dela beloppet med myntets värde. Vad gör du med decimalerna?',
+          'Det är bara hela mynt som räknas, så svaret avrundas alltid nedåt.',
+        ],
+        solution: `function coinsOf(amount, coin) {
+  return Math.floor(amount / coin);
+}`,
+        tests: [
+          {
+            description: 'coinsOf(37, 10) ger 3',
+            code: 'coinsOf(37, 10)',
+            expected: 3,
+          },
+          {
+            description: 'coinsOf(9, 10) ger 0',
+            code: 'coinsOf(9, 10)',
+            expected: 0,
+          },
+          {
+            description: 'coinsOf(40, 20) ger 2',
+            code: 'coinsOf(40, 20)',
+            expected: 2,
+          },
+          {
+            description: 'coinsOf(7, 1) ger 7',
+            code: 'coinsOf(7, 1)',
+            expected: 7,
+          },
+        ],
+      },
+      {
+        title: 'Växla',
+        xp: 25,
+        description:
+          'Nu ska automaten dela upp ett helt belopp i mynt. Den tar alltid så många stora mynt som möjligt först, så att det blir så få mynt som möjligt. Det som blir över efter en sort går vidare till nästa.',
+        task: 'Uppgift: Skriv funktionen `makeChange(amount)` som returnerar ett objekt med egenskaperna twenties, tens, fives och ones. makeChange(37) ger { twenties: 1, tens: 1, fives: 1, ones: 2 }. Använd coinsOf.',
+        hints: [
+          'Håll reda på hur mycket som är kvar att växla efter varje myntsort.',
+          'Det som är kvar efter 20-kronorna är beloppet minus antalet 20-kronor gånger 20. Eller resten med %.',
+        ],
+        solution: `function coinsOf(amount, coin) {
+  return Math.floor(amount / coin);
+}
+
+function makeChange(amount) {
+  let left = amount;
+  const twenties = coinsOf(left, 20);
+  left = left - twenties * 20;
+  const tens = coinsOf(left, 10);
+  left = left - tens * 10;
+  const fives = coinsOf(left, 5);
+  left = left - fives * 5;
+  return { twenties, tens, fives, ones: left };
+}`,
+        tests: [
+          {
+            description: 'makeChange(37) ger 1, 1, 1 och 2 mynt',
+            code: '(() => { const c = makeChange(37); return [c.twenties, c.tens, c.fives, c.ones]; })()',
+            expected: [1, 1, 1, 2],
+          },
+          {
+            description: 'makeChange(80) ger fyra 20-kronor och inget annat',
+            code: '(() => { const c = makeChange(80); return [c.twenties, c.tens, c.fives, c.ones]; })()',
+            expected: [4, 0, 0, 0],
+          },
+          {
+            description: 'makeChange(19) ger 0, 1, 1 och 4 mynt',
+            code: '(() => { const c = makeChange(19); return [c.twenties, c.tens, c.fives, c.ones]; })()',
+            expected: [0, 1, 1, 4],
+          },
+          {
+            description: 'makeChange(0) ger inga mynt',
+            code: '(() => { const c = makeChange(0); return [c.twenties, c.tens, c.fives, c.ones]; })()',
+            expected: [0, 0, 0, 0],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'makeChange använder coinsOf',
+            pattern:
+              /function\s+makeChange[^]*coinsOf\s*\(|makeChange\s*=[^]*coinsOf\s*\(/,
+          },
+        ],
+      },
+      {
+        title: 'Betala',
+        xp: 40,
+        description:
+          'Sist kopplar du ihop allt till själva betalningen. Kunden lägger i pengar, och automaten svarar på tre olika sätt beroende på hur mycket som kom in.',
+        task: `Uppgift: Skriv funktionen \`pay(price, paid)\`.
+  - Om kunden betalat för lite returnerar den texten "Det fattas 13 kr", med rätt belopp.
+  - Om kunden betalat exakt returnerar den "Jämnt!".
+  - Om kunden betalat för mycket returnerar den växeln som ett objekt från makeChange.`,
+        hints: [
+          'Tre fall betyder tre vägar genom funktionen. Vilket fall ska kollas först?',
+          'Texten kan byggas med + mellan text och tal.',
+        ],
+        solution: `function coinsOf(amount, coin) {
+  return Math.floor(amount / coin);
+}
+
+function makeChange(amount) {
+  let left = amount;
+  const twenties = coinsOf(left, 20);
+  left = left - twenties * 20;
+  const tens = coinsOf(left, 10);
+  left = left - tens * 10;
+  const fives = coinsOf(left, 5);
+  left = left - fives * 5;
+  return { twenties, tens, fives, ones: left };
+}
+
+function pay(price, paid) {
+  if (paid < price) {
+    return 'Det fattas ' + (price - paid) + ' kr';
+  }
+  if (paid === price) {
+    return 'Jämnt!';
+  }
+  return makeChange(paid - price);
+}`,
+        tests: [
+          {
+            description: 'pay(50, 37) ger "Det fattas 13 kr"',
+            code: 'pay(50, 37)',
+            expected: 'Det fattas 13 kr',
+          },
+          {
+            description: 'pay(25, 25) ger "Jämnt!"',
+            code: 'pay(25, 25)',
+            expected: 'Jämnt!',
+          },
+          {
+            description: 'pay(63, 100) ger växel för 37 kr',
+            code: '(() => { const c = pay(63, 100); return [c.twenties, c.tens, c.fives, c.ones]; })()',
+            expected: [1, 1, 1, 2],
+          },
+          {
+            description: 'pay(1, 50) ger växel för 49 kr',
+            code: '(() => { const c = pay(1, 50); return [c.twenties, c.tens, c.fives, c.ones]; })()',
+            expected: [2, 0, 1, 4],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'pay använder makeChange',
+            pattern:
+              /function\s+pay[^]*makeChange\s*\(|pay\s*=[^]*makeChange\s*\(/,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-weather',
+    track: 'functions',
+    title: 'Väderstationen',
+    reward: { emoji: '🌂', name: 'Paraply' },
+    summary: 'Små funktioner som tillsammans blir en veckorapport om vädret.',
+    steps: [
+      {
+        title: 'Medeltemperaturen',
+        xp: 25,
+        description:
+          'Väderstationen mäter temperaturen varje dag och sparar mätningarna i en array. Första verktyget räknar ut medelvärdet.',
+        task: 'Uppgift: Skriv funktionen `average(numbers)` som returnerar medelvärdet av talen i arrayen. För en tom array ska den returnera 0.',
+        starterCode: '// Steg 1: medelvärdet\n',
+        hints: [
+          'Medelvärdet är summan delat med antalet.',
+          'Vad blir 0 / 0 i JavaScript? Den tomma arrayen behöver ett eget fall.',
+        ],
+        solution: `function average(numbers) {
+  if (numbers.length === 0) {
+    return 0;
+  }
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum = sum + numbers[i];
+  }
+  return sum / numbers.length;
+}`,
+        tests: [
+          {
+            description: 'average([12, 15, 18]) ger 15',
+            code: 'average([12, 15, 18])',
+            expected: 15,
+          },
+          {
+            description: 'average([-4, 2]) ger -1',
+            code: 'average([-4, 2])',
+            expected: -1,
+          },
+          {
+            description: 'average([7]) ger 7',
+            code: 'average([7])',
+            expected: 7,
+          },
+          {
+            description: 'average([]) ger 0',
+            code: 'average([])',
+            expected: 0,
+          },
+        ],
+      },
+      {
+        title: 'Varmast och känsla',
+        xp: 25,
+        description:
+          'Två verktyg till: ett som hittar den varmaste dagen och ett som beskriver hur en temperatur känns.',
+        task: `Uppgift:
+  - Skriv \`warmest(temps)\` som returnerar den högsta temperaturen i arrayen. Den ska fungera även när alla temperaturer är under noll.
+  - Skriv \`describe(temp)\` som returnerar "kallt" under 10 grader, "varmt" över 20 grader och annars "lagom".`,
+        hints: [
+          'Om du börjar leta från 0 blir det fel när alla dagar är kalla. Vad kan du börja med i stället?',
+          'Gränserna 10 och 20 räknas som lagom.',
+        ],
+        solution: `function average(numbers) {
+  if (numbers.length === 0) {
+    return 0;
+  }
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum = sum + numbers[i];
+  }
+  return sum / numbers.length;
+}
+
+function warmest(temps) {
+  let max = temps[0];
+  for (let i = 1; i < temps.length; i++) {
+    if (temps[i] > max) {
+      max = temps[i];
+    }
+  }
+  return max;
+}
+
+function describe(temp) {
+  if (temp < 10) {
+    return 'kallt';
+  }
+  if (temp > 20) {
+    return 'varmt';
+  }
+  return 'lagom';
+}`,
+        tests: [
+          {
+            description: 'warmest([12, 25, 18]) ger 25',
+            code: 'warmest([12, 25, 18])',
+            expected: 25,
+          },
+          {
+            description: 'warmest([-8, -3, -12]) ger -3',
+            code: 'warmest([-8, -3, -12])',
+            expected: -3,
+          },
+          {
+            description: 'describe(4) ger "kallt"',
+            code: 'describe(4)',
+            expected: 'kallt',
+          },
+          {
+            description: 'describe(10) ger "lagom"',
+            code: 'describe(10)',
+            expected: 'lagom',
+          },
+          {
+            description: 'describe(20) ger "lagom"',
+            code: 'describe(20)',
+            expected: 'lagom',
+          },
+          {
+            description: 'describe(27) ger "varmt"',
+            code: 'describe(27)',
+            expected: 'varmt',
+          },
+        ],
+      },
+      {
+        title: 'Veckorapporten',
+        xp: 40,
+        description:
+          'Nu sätter du ihop verktygen. Bra funktioner gör en sak var, och större funktioner bygger på de små.',
+        task: 'Uppgift: Skriv `weekReport(temps)` som returnerar ett objekt med average (medeltemperaturen), warmest (högsta temperaturen) och feel (hur medeltemperaturen känns). Använd dina tre funktioner.',
+        hints: [
+          'weekReport behöver inte räkna något själv.',
+          'feel beskriver medeltemperaturen, inte den varmaste dagen.',
+        ],
+        solution: `function average(numbers) {
+  if (numbers.length === 0) {
+    return 0;
+  }
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum = sum + numbers[i];
+  }
+  return sum / numbers.length;
+}
+
+function warmest(temps) {
+  let max = temps[0];
+  for (let i = 1; i < temps.length; i++) {
+    if (temps[i] > max) {
+      max = temps[i];
+    }
+  }
+  return max;
+}
+
+function describe(temp) {
+  if (temp < 10) {
+    return 'kallt';
+  }
+  if (temp > 20) {
+    return 'varmt';
+  }
+  return 'lagom';
+}
+
+function weekReport(temps) {
+  const avg = average(temps);
+  return {
+    average: avg,
+    warmest: warmest(temps),
+    feel: describe(avg),
+  };
+}`,
+        tests: [
+          {
+            description: 'weekReport för en sval vecka',
+            code: '(() => { const r = weekReport([8, 12, 14, 10, 16, 18, 6]); return [r.average, r.warmest, r.feel]; })()',
+            expected: [12, 18, 'lagom'],
+          },
+          {
+            description: 'weekReport för en vintervecka',
+            code: '(() => { const r = weekReport([-2, -6, 1, -4, -3, 0, 0]); return [r.average, r.warmest, r.feel]; })()',
+            expected: [-2, 1, 'kallt'],
+          },
+          {
+            description:
+              'feel beskriver medeltemperaturen och inte den varmaste dagen',
+            code: 'weekReport([18, 18, 18, 18, 18, 18, 30]).feel',
+            expected: 'lagom',
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'weekReport använder average, warmest och describe',
+            pattern:
+              /weekReport[^]*(?=[^]*\baverage\s*\()(?=[^]*\bwarmest\s*\()(?=[^]*\bdescribe\s*\()/,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-dice',
+    track: 'functions',
+    title: 'Tärningsspelet',
+    reward: { emoji: '🎲', name: 'Tärningar' },
+    summary: 'Räkna poäng för ett kast med fem tärningar.',
+    steps: [
+      {
+        title: 'Räkna ögon',
+        xp: 25,
+        description:
+          'Du bygger poängräkningen till ett tärningsspel med fem tärningar. Ett kast är en array, till exempel [3, 1, 3, 6, 3].',
+        task: 'Uppgift: Skriv `countValue(dice, value)` som returnerar hur många tärningar i kastet som visar value. countValue([3, 1, 3, 6, 3], 3) ger 3.',
+        starterCode: '// Steg 1: räkna en sorts tärningar\n',
+        hints: [
+          'Gå igenom tärningarna en i taget.',
+          'Du behöver en räknare som börjar på 0.',
+        ],
+        solution: `function countValue(dice, value) {
+  let count = 0;
+  for (let i = 0; i < dice.length; i++) {
+    if (dice[i] === value) {
+      count = count + 1;
+    }
+  }
+  return count;
+}`,
+        tests: [
+          {
+            description: 'countValue([3, 1, 3, 6, 3], 3) ger 3',
+            code: 'countValue([3, 1, 3, 6, 3], 3)',
+            expected: 3,
+          },
+          {
+            description: 'countValue([3, 1, 3, 6, 3], 6) ger 1',
+            code: 'countValue([3, 1, 3, 6, 3], 6)',
+            expected: 1,
+          },
+          {
+            description: 'countValue([3, 1, 3, 6, 3], 5) ger 0',
+            code: 'countValue([3, 1, 3, 6, 3], 5)',
+            expected: 0,
+          },
+          {
+            description: 'countValue([2, 2, 2, 2, 2], 2) ger 5',
+            code: 'countValue([2, 2, 2, 2, 2], 2)',
+            expected: 5,
+          },
+        ],
+      },
+      {
+        title: 'Summa och yatzy',
+        xp: 25,
+        description:
+          'Två regler till spelet: summan av alla tärningar, och yatzy, som är när alla fem visar samma.',
+        task: `Uppgift:
+  - Skriv \`sumDice(dice)\` som returnerar summan av tärningarna.
+  - Skriv \`hasYatzy(dice)\` som returnerar true om alla fem tärningar visar samma, annars false.`,
+        hints: [
+          'Om alla visar samma som den första tärningen, hur många visar då det värdet?',
+          'countValue kan svara på det.',
+        ],
+        solution: `function countValue(dice, value) {
+  let count = 0;
+  for (let i = 0; i < dice.length; i++) {
+    if (dice[i] === value) {
+      count = count + 1;
+    }
+  }
+  return count;
+}
+
+function sumDice(dice) {
+  let sum = 0;
+  for (let i = 0; i < dice.length; i++) {
+    sum = sum + dice[i];
+  }
+  return sum;
+}
+
+function hasYatzy(dice) {
+  return countValue(dice, dice[0]) === 5;
+}`,
+        tests: [
+          {
+            description: 'sumDice([3, 1, 3, 6, 3]) ger 16',
+            code: 'sumDice([3, 1, 3, 6, 3])',
+            expected: 16,
+          },
+          {
+            description: 'sumDice([6, 6, 6, 6, 6]) ger 30',
+            code: 'sumDice([6, 6, 6, 6, 6])',
+            expected: 30,
+          },
+          {
+            description: 'hasYatzy([4, 4, 4, 4, 4]) ger true',
+            code: 'hasYatzy([4, 4, 4, 4, 4])',
+            expected: true,
+          },
+          {
+            description: 'hasYatzy([4, 4, 4, 4, 1]) ger false',
+            code: 'hasYatzy([4, 4, 4, 4, 1])',
+            expected: false,
+          },
+          {
+            description: 'hasYatzy([1, 4, 4, 4, 4]) ger false',
+            code: 'hasYatzy([1, 4, 4, 4, 4])',
+            expected: false,
+          },
+        ],
+      },
+      {
+        title: 'Poängen',
+        xp: 40,
+        description: 'Nu ska ett kast få sin poäng enligt spelets regler.',
+        task: `Uppgift: Skriv \`score(dice)\` som returnerar poängen för ett kast:
+  - Yatzy ger 50 poäng.
+  - Annars: visar minst tre tärningar samma värde ger kastet summan av alla tärningar.
+  - Annars ger kastet 0 poäng.`,
+        hints: [
+          'Börja med regeln som ger mest poäng.',
+          'För att hitta tre lika kan du prova varje värde från 1 till 6.',
+        ],
+        solution: `function countValue(dice, value) {
+  let count = 0;
+  for (let i = 0; i < dice.length; i++) {
+    if (dice[i] === value) {
+      count = count + 1;
+    }
+  }
+  return count;
+}
+
+function sumDice(dice) {
+  let sum = 0;
+  for (let i = 0; i < dice.length; i++) {
+    sum = sum + dice[i];
+  }
+  return sum;
+}
+
+function hasYatzy(dice) {
+  return countValue(dice, dice[0]) === 5;
+}
+
+function score(dice) {
+  if (hasYatzy(dice)) {
+    return 50;
+  }
+  for (let value = 1; value <= 6; value++) {
+    if (countValue(dice, value) >= 3) {
+      return sumDice(dice);
+    }
+  }
+  return 0;
+}`,
+        tests: [
+          {
+            description: 'score([5, 5, 5, 5, 5]) ger 50',
+            code: 'score([5, 5, 5, 5, 5])',
+            expected: 50,
+          },
+          {
+            description: 'score([3, 1, 3, 6, 3]) ger 16',
+            code: 'score([3, 1, 3, 6, 3])',
+            expected: 16,
+          },
+          {
+            description: 'score([2, 6, 6, 6, 6]) ger 26',
+            code: 'score([2, 6, 6, 6, 6])',
+            expected: 26,
+          },
+          {
+            description: 'score([1, 2, 3, 4, 6]) ger 0',
+            code: 'score([1, 2, 3, 4, 6])',
+            expected: 0,
+          },
+          {
+            description: 'score([4, 4, 1, 1, 6]) ger 0',
+            code: 'score([4, 4, 1, 1, 6])',
+            expected: 0,
+          },
         ],
       },
     ],
@@ -448,4 +1558,16 @@ export function isProjectComplete(project, completedIds) {
   return project.steps.every((_, index) =>
     completedIds.includes(`${project.id}-${index + 1}`),
   );
+}
+
+// Ett projekt som byggs klart utan ledtrådar sparas som ett eget id
+// bland de klara, så att det följer med till kontot som allt annat.
+export function noHintsId(project) {
+  return `${project.id}-utan-ledtradar`;
+}
+
+// Bonusen för att bygga utan ledtrådar: hälften av projektets XP.
+export function noHintsBonusXp(project) {
+  const xp = project.steps.reduce((sum, step) => sum + step.xp, 0);
+  return Math.round(xp / 2);
 }

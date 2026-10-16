@@ -15,7 +15,13 @@ import AccountPanel from './components/AccountPanel';
 import { useCloudProgress } from './lib/useCloudProgress';
 import Quiz from './components/Quiz';
 import { quiz } from './data/quiz';
-import { isProjectComplete, projects, projectSteps } from './data/projects';
+import {
+  isProjectComplete,
+  noHintsBonusXp,
+  noHintsId,
+  projects,
+  projectSteps,
+} from './data/projects';
 
 // Övningarna först och projektstegen efter, så att en övnings plats
 // i lessons är samma som i exercises.
@@ -100,6 +106,44 @@ function App() {
     );
   }, [passedTrackIds]);
 
+  // Hur man valt att bygga varje projekt: 'hints' eller 'noHints'.
+  const [projectModes, setProjectModes] = useState(() => {
+    try {
+      const parsed = JSON.parse(
+        localStorage.getItem('academy-project-modes') ?? '{}',
+      );
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+        ? parsed
+        : {};
+    } catch {
+      return {};
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem('academy-project-modes', JSON.stringify(projectModes));
+  }, [projectModes]);
+
+  // null tills man valt. Har man redan klarat ett steg utan att välja
+  // bygger man med ledtrådar.
+  const projectMode = project
+    ? (projectModes[project.id] ??
+      (project.steps.some((_, index) =>
+        completedIds.includes(`${project.id}-${index + 1}`),
+      )
+        ? 'hints'
+        : null))
+    : null;
+
+  function handleChooseProjectMode(mode) {
+    setProjectModes(previous => ({ ...previous, [project.id]: mode }));
+  }
+
+  // Lösningen räknas som hjälp, så då försvinner bonusen.
+  function handleShowSolution() {
+    if (project && projectMode !== 'hints') handleChooseProjectMode('hints');
+    setShowSolution(true);
+  }
+
   // null när inget quiz visas, annars { trackId } för en bana eller {}
   // för nivåtestet.
   const [activeQuiz, setActiveQuiz] = useState(null);
@@ -126,9 +170,13 @@ function App() {
     setFeedback(null);
   }
 
-  const totalXp = exercises
-    .filter(lesson => completedIds.includes(lesson.id))
-    .reduce((sum, lesson) => sum + lesson.xp, 0);
+  const totalXp =
+    exercises
+      .filter(lesson => completedIds.includes(lesson.id))
+      .reduce((sum, lesson) => sum + lesson.xp, 0) +
+    projects
+      .filter(item => completedIds.includes(noHintsId(item)))
+      .reduce((sum, item) => sum + noHintsBonusXp(item), 0);
 
   const growth = getGrowth(tracks, lessons, completedIds, passedTrackIds);
   const trackStatusById = Object.fromEntries(
@@ -289,6 +337,9 @@ function App() {
     }
     if (isFirstTime) {
       const newIds = [...completedIds, lesson.id];
+      const projectDone = project && isProjectComplete(project, newIds);
+      const withoutHints = projectDone && projectMode === 'noHints';
+      if (withoutHints) newIds.push(noHintsId(project));
       setCompletedIds(newIds);
 
       // Blev banan klar nu? Då firar vi och visar hur figuren växt.
@@ -296,7 +347,14 @@ function App() {
         newlyCompletedTracks(newIds, passedTrackIds),
         newIds,
         passedTrackIds,
-        project && isProjectComplete(project, newIds) ? [project] : [],
+        projectDone
+          ? [
+              {
+                ...project,
+                bonusXp: withoutHints ? noHintsBonusXp(project) : 0,
+              },
+            ]
+          : [],
       );
     }
   }
@@ -340,7 +398,8 @@ function App() {
   // Öppnar första steget i projektet som inte är klart.
   function handleSelectProject(projectId) {
     const steps = projectSteps.filter(item => item.project === projectId);
-    const step = steps.find(item => !completedIds.includes(item.id)) ?? steps[0];
+    const step =
+      steps.find(item => !completedIds.includes(item.id)) ?? steps[0];
     handleSelectLesson(step.id);
   }
 
@@ -511,10 +570,13 @@ function App() {
             canUndoReset={undoCode !== null}
             onUndoReset={handleUndoReset}
             showSolution={showSolution}
-            onShowSolution={() => setShowSolution(true)}
+            onShowSolution={handleShowSolution}
             feedback={feedback}
             lesson={lesson}
             project={project}
+            projectMode={projectMode}
+            onChooseProjectMode={handleChooseProjectMode}
+            noHintsBonusXp={project ? noHintsBonusXp(project) : 0}
             isCompleted={completedIds.includes(lesson.id)}
             failedAttempts={failedAttempts}
             trackTitle={track.title}

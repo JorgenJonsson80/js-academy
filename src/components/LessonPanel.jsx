@@ -22,6 +22,9 @@ function TaskText({ text }) {
 export default function LessonPanel({
   lesson,
   project,
+  projectMode,
+  onChooseProjectMode,
+  noHintsBonusXp,
 
   trackTitle,
   docs,
@@ -74,6 +77,9 @@ export default function LessonPanel({
         )}
         <span className="chip chip-xp">⭐ {lesson.xp} XP</span>
         {lesson.isBoss && <span className="chip chip-boss">👑 Boss</span>}
+        {projectMode === 'noHints' && (
+          <span className="chip chip-boss">🔥 Utan ledtrådar</span>
+        )}
         {isCompleted && <span className="chip chip-done">✓ Klar</span>}
       </p>
       {canTestOut && (
@@ -110,6 +116,24 @@ export default function LessonPanel({
             </figure>
           )}
         </details>
+      )}
+      {project && projectMode === null && (
+        <div className="mode-choice">
+          <p>
+            <strong>Hur vill du bygga {project.title}?</strong> Du kan byta till
+            ledtrådar senare om du kör fast.
+          </p>
+          <button type="button" onClick={() => onChooseProjectMode('hints')}>
+            💡 Med ledtrådar
+          </button>
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() => onChooseProjectMode('noHints')}
+          >
+            🔥 Utan ledtrådar, +{noHintsBonusXp} bonus-XP
+          </button>
+        </div>
       )}
       <p className="lesson-task">
         <TaskText text={lesson.task} />
@@ -164,13 +188,19 @@ export default function LessonPanel({
       )}
       <HintPanel
         key={lesson.id}
-        hints={lesson.hints}
+        hints={project && projectMode !== 'hints' ? [] : lesson.hints}
         failedAttempts={failedAttempts}
         isBoss={lesson.isBoss}
       />
-      {failedAttempts >= 4 && (
+      {projectMode === 'noHints' && !isCompleted && (
+        <button type="button" onClick={() => onChooseProjectMode('hints')}>
+          💡 Byt till med ledtrådar (bonusen försvinner)
+        </button>
+      )}
+      {failedAttempts >= (projectMode === 'noHints' ? 6 : 4) && (
         <button type="button" onClick={onShowSolution}>
           Visa lösning
+          {projectMode === 'noHints' && ' (bonusen försvinner)'}
         </button>
       )}
       {showSolution && (

@@ -53,13 +53,19 @@ export default function LevelUp({ celebration, onClose }) {
         <p key={project.id} className="level-up-reward">
           <span aria-hidden="true">{project.reward.emoji}</span> Nytt
           projektpris i samlingen: <strong>{project.reward.name}</strong>
+          {project.bonusXp > 0 && (
+            <>
+              <br />
+              🔥 Utan ledtrådar: <strong>+{project.bonusXp} bonus-XP</strong>
+            </>
+          )}
         </p>
       ))}
       {unlockedProjects.length > 0 && (
         <p>
           🛠️ Nu kan du bygga ett projekt:{' '}
-          {unlockedProjects.map(project => project.title).join(', ')}. Du
-          hittar dem under banan.
+          {unlockedProjects.map(project => project.title).join(', ')}. Du hittar
+          dem under banan.
         </p>
       )}
       <form method="dialog">

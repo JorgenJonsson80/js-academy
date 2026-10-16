@@ -56,8 +56,7 @@ function ProjectPicker({
                         <span aria-hidden="true">
                           {completedIds.includes(step.id) ? '✓' : '○'}
                         </span>{' '}
-                        Steg {step.stepNumber}:{' '}
-                        {step.title.split(': ').at(-1)}
+                        Steg {step.stepNumber}: {step.title.split(': ').at(-1)}
                       </button>
                     </li>
                   ))}

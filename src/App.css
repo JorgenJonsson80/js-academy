@@ -795,3 +795,18 @@
 .collection-subtitle {
   margin-top: 16px;
 }
+
+.mode-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 12px;
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius);
+}
+
+.mode-choice p {
+  flex-basis: 100%;
+  margin: 0;
+}
