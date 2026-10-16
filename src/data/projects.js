@@ -3313,6 +3313,549 @@ function publicProfile(player) {
       },
     ],
   },
+  {
+    id: 'proj-poll',
+    track: 'immutable',
+    title: 'Omröstningen',
+    reward: { emoji: '🗳️', name: 'Valurna' },
+    summary: 'Räkna röster, visa resultatet sorterat och kora en vinnare.',
+    steps: [
+      {
+        title: 'Rösta',
+        xp: 25,
+        description:
+          'Klassen röstar om vad det ska bli på fredagsfikat. Rösterna sparas i ett objekt där varje alternativ är en nyckel: { pizza: 3, tacos: 5 }.',
+        task: 'Uppgift: Skriv `vote(votes, option)` som returnerar ett nytt objekt där option har fått en röst till. Ett alternativ som inte fanns förut får sin första röst. votes får inte ändras.',
+        starterCode: '// Steg 1: lägg en röst\n',
+        hints: [
+          'Nyckeln står i en variabel. Hur skriver man en nyckel som räknas ut?',
+          'Ett alternativ som saknas har 0 röster. Vilken operator ger ett reservvärde?',
+        ],
+        solution: `function vote(votes, option) {
+  return { ...votes, [option]: (votes[option] ?? 0) + 1 };
+}`,
+        tests: [
+          {
+            description: 'Ett befintligt alternativ får en röst till',
+            code: "vote({ pizza: 3, tacos: 5 }, 'tacos').tacos",
+            expected: 6,
+          },
+          {
+            description: 'Ett nytt alternativ får 1 röst',
+            code: "vote({ pizza: 3 }, 'sushi').sushi",
+            expected: 1,
+          },
+          {
+            description: 'De andra alternativen är kvar',
+            code: "vote({ pizza: 3 }, 'sushi').pizza",
+            expected: 3,
+          },
+          {
+            description: 'votes ändras inte',
+            code: "(() => { const v = { pizza: 3 }; vote(v, 'pizza'); vote(v, 'sushi'); return [v.pizza, 'sushi' in v]; })()",
+            expected: [3, false],
+          },
+        ],
+      },
+      {
+        title: 'Resultatet',
+        xp: 25,
+        description:
+          'Resultatet ska visas som en lista, med flest röster först. a.localeCompare(b) jämför två texter i bokstavsordning och fungerar i en sorteringsfunktion.',
+        task: `Uppgift: Skriv \`results(votes)\` som returnerar en array med rader som "tacos: 5 röster (50 %)".
+  - Flest röster först. Vid lika kommer alternativen i bokstavsordning.
+  - Procenten avrundas med Math.round.
+  - Ett alternativ med en enda röst skrivs "1 röst".
+  - votes får inte ändras.`,
+        hints: [
+          'Gör först om objektet till något som går att sortera.',
+          'En sorteringsfunktion kan jämföra en sak först och bara gå vidare till nästa när den första är lika.',
+        ],
+        solution: `function vote(votes, option) {
+  return { ...votes, [option]: (votes[option] ?? 0) + 1 };
+}
+
+function results(votes) {
+  const entries = Object.entries(votes);
+  const total = entries.reduce((sum, [, count]) => sum + count, 0);
+  return entries
+    .toSorted(([nameA, a], [nameB, b]) => b - a || nameA.localeCompare(nameB))
+    .map(([name, count]) => {
+      const word = count === 1 ? 'röst' : 'röster';
+      const share = Math.round((count / total) * 100);
+      return \`\${name}: \${count} \${word} (\${share} %)\`;
+    });
+}`,
+        tests: [
+          {
+            description: 'Flest röster först, med procent',
+            code: 'results({ pizza: 3, tacos: 5, sushi: 2 })',
+            expected: [
+              'tacos: 5 röster (50 %)',
+              'pizza: 3 röster (30 %)',
+              'sushi: 2 röster (20 %)',
+            ],
+          },
+          {
+            description:
+              'Lika många röster ger bokstavsordning, och 1 röst skrivs i singular',
+            code: 'results({ våfflor: 1, bullar: 1, glass: 2 })',
+            expected: [
+              'glass: 2 röster (50 %)',
+              'bullar: 1 röst (25 %)',
+              'våfflor: 1 röst (25 %)',
+            ],
+          },
+          {
+            description: 'Procenten avrundas',
+            code: 'results({ a: 1, b: 2 })',
+            expected: ['b: 2 röster (67 %)', 'a: 1 röst (33 %)'],
+          },
+          {
+            description: 'Inga röster ger en tom lista',
+            code: 'results({})',
+            expected: [],
+          },
+        ],
+      },
+      {
+        title: 'Vinnaren',
+        xp: 40,
+        description:
+          'Sist ska appen säga vad det blir. Ibland blir det oavgjort.',
+        task: `Uppgift: Skriv \`winner(votes)\` som returnerar:
+  - Namnet på alternativet med flest röster, till exempel "tacos".
+  - "Oavgjort: bullar, glass" om flera delar på förstaplatsen, i bokstavsordning.
+  - "Inga röster" om ingen har röstat.`,
+        hints: [
+          'Ta reda på det högsta antalet röster först.',
+          'Hur många alternativ har just det antalet?',
+        ],
+        solution: `function vote(votes, option) {
+  return { ...votes, [option]: (votes[option] ?? 0) + 1 };
+}
+
+function results(votes) {
+  const entries = Object.entries(votes);
+  const total = entries.reduce((sum, [, count]) => sum + count, 0);
+  return entries
+    .toSorted(([nameA, a], [nameB, b]) => b - a || nameA.localeCompare(nameB))
+    .map(([name, count]) => {
+      const word = count === 1 ? 'röst' : 'röster';
+      const share = Math.round((count / total) * 100);
+      return \`\${name}: \${count} \${word} (\${share} %)\`;
+    });
+}
+
+function winner(votes) {
+  const entries = Object.entries(votes);
+  if (entries.length === 0) {
+    return 'Inga röster';
+  }
+  const top = Math.max(...entries.map(([, count]) => count));
+  const leaders = entries
+    .filter(([, count]) => count === top)
+    .map(([name]) => name)
+    .toSorted((a, b) => a.localeCompare(b));
+  return leaders.length === 1 ? leaders[0] : \`Oavgjort: \${leaders.join(', ')}\`;
+}`,
+        tests: [
+          {
+            description: 'En klar vinnare',
+            code: 'winner({ pizza: 3, tacos: 5 })',
+            expected: 'tacos',
+          },
+          {
+            description: 'Oavgjort i bokstavsordning',
+            code: 'winner({ glass: 4, bullar: 4, pizza: 1 })',
+            expected: 'Oavgjort: bullar, glass',
+          },
+          {
+            description: 'Inga röster',
+            code: 'winner({})',
+            expected: 'Inga röster',
+          },
+          {
+            description: 'Fungerar ihop med vote',
+            code: "winner(vote(vote(vote({}, 'te'), 'kaffe'), 'kaffe'))",
+            expected: 'kaffe',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-library',
+    track: 'immutable',
+    title: 'Biblioteket',
+    reward: { emoji: '📚', name: 'Bokhylla' },
+    summary: 'Sortera böcker, låna ut dem och se vem som har vad.',
+    steps: [
+      {
+        title: 'Sortera hyllan',
+        xp: 25,
+        description:
+          'Du bygger systemet till skolbiblioteket. En bok är { id, title, year }. Boklistan delas av flera vyer i appen, så den får aldrig ändras. a.localeCompare(b, "sv") jämför två texter i svensk bokstavsordning, med Å, Ä och Ö sist.',
+        task: 'Uppgift: Skriv `sortBooks(books, by)` som returnerar böckerna sorterade efter title i bokstavsordning när by är "title", och efter year med äldst först när by är "year". books får inte ändras.',
+        starterCode: '// Steg 1: sortera böckerna\n',
+        hints: [
+          'Det finns en sorteringsmetod som inte ändrar originalet.',
+          'En sorteringsfunktion för tal kan returnera skillnaden mellan dem.',
+        ],
+        solution: `function sortBooks(books, by) {
+  if (by === 'year') {
+    return books.toSorted((a, b) => a.year - b.year);
+  }
+  return books.toSorted((a, b) => a.title.localeCompare(b.title, 'sv'));
+}`,
+        tests: [
+          {
+            description: 'Sorterar efter titel, med Ö sist',
+            code: "sortBooks([{ id: 1, title: 'Ödlan', year: 2001 }, { id: 2, title: 'Bröderna Lejonhjärta', year: 1973 }, { id: 3, title: 'Alfons', year: 1972 }], 'title').map(book => book.id)",
+            expected: [3, 2, 1],
+          },
+          {
+            description: 'Sorterar efter år, äldst först',
+            code: "sortBooks([{ id: 1, title: 'Ödlan', year: 2001 }, { id: 2, title: 'Bröderna Lejonhjärta', year: 1973 }, { id: 3, title: 'Alfons', year: 1972 }], 'year').map(book => book.year)",
+            expected: [1972, 1973, 2001],
+          },
+          {
+            description: 'books ändras inte',
+            code: "(() => { const books = [{ id: 1, title: 'B', year: 2 }, { id: 2, title: 'A', year: 1 }]; sortBooks(books, 'title'); sortBooks(books, 'year'); return books.map(book => book.id); })()",
+            expected: [1, 2],
+          },
+        ],
+      },
+      {
+        title: 'Låna och lämna',
+        xp: 25,
+        description:
+          'Utlånen sparas i ett objekt där nyckeln är bokens id och värdet är namnet på den som lånat: { 2: "Ada" }. Object.fromEntries(entries) gör om en array med [nyckel, värde]-par till ett objekt, alltså motsatsen till Object.entries.',
+        task: `Uppgift:
+  - Skriv \`lend(loans, bookId, name)\` som returnerar nya utlån där boken är utlånad till name. Är boken redan utlånad returneras loans som det är.
+  - Skriv \`giveBack(loans, bookId)\` som returnerar nya utlån utan boken.
+  - loans får aldrig ändras.`,
+        hints: [
+          'Nyckeln står i en variabel. Hur skriver man en nyckel som räknas ut?',
+          'Att ta bort en nyckel utan delete: gör om till en lista, filtrera, och gör om tillbaka.',
+        ],
+        solution: `function sortBooks(books, by) {
+  if (by === 'year') {
+    return books.toSorted((a, b) => a.year - b.year);
+  }
+  return books.toSorted((a, b) => a.title.localeCompare(b.title, 'sv'));
+}
+
+function lend(loans, bookId, name) {
+  if (loans[bookId] !== undefined) {
+    return loans;
+  }
+  return { ...loans, [bookId]: name };
+}
+
+function giveBack(loans, bookId) {
+  return Object.fromEntries(
+    Object.entries(loans).filter(([id]) => id !== String(bookId)),
+  );
+}`,
+        tests: [
+          {
+            description: 'lend lånar ut boken',
+            code: "lend({}, 3, 'Ada')[3]",
+            expected: 'Ada',
+          },
+          {
+            description: 'En bok som redan är utlånad lånas inte ut igen',
+            code: "(() => { const loans = { 3: 'Ada' }; return lend(loans, 3, 'Bo') === loans; })()",
+            expected: true,
+          },
+          {
+            description: 'giveBack tar bort boken och behåller de andra',
+            code: "(() => { const next = giveBack({ 3: 'Ada', 5: 'Bo' }, 3); return [3 in next, next[5]]; })()",
+            expected: [false, 'Bo'],
+          },
+          {
+            description: 'loans ändras aldrig',
+            code: "(() => { const loans = { 3: 'Ada' }; lend(loans, 4, 'Bo'); giveBack(loans, 3); return Object.keys(loans); })()",
+            expected: ['3'],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inget delete',
+            pattern: /\bdelete\s/,
+            forbidden: true,
+          },
+        ],
+      },
+      {
+        title: 'Vem har vad?',
+        xp: 40,
+        description:
+          'Bibliotekarien vill se alla utlån på en lista, sorterade efter den som lånat.',
+        task: `Uppgift: Skriv \`loanReport(books, loans)\` som returnerar en array med rader som "Ada har Bröderna Lejonhjärta".
+  - Raderna sorteras efter namnet på den som lånat, i bokstavsordning. Har någon lånat flera böcker sorteras de efter titel.
+  - Ett utlån av en bok som inte finns i books visas som "Bo har en okänd bok".
+  - Inga utlån ger ["Inga utlånade böcker"].`,
+        hints: [
+          'Nycklarna i loans är text, men id i böckerna är tal.',
+          'Bygg ett objekt för varje utlån med namn och titel, och sortera dem innan du gör texten.',
+        ],
+        solution: `function sortBooks(books, by) {
+  if (by === 'year') {
+    return books.toSorted((a, b) => a.year - b.year);
+  }
+  return books.toSorted((a, b) => a.title.localeCompare(b.title, 'sv'));
+}
+
+function lend(loans, bookId, name) {
+  if (loans[bookId] !== undefined) {
+    return loans;
+  }
+  return { ...loans, [bookId]: name };
+}
+
+function giveBack(loans, bookId) {
+  return Object.fromEntries(
+    Object.entries(loans).filter(([id]) => id !== String(bookId)),
+  );
+}
+
+function loanReport(books, loans) {
+  const rows = Object.entries(loans).map(([id, name]) => {
+    const book = books.find(item => String(item.id) === id);
+    return { name, title: book?.title };
+  });
+  if (rows.length === 0) {
+    return ['Inga utlånade böcker'];
+  }
+  return rows
+    .toSorted(
+      (a, b) =>
+        a.name.localeCompare(b.name, 'sv') ||
+        (a.title ?? '').localeCompare(b.title ?? '', 'sv'),
+    )
+    .map(({ name, title }) =>
+      title ? \`\${name} har \${title}\` : \`\${name} har en okänd bok\`,
+    );
+}`,
+        tests: [
+          {
+            description: 'Sorterar efter den som lånat och sedan efter titel',
+            code: "loanReport([{ id: 1, title: 'Ödlan' }, { id: 2, title: 'Alfons' }, { id: 3, title: 'Mio' }], { 1: 'Ada', 2: 'Cy', 3: 'Ada' })",
+            expected: ['Ada har Mio', 'Ada har Ödlan', 'Cy har Alfons'],
+          },
+          {
+            description: 'En bok som saknas visas som okänd',
+            code: "loanReport([{ id: 1, title: 'Mio' }], { 9: 'Bo' })",
+            expected: ['Bo har en okänd bok'],
+          },
+          {
+            description: 'Inga utlån',
+            code: "loanReport([{ id: 1, title: 'Mio' }], {})",
+            expected: ['Inga utlånade böcker'],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-undo',
+    track: 'immutable',
+    title: 'Ångra-knappen',
+    reward: { emoji: '🧽', name: 'Suddgummi' },
+    summary: 'Bygg ångra och gör om med en closure som minns historiken.',
+    steps: [
+      {
+        title: 'Historiken',
+        xp: 25,
+        description:
+          'Du bygger ångra-knappen till ett ritprogram. Varje ändring sparas, så att man kan gå tillbaka. Historiken ska leva inne i en closure, så att ingen utanför kan röra den.',
+        task: `Uppgift: Skriv \`createHistory(initial)\` som returnerar ett objekt med tre funktioner:
+  - current() returnerar det nuvarande värdet, från början initial.
+  - push(value) gör value till det nuvarande värdet.
+  - undo() går tillbaka till värdet innan. Längre tillbaka än initial går det inte.`,
+        starterCode: '// Steg 1: en historik med ångra\n',
+        hints: [
+          'Vilka variabler behöver funktionerna dela, och var ska de skapas för att bara de ska nå dem?',
+          'En lista med alla värden och en plats i listan räcker långt.',
+        ],
+        solution: `function createHistory(initial) {
+  let past = [initial];
+  return {
+    current: () => past.at(-1),
+    push: value => {
+      past = [...past, value];
+    },
+    undo: () => {
+      if (past.length > 1) {
+        past = past.slice(0, -1);
+      }
+    },
+  };
+}`,
+        tests: [
+          {
+            description: 'current() ger initial från början',
+            code: "createHistory('tomt').current()",
+            expected: 'tomt',
+          },
+          {
+            description: 'push byter det nuvarande värdet',
+            code: '(() => { const h = createHistory(0); h.push(1); h.push(2); return h.current(); })()',
+            expected: 2,
+          },
+          {
+            description: 'undo går tillbaka ett steg i taget',
+            code: '(() => { const h = createHistory(0); h.push(1); h.push(2); h.undo(); const a = h.current(); h.undo(); return [a, h.current()]; })()',
+            expected: [1, 0],
+          },
+          {
+            description: 'undo går inte längre tillbaka än initial',
+            code: "(() => { const h = createHistory('start'); h.push('a'); h.undo(); h.undo(); h.undo(); return h.current(); })()",
+            expected: 'start',
+          },
+          {
+            description: 'Två historiker påverkar inte varandra',
+            code: '(() => { const a = createHistory(1); const b = createHistory(10); a.push(2); return [a.current(), b.current()]; })()',
+            expected: [2, 10],
+          },
+        ],
+      },
+      {
+        title: 'Gör om',
+        xp: 25,
+        description:
+          'En ångra-knapp behöver en gör om-knapp. Och knapparna ska vara gråa när de inte går att använda.',
+        task: `Uppgift: Bygg ut historiken med:
+  - redo() som gör om det man senast ångrade.
+  - canUndo() och canRedo() som returnerar true eller false.
+  - Gör man push efter att ha ångrat försvinner det som gick att göra om, som i alla ritprogram.`,
+        hints: [
+          'Det som ångras måste sparas någonstans, så att det går att hämta tillbaka.',
+          'push är det enda som tömmer gör om-listan.',
+        ],
+        solution: `function createHistory(initial) {
+  let past = [initial];
+  let future = [];
+  return {
+    current: () => past.at(-1),
+    push: value => {
+      past = [...past, value];
+      future = [];
+    },
+    undo: () => {
+      if (past.length > 1) {
+        future = [past.at(-1), ...future];
+        past = past.slice(0, -1);
+      }
+    },
+    redo: () => {
+      if (future.length > 0) {
+        past = [...past, future[0]];
+        future = future.slice(1);
+      }
+    },
+    canUndo: () => past.length > 1,
+    canRedo: () => future.length > 0,
+  };
+}`,
+        tests: [
+          {
+            description: 'redo gör om det som ångrades',
+            code: '(() => { const h = createHistory(0); h.push(1); h.push(2); h.undo(); h.undo(); h.redo(); return h.current(); })()',
+            expected: 1,
+          },
+          {
+            description: 'redo gör ingenting när inget har ångrats',
+            code: '(() => { const h = createHistory(0); h.push(1); h.redo(); return h.current(); })()',
+            expected: 1,
+          },
+          {
+            description: 'canUndo och canRedo stämmer',
+            code: '(() => { const h = createHistory(0); const start = [h.canUndo(), h.canRedo()]; h.push(1); h.undo(); return [...start, h.canUndo(), h.canRedo()]; })()',
+            expected: [false, false, false, true],
+          },
+          {
+            description: 'push efter undo tömmer det som gick att göra om',
+            code: '(() => { const h = createHistory(0); h.push(1); h.undo(); h.push(5); h.redo(); return [h.current(), h.canRedo()]; })()',
+            expected: [5, false],
+          },
+        ],
+      },
+      {
+        title: 'Ritprogrammet',
+        xp: 40,
+        description:
+          'Nu kopplar du historiken till själva ritprogrammet. En teckning är ett objekt: { color, shapes }, där shapes är en array. Det är samma idé som när React får en funktion till setState.',
+        task: `Uppgift: Bygg ut historiken med update(change), där change är en funktion som får det nuvarande värdet och returnerar nästa. Nästa värde läggs till som med push.
+Skriv sedan två sådana funktioner för teckningar, som inte får ändra teckningen de får in:
+  - \`addShape(shape)\` returnerar en funktion som lägger till shape sist i shapes.
+  - \`setColor(color)\` returnerar en funktion som byter color.`,
+        hints: [
+          'addShape och setColor returnerar en funktion som minns shape eller color: en closure till.',
+          'Om en tidigare teckning ändras på plats förstör det historiken. Varför?',
+        ],
+        solution: `function createHistory(initial) {
+  let past = [initial];
+  let future = [];
+  const push = value => {
+    past = [...past, value];
+    future = [];
+  };
+  return {
+    current: () => past.at(-1),
+    push,
+    update: change => push(change(past.at(-1))),
+    undo: () => {
+      if (past.length > 1) {
+        future = [past.at(-1), ...future];
+        past = past.slice(0, -1);
+      }
+    },
+    redo: () => {
+      if (future.length > 0) {
+        past = [...past, future[0]];
+        future = future.slice(1);
+      }
+    },
+    canUndo: () => past.length > 1,
+    canRedo: () => future.length > 0,
+  };
+}
+
+function addShape(shape) {
+  return drawing => ({ ...drawing, shapes: [...drawing.shapes, shape] });
+}
+
+function setColor(color) {
+  return drawing => ({ ...drawing, color });
+}`,
+        tests: [
+          {
+            description: 'update använder funktionen på det nuvarande värdet',
+            code: '(() => { const h = createHistory(1); h.update(n => n * 10); h.update(n => n + 5); return h.current(); })()',
+            expected: 15,
+          },
+          {
+            description: 'addShape och setColor fungerar med update',
+            code: "(() => { const h = createHistory({ color: 'svart', shapes: [] }); h.update(addShape('cirkel')); h.update(setColor('röd')); h.update(addShape('fyrkant')); const d = h.current(); return [d.color, d.shapes]; })()",
+            expected: ['röd', ['cirkel', 'fyrkant']],
+          },
+          {
+            description: 'undo ger tillbaka teckningen som den var',
+            code: "(() => { const h = createHistory({ color: 'svart', shapes: [] }); h.update(addShape('cirkel')); h.update(addShape('fyrkant')); h.undo(); return h.current().shapes; })()",
+            expected: ['cirkel'],
+          },
+          {
+            description: 'Teckningen som skickas in ändras inte',
+            code: "(() => { const d = { color: 'svart', shapes: ['linje'] }; addShape('cirkel')(d); setColor('röd')(d); return [d.color, d.shapes.length]; })()",
+            expected: ['svart', 1],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // Stegen som vanliga övningar, så att samma editor och rättning kan

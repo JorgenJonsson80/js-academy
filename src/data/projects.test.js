@@ -178,6 +178,21 @@ const otherAnswers = [
     "const withDefaults = settings => ({ theme: 'ljust', volume: 50, language: 'sv', ...settings });",
     false,
   ],
+  [
+    'proj-undo-2',
+    'function createHistory(initial) {\n  let values = [initial];\n  let index = 0;\n  return {\n    current: () => values[index],\n    push(value) {\n      values = [...values.slice(0, index + 1), value];\n      index++;\n    },\n    undo() { if (index > 0) index--; },\n    redo() { if (index < values.length - 1) index++; },\n    canUndo: () => index > 0,\n    canRedo: () => index < values.length - 1,\n  };\n}',
+    true,
+  ],
+  [
+    'proj-undo-3',
+    'function createHistory(initial) {\n  let past = [initial];\n  return {\n    current: () => past.at(-1),\n    push: v => { past = [...past, v]; },\n    update: f => { past = [...past, f(past.at(-1))]; },\n    undo: () => {},\n    redo: () => {},\n    canUndo: () => false,\n    canRedo: () => false,\n  };\n}\nconst addShape = shape => drawing => {\n  drawing.shapes.push(shape);\n  return drawing;\n};\nconst setColor = color => drawing => ({ ...drawing, color });',
+    false,
+  ],
+  [
+    'proj-poll-1',
+    'function vote(votes, option) {\n  votes[option] = (votes[option] ?? 0) + 1;\n  return votes;\n}',
+    false,
+  ],
 ];
 
 describe('andra svar', () => {
