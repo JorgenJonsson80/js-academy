@@ -1534,6 +1534,639 @@ function score(dice) {
       },
     ],
   },
+  {
+    id: 'proj-password',
+    track: 'strings',
+    title: 'Lösenordskollen',
+    reward: { emoji: '🔑', name: 'Nyckel' },
+    summary: 'Kolla hur starkt ett lösenord är och säg vad som saknas.',
+    steps: [
+      {
+        title: 'Siffror och stora bokstäver',
+        xp: 25,
+        description:
+          'Du bygger lösenordskollen till ett registreringsformulär. Först behövs två små verktyg som letar efter olika sorters tecken. En sträng kan gås igenom tecken för tecken precis som en array: text[i] och text.length.',
+        task: `Uppgift:
+  - Skriv \`hasDigit(text)\` som returnerar true om text innehåller minst en siffra.
+  - Skriv \`hasUpper(text)\` som returnerar true om text innehåller minst en stor bokstav, även Å, Ä och Ö.`,
+        starterCode: '// Steg 1: leta efter tecken\n',
+        hints: [
+          'Finns det en sträng som innehåller alla siffror, som du kan fråga med includes?',
+          'Vad händer med en stor bokstav när du gör toLowerCase på den? Och med en siffra?',
+        ],
+        solution: `function hasDigit(text) {
+  for (let i = 0; i < text.length; i++) {
+    if ('0123456789'.includes(text[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hasUpper(text) {
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    if (char !== char.toLowerCase()) {
+      return true;
+    }
+  }
+  return false;
+}`,
+        tests: [
+          {
+            description: 'hasDigit("hemligt7") ger true',
+            code: "hasDigit('hemligt7')",
+            expected: true,
+          },
+          {
+            description: 'hasDigit("0abc") ger true',
+            code: "hasDigit('0abc')",
+            expected: true,
+          },
+          {
+            description: 'hasDigit("hemligt") ger false',
+            code: "hasDigit('hemligt')",
+            expected: false,
+          },
+          {
+            description: 'hasDigit("") ger false',
+            code: "hasDigit('')",
+            expected: false,
+          },
+          {
+            description: 'hasUpper("hejSan") ger true',
+            code: "hasUpper('hejSan')",
+            expected: true,
+          },
+          {
+            description: 'hasUpper("åÖ") ger true',
+            code: "hasUpper('åÖ')",
+            expected: true,
+          },
+          {
+            description: 'hasUpper("hej123!") ger false',
+            code: "hasUpper('hej123!')",
+            expected: false,
+          },
+        ],
+      },
+      {
+        title: 'Vad är fel?',
+        xp: 25,
+        description:
+          'Formuläret ska kunna säga exakt vad som är fel med ett lösenord, så att användaren vet vad hen ska ändra.',
+        task: `Uppgift: Skriv \`passwordProblems(password)\` som returnerar en array med alla problem, i den här ordningen:
+  - "För kort" om lösenordet har färre än 8 tecken
+  - "Saknar siffra"
+  - "Saknar stor bokstav"
+Ett bra lösenord ger en tom array.`,
+        hints: [
+          'Börja med en tom array och lägg till ett problem i taget.',
+          'Varje regel är en egen if, inte en else if. Varför?',
+        ],
+        solution: `function hasDigit(text) {
+  for (let i = 0; i < text.length; i++) {
+    if ('0123456789'.includes(text[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hasUpper(text) {
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    if (char !== char.toLowerCase()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function passwordProblems(password) {
+  const problems = [];
+  if (password.length < 8) {
+    problems.push('För kort');
+  }
+  if (!hasDigit(password)) {
+    problems.push('Saknar siffra');
+  }
+  if (!hasUpper(password)) {
+    problems.push('Saknar stor bokstav');
+  }
+  return problems;
+}`,
+        tests: [
+          {
+            description: 'passwordProblems("Hemligt123") ger []',
+            code: "passwordProblems('Hemligt123')",
+            expected: [],
+          },
+          {
+            description: 'passwordProblems("abc") ger alla tre problemen',
+            code: "passwordProblems('abc')",
+            expected: ['För kort', 'Saknar siffra', 'Saknar stor bokstav'],
+          },
+          {
+            description:
+              'passwordProblems("hemligt123") saknar bara stor bokstav',
+            code: "passwordProblems('hemligt123')",
+            expected: ['Saknar stor bokstav'],
+          },
+          {
+            description: 'passwordProblems("Kort1") är bara för kort',
+            code: "passwordProblems('Kort1')",
+            expected: ['För kort'],
+          },
+          {
+            description: 'Exakt 8 tecken är inte för kort',
+            code: "passwordProblems('Abcdefg1')",
+            expected: [],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'passwordProblems använder hasDigit och hasUpper',
+            pattern:
+              /passwordProblems[^]*(?=[^]*\bhasDigit\s*\()(?=[^]*\bhasUpper\s*\()/,
+          },
+        ],
+      },
+      {
+        title: 'Omdömet',
+        xp: 40,
+        description:
+          'Sist ska användaren få ett omdöme om lösenordet i klartext, precis under rutan i formuläret.',
+        task: `Uppgift: Skriv \`feedback(password)\` som returnerar en text:
+  - Inga problem: "Lösenordet är starkt!"
+  - Ett problem: "Lösenordet är okej: Saknar siffra", med problemet efter kolon.
+  - Två eller fler: "Lösenordet är svagt: För kort, Saknar siffra", med problemen i ordning och komma emellan.
+Mellanslag före och efter lösenordet räknas inte, så "  Hemligt1  " är bara 8 tecken.`,
+        hints: [
+          'Städa lösenordet först och skicka det städade vidare.',
+          'Det finns en array-metod som sätter ihop alla delar med en text emellan.',
+        ],
+        solution: `function hasDigit(text) {
+  for (let i = 0; i < text.length; i++) {
+    if ('0123456789'.includes(text[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hasUpper(text) {
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    if (char !== char.toLowerCase()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function passwordProblems(password) {
+  const problems = [];
+  if (password.length < 8) {
+    problems.push('För kort');
+  }
+  if (!hasDigit(password)) {
+    problems.push('Saknar siffra');
+  }
+  if (!hasUpper(password)) {
+    problems.push('Saknar stor bokstav');
+  }
+  return problems;
+}
+
+function feedback(password) {
+  const problems = passwordProblems(password.trim());
+  if (problems.length === 0) {
+    return 'Lösenordet är starkt!';
+  }
+  const level = problems.length === 1 ? 'okej' : 'svagt';
+  return \`Lösenordet är \${level}: \${problems.join(', ')}\`;
+}`,
+        tests: [
+          {
+            description: 'feedback("Hemligt123") ger starkt',
+            code: "feedback('Hemligt123')",
+            expected: 'Lösenordet är starkt!',
+          },
+          {
+            description: 'feedback("hemligt123") ger okej med problemet',
+            code: "feedback('hemligt123')",
+            expected: 'Lösenordet är okej: Saknar stor bokstav',
+          },
+          {
+            description: 'feedback("abc") ger svagt med alla problemen',
+            code: "feedback('abc')",
+            expected:
+              'Lösenordet är svagt: För kort, Saknar siffra, Saknar stor bokstav',
+          },
+          {
+            description: 'Mellanslag runt lösenordet räknas inte',
+            code: "feedback('  Hemligt  ')",
+            expected: 'Lösenordet är svagt: För kort, Saknar siffra',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-badge',
+    track: 'strings',
+    title: 'Namnbrickan',
+    reward: { emoji: '📛', name: 'Namnbricka' },
+    summary:
+      'Städa slarvigt inskrivna namn och gör namnbrickor till en konferens.',
+    steps: [
+      {
+        title: 'Stor första bokstav',
+        xp: 25,
+        description:
+          'Till en konferens skriver deltagarna in sina namn själva, och de gör det slarvigt: "aDA", " linus ", "GRACE". Namnbrickorna ska ändå bli snygga. Ett nytt verktyg: text.slice(1) ger hela texten utom första tecknet.',
+        task: 'Uppgift: Skriv `capitalize(word)` som tar bort mellanslag runt ordet och returnerar det med stor första bokstav och resten små. capitalize(" aDA ") ger "Ada". En tom sträng ger en tom sträng.',
+        starterCode: '// Steg 1: stor första bokstav\n',
+        hints: [
+          'Dela upp jobbet: den första bokstaven och resten av ordet behandlas olika.',
+          'Vad är text[0], och vad är text.slice(1)? Vad gör en tom sträng med text[0]?',
+        ],
+        solution: `function capitalize(word) {
+  const clean = word.trim();
+  if (clean === '') {
+    return '';
+  }
+  return clean[0].toUpperCase() + clean.slice(1).toLowerCase();
+}`,
+        tests: [
+          {
+            description: 'capitalize(" aDA ") ger "Ada"',
+            code: "capitalize(' aDA ')",
+            expected: 'Ada',
+          },
+          {
+            description: 'capitalize("GRACE") ger "Grace"',
+            code: "capitalize('GRACE')",
+            expected: 'Grace',
+          },
+          {
+            description: 'capitalize("östen") ger "Östen"',
+            code: "capitalize('östen')",
+            expected: 'Östen',
+          },
+          {
+            description: 'capitalize("x") ger "X"',
+            code: "capitalize('x')",
+            expected: 'X',
+          },
+          {
+            description: 'capitalize("") ger ""',
+            code: "capitalize('')",
+            expected: '',
+          },
+          {
+            description: 'capitalize("   ") ger ""',
+            code: "capitalize('   ')",
+            expected: '',
+          },
+        ],
+      },
+      {
+        title: 'Hela namnet',
+        xp: 25,
+        description:
+          'Många skriver både för- och efternamn, ibland med flera mellanslag emellan. Också dubbelnamn som "anna maria" ska bli rätt.',
+        task: 'Uppgift: Skriv `formatName(fullName)` som returnerar namnet med stor bokstav i varje del och exakt ett mellanslag mellan delarna. formatName("  ada   LOVELACE ") ger "Ada Lovelace".',
+        hints: [
+          'Vad ger "a  b".split(" ")? Prova med console.log.',
+          'Tomma delar ska hoppas över innan du sätter ihop namnet igen.',
+        ],
+        solution: `function capitalize(word) {
+  const clean = word.trim();
+  if (clean === '') {
+    return '';
+  }
+  return clean[0].toUpperCase() + clean.slice(1).toLowerCase();
+}
+
+function formatName(fullName) {
+  const parts = fullName.split(' ');
+  const words = [];
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] !== '') {
+      words.push(capitalize(parts[i]));
+    }
+  }
+  return words.join(' ');
+}`,
+        tests: [
+          {
+            description: 'formatName("  ada   LOVELACE ") ger "Ada Lovelace"',
+            code: "formatName('  ada   LOVELACE ')",
+            expected: 'Ada Lovelace',
+          },
+          {
+            description: 'formatName("linus") ger "Linus"',
+            code: "formatName('linus')",
+            expected: 'Linus',
+          },
+          {
+            description:
+              'formatName("anna maria ÅBERG") ger "Anna Maria Åberg"',
+            code: "formatName('anna maria ÅBERG')",
+            expected: 'Anna Maria Åberg',
+          },
+          {
+            description: 'formatName("") ger ""',
+            code: "formatName('')",
+            expected: '',
+          },
+        ],
+      },
+      {
+        title: 'Brickan',
+        xp: 40,
+        description:
+          'Nu ska brickorna skrivas ut. Varje deltagare är ett objekt, men alla har inte fyllt i allt, och ibland saknas deltagaren helt.',
+        task: `Uppgift: Skriv \`badge(person)\` som returnerar texten på brickan.
+  - Namnet formateras som i förra steget, och efter det kommer " – " och rollen: "Ada Lovelace – Utvecklare".
+  - Saknas rollen står det "Gäst".
+  - Har personen ett företag med ett namn, som person.company.name, läggs det till inom parentes: "Ada Lovelace – Utvecklare (Analytical AB)".
+  - Saknas personen helt returneras "Okänd besökare".`,
+        hints: [
+          'Två av operatorerna från banan är gjorda för precis det här: saker som kanske saknas.',
+          'Bygg texten i två delar: först det som alltid finns, sedan det som bara ibland finns.',
+        ],
+        solution: `function capitalize(word) {
+  const clean = word.trim();
+  if (clean === '') {
+    return '';
+  }
+  return clean[0].toUpperCase() + clean.slice(1).toLowerCase();
+}
+
+function formatName(fullName) {
+  const parts = fullName.split(' ');
+  const words = [];
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] !== '') {
+      words.push(capitalize(parts[i]));
+    }
+  }
+  return words.join(' ');
+}
+
+function badge(person) {
+  if (!person) {
+    return 'Okänd besökare';
+  }
+  const text = \`\${formatName(person.name)} – \${person.role ?? 'Gäst'}\`;
+  const company = person.company?.name;
+  if (company) {
+    return \`\${text} (\${company})\`;
+  }
+  return text;
+}`,
+        tests: [
+          {
+            description: 'En person med roll och företag',
+            code: "badge({ name: 'ada lovelace', role: 'Utvecklare', company: { name: 'Analytical AB' } })",
+            expected: 'Ada Lovelace – Utvecklare (Analytical AB)',
+          },
+          {
+            description: 'En person utan roll blir Gäst',
+            code: "badge({ name: ' LINUS ' })",
+            expected: 'Linus – Gäst',
+          },
+          {
+            description: 'Ett företag utan namn visas inte',
+            code: "badge({ name: 'grace hopper', role: 'Amiral', company: {} })",
+            expected: 'Grace Hopper – Amiral',
+          },
+          {
+            description: 'Utan person blir det "Okänd besökare"',
+            code: 'badge(undefined)',
+            expected: 'Okänd besökare',
+          },
+          {
+            description: 'Även null ger "Okänd besökare"',
+            code: 'badge(null)',
+            expected: 'Okänd besökare',
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'badge använder formatName',
+            pattern: /badge[^]*\bformatName\s*\(/,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-chat',
+    track: 'strings',
+    title: 'Chattfiltret',
+    reward: { emoji: '🦜', name: 'Papegoja' },
+    summary: 'Räkna ord, censurera fula ord och visa chattmeddelanden snyggt.',
+    steps: [
+      {
+        title: 'Räkna ord',
+        xp: 25,
+        description:
+          'Du bygger filtret till en chatt. Först ska den kunna räkna orden i ett meddelande, till exempel för att stoppa meddelanden som är för långa. Folk skriver ofta med extra mellanslag.',
+        task: 'Uppgift: Skriv `countWords(text)` som returnerar antalet ord. countWords("  hej  på dig ") ger 3, och en tom text eller bara mellanslag ger 0.',
+        starterCode: '// Steg 1: räkna ord\n',
+        hints: [
+          'Vad blir det när du delar " hej " med split(" ")? Vilka delar är egentligen ord?',
+          'Räkna bara de delar som inte är tomma.',
+        ],
+        solution: `function countWords(text) {
+  const parts = text.split(' ');
+  let count = 0;
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] !== '') {
+      count = count + 1;
+    }
+  }
+  return count;
+}`,
+        tests: [
+          {
+            description: 'countWords("hej på dig") ger 3',
+            code: "countWords('hej på dig')",
+            expected: 3,
+          },
+          {
+            description: 'countWords("  hej  på dig ") ger 3',
+            code: "countWords('  hej  på dig ')",
+            expected: 3,
+          },
+          {
+            description: 'countWords("hej") ger 1',
+            code: "countWords('hej')",
+            expected: 1,
+          },
+          {
+            description: 'countWords("") ger 0',
+            code: "countWords('')",
+            expected: 0,
+          },
+          {
+            description: 'countWords("    ") ger 0',
+            code: "countWords('    ')",
+            expected: 0,
+          },
+        ],
+      },
+      {
+        title: 'Censur',
+        xp: 25,
+        description:
+          'Chatten ska vara snäll. Fula ord byts ut mot stjärnor, en stjärna per bokstav, så att man ser att något stod där. Orden i ett meddelande skiljs åt med ett mellanslag.',
+        task: 'Uppgift: Skriv `censor(text, badWords)` som byter ut varje ord som finns i arrayen badWords mot lika många * som ordet har bokstäver. Stora och små bokstäver spelar ingen roll. censor("Du är en Fåne", ["fåne"]) ger "Du är en ****". Alla andra ord ska vara precis som förut.',
+        hints: [
+          'Dela upp, byt ut de delar som behöver det, och sätt ihop igen.',
+          'Stjärnorna kan byggas upp i en loop, ett tecken per varv.',
+        ],
+        solution: `function countWords(text) {
+  const parts = text.split(' ');
+  let count = 0;
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] !== '') {
+      count = count + 1;
+    }
+  }
+  return count;
+}
+
+function stars(length) {
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result = result + '*';
+  }
+  return result;
+}
+
+function censor(text, badWords) {
+  const words = text.split(' ');
+  for (let i = 0; i < words.length; i++) {
+    if (badWords.includes(words[i].toLowerCase())) {
+      words[i] = stars(words[i].length);
+    }
+  }
+  return words.join(' ');
+}`,
+        tests: [
+          {
+            description:
+              'censor("Du är en Fåne", ["fåne"]) ger "Du är en ****"',
+            code: "censor('Du är en Fåne', ['fåne'])",
+            expected: 'Du är en ****',
+          },
+          {
+            description: 'Flera fula ord byts ut',
+            code: "censor('DUMBOM och fåne', ['fåne', 'dumbom'])",
+            expected: '****** och ****',
+          },
+          {
+            description: 'Ord som bara innehåller ett fult ord byts inte ut',
+            code: "censor('Fånerier är kul', ['fåne'])",
+            expected: 'Fånerier är kul',
+          },
+          {
+            description: 'Utan fula ord blir texten likadan',
+            code: "censor('Hej på dig', ['fåne'])",
+            expected: 'Hej på dig',
+          },
+        ],
+      },
+      {
+        title: 'Visa meddelandet',
+        xp: 40,
+        description:
+          'Sist ska meddelandena visas i chatten. Ett meddelande är ett objekt med text, och ibland user och time. Ordlistan med fula ord är ["fåne", "dumbom"].',
+        task: `Uppgift: Skriv \`formatMessage(message)\` som returnerar raden som visas i chatten.
+  - Formatet är "[12:05] Ada: Hej på dig", med texten censurerad.
+  - Saknas user står det "Anonym". Saknas time visas ingen tid, och raden börjar direkt med namnet.
+  - Mellanslag runt texten tas bort.
+  - Är texten tom, eller bara mellanslag, ska meddelandet inte visas: returnera null.`,
+        hints: [
+          'Börja med fallet där inget ska visas, så slipper resten av funktionen tänka på det.',
+          'Tiden är antingen en bit text med hakparenteser och ett mellanslag, eller ingenting.',
+        ],
+        solution: `function countWords(text) {
+  const parts = text.split(' ');
+  let count = 0;
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] !== '') {
+      count = count + 1;
+    }
+  }
+  return count;
+}
+
+function stars(length) {
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result = result + '*';
+  }
+  return result;
+}
+
+function censor(text, badWords) {
+  const words = text.split(' ');
+  for (let i = 0; i < words.length; i++) {
+    if (badWords.includes(words[i].toLowerCase())) {
+      words[i] = stars(words[i].length);
+    }
+  }
+  return words.join(' ');
+}
+
+const BAD_WORDS = ['fåne', 'dumbom'];
+
+function formatMessage(message) {
+  const text = message.text.trim();
+  if (text === '') {
+    return null;
+  }
+  const time = message.time ? \`[\${message.time}] \` : '';
+  const user = message.user ?? 'Anonym';
+  return \`\${time}\${user}: \${censor(text, BAD_WORDS)}\`;
+}`,
+        tests: [
+          {
+            description: 'Ett helt meddelande med tid och namn',
+            code: "formatMessage({ user: 'Ada', time: '12:05', text: 'Hej på dig' })",
+            expected: '[12:05] Ada: Hej på dig',
+          },
+          {
+            description: 'Utan user blir det Anonym, och fula ord censureras',
+            code: "formatMessage({ time: '09:30', text: 'Din dumbom' })",
+            expected: '[09:30] Anonym: Din ******',
+          },
+          {
+            description: 'Utan time börjar raden med namnet',
+            code: "formatMessage({ user: 'Linus', text: '  Hallå!  ' })",
+            expected: 'Linus: Hallå!',
+          },
+          {
+            description: 'Ett tomt meddelande ger null',
+            code: "formatMessage({ user: 'Grace', time: '10:00', text: '   ' })",
+            expected: null,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'formatMessage använder censor',
+            pattern: /formatMessage[^]*\bcensor\s*\(/,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // Stegen som vanliga övningar, så att samma editor och rättning kan

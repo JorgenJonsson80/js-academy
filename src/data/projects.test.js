@@ -132,6 +132,22 @@ const otherAnswers = [
     'function sumDice(dice) {\n  return dice[0] + dice[1] + dice[2] + dice[3] + dice[4];\n}\nfunction hasYatzy(dice) {\n  for (let i = 1; i < dice.length; i++) {\n    if (dice[i] !== dice[0]) return false;\n  }\n  return true;\n}',
     true,
   ],
+  ['proj-chat-1', "const countWords = text => text.split(' ').length;", false],
+  [
+    'proj-chat-1',
+    "function countWords(text) {\n  const trimmed = text.trim();\n  if (!trimmed) return 0;\n  let count = 1;\n  for (let i = 1; i < trimmed.length; i++) {\n    if (trimmed[i] !== ' ' && trimmed[i - 1] === ' ') count++;\n  }\n  return count;\n}",
+    true,
+  ],
+  [
+    'proj-badge-1',
+    "const capitalize = word => {\n  const w = word.trim().toLowerCase();\n  return w ? w[0].toUpperCase() + w.slice(1) : '';\n};",
+    true,
+  ],
+  [
+    'proj-password-1',
+    "function hasDigit(text) {\n  return text.split('').some(c => c >= '0' && c <= '9');\n}\nfunction hasUpper(text) {\n  return text !== text.toLowerCase();\n}",
+    true,
+  ],
 ];
 
 describe('andra svar', () => {
