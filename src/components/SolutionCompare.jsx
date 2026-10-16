@@ -1,20 +1,15 @@
-import { compareWithSolution } from '../runner/compare';
+import { isNoticeablyLonger } from '../runner/compare';
 
-const messages = {
-  longer:
-    'Din lösning fungerar! Den går att skriva kortare. Så här ser facit ut:',
-  different:
-    'Din lösning fungerar! Facit är skrivet på ett annat sätt, jämför gärna:',
-};
-
-// Visas när svaret är rätt, så att eleven kan jämföra med facit.
+// Visas när svaret är rätt men märkbart längre än facit, så att eleven
+// ser att det går att skriva kortare.
 function SolutionCompare({ code, solution }) {
-  const result = compareWithSolution(code, solution);
-  if (result === 'same') return null;
+  if (!isNoticeablyLonger(code, solution)) return null;
 
   return (
     <figure className="solution-compare">
-      <figcaption>{messages[result]}</figcaption>
+      <figcaption>
+        Din lösning fungerar! Den går att skriva kortare. Så här ser facit ut:
+      </figcaption>
       <pre>
         <code>{solution}</code>
       </pre>

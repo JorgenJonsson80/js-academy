@@ -1,21 +1,20 @@
-// Jämför elevens godkända kod med facit. Kommentarer, blanksteg,
-// semikolon och citattecken räknas inte, så att samma lösning med
-// annan formatering inte ser ut som en annan lösning.
+// Jämför elevens godkända kod med facit. Sådant som bara är stil räknas
+// inte: kommentarer, blanksteg, semikolon, citattecken, parenteser runt
+// en ensam parameter och kommatecken sist i en lista.
 function normalize(code) {
   return code
     .replace(/\/\*[^]*?\*\//g, '')
     .replace(/\/\/.*$/gm, '')
     .replace(/["`]/g, "'")
+    .replace(/\(\s*([A-Za-z_$][\w$]*)\s*\)\s*=>/g, '$1=>')
+    .replace(/,(\s*[)\]}])/g, '$1')
     .replace(/[\s;]/g, '');
 }
 
-// 'same' – samma lösning som facit
-// 'longer' – fungerar, men är klart längre än facit
-// 'different' – fungerar, men är skriven på ett annat sätt
-export function compareWithSolution(code, solution) {
-  const mine = normalize(code);
-  const theirs = normalize(solution);
-  if (mine === theirs) return 'same';
-  if (mine.length > theirs.length * 1.3) return 'longer';
-  return 'different';
+// true när lösningen fungerar men är märkbart längre än facit, både
+// räknat i andel och i antal tecken. Då är facit värt att visa.
+export function isNoticeablyLonger(code, solution) {
+  const mine = normalize(code).length;
+  const theirs = normalize(solution).length;
+  return mine > theirs * 1.3 && mine - theirs >= 15;
 }
