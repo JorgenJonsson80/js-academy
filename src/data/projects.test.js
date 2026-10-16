@@ -163,6 +163,21 @@ const otherAnswers = [
     'const titlesByGenre = (movies, genre) =>\n  movies.reduce((titles, movie) => (movie.genres.includes(genre) ? [...titles, movie.title] : titles), []);',
     true,
   ],
+  [
+    'proj-player-1',
+    'const createPlayer = (name, ...scores) => ({\n  best: scores.length ? Math.max(...scores) : 0,\n  scores,\n  name,\n});',
+    true,
+  ],
+  [
+    'proj-todos-2',
+    'function toggleTodo(todos, id) {\n  const todo = todos.find(t => t.id === id);\n  todo.done = !todo.done;\n  return [...todos];\n}\nconst removeTodo = (todos, id) => todos.filter(t => t.id !== id);',
+    false,
+  ],
+  [
+    'proj-settings-1',
+    "const withDefaults = settings => ({ theme: 'ljust', volume: 50, language: 'sv', ...settings });",
+    false,
+  ],
 ];
 
 describe('andra svar', () => {

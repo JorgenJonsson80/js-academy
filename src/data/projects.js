@@ -2792,6 +2792,527 @@ function summary(students) {
       },
     ],
   },
+  // Modern JS: testerna kollar också att originalet aldrig ändras,
+  // eftersom det är så state måste uppdateras i React.
+  {
+    id: 'proj-settings',
+    track: 'modern-js',
+    title: 'Inställningarna',
+    reward: { emoji: '🎛️', name: 'Mixerbord' },
+    summary:
+      'Standardvärden, säkra uppdateringar och en sammanfattning av inställningarna.',
+    steps: [
+      {
+        title: 'Standardvärden',
+        xp: 25,
+        description:
+          'Du bygger inställningssidan i en app. Användaren har bara sparat de inställningar hen ändrat, så resten ska fyllas i med standardvärden: theme "ljust", volume 50 och language "sv".',
+        task: 'Uppgift: Skriv `withDefaults(settings)` som returnerar ett nytt objekt med standardvärdena, där det användaren sparat vinner. Andra egenskaper ska följa med. En inställning som är undefined räknas som att den saknas, men volume 0 är en riktig inställning.',
+        starterCode: '// Steg 1: standardvärden\n',
+        hints: [
+          'Vad händer med en egenskap som är undefined när ett objekt spreadas?',
+          'Det finns en operator som bara använder reservvärdet när något är null eller undefined.',
+        ],
+        solution: `const DEFAULTS = { theme: 'ljust', volume: 50, language: 'sv' };
+
+function withDefaults(settings) {
+  return {
+    ...settings,
+    theme: settings.theme ?? DEFAULTS.theme,
+    volume: settings.volume ?? DEFAULTS.volume,
+    language: settings.language ?? DEFAULTS.language,
+  };
+}`,
+        tests: [
+          {
+            description: 'Ett tomt objekt får alla standardvärden',
+            code: '(() => { const s = withDefaults({}); return [s.theme, s.volume, s.language]; })()',
+            expected: ['ljust', 50, 'sv'],
+          },
+          {
+            description: 'Det användaren sparat vinner, och volume 0 behålls',
+            code: "(() => { const s = withDefaults({ theme: 'mörkt', volume: 0 }); return [s.theme, s.volume, s.language]; })()",
+            expected: ['mörkt', 0, 'sv'],
+          },
+          {
+            description: 'undefined räknas som att inställningen saknas',
+            code: '(() => { const s = withDefaults({ volume: undefined }); return s.volume; })()',
+            expected: 50,
+          },
+          {
+            description: 'Andra egenskaper följer med',
+            code: 'withDefaults({ fontSize: 18 }).fontSize',
+            expected: 18,
+          },
+          {
+            description: 'settings ändras inte',
+            code: "(() => { const s = { theme: 'mörkt' }; withDefaults(s); return Object.keys(s); })()",
+            expected: ['theme'],
+          },
+        ],
+      },
+      {
+        title: 'Ändra',
+        xp: 25,
+        description:
+          'Nu ska användaren kunna ändra inställningarna. Funktionerna får aldrig ändra objektet de får in, utan returnerar en ny kopia. Math.min(a, b) ger det minsta av två tal och Math.max(a, b) det största.',
+        task: `Uppgift:
+  - Skriv \`toggleTheme(settings)\` som byter theme mellan "ljust" och "mörkt".
+  - Skriv \`changeVolume(settings, change)\` som ändrar volume med change, men aldrig under 0 eller över 100.`,
+        hints: [
+          'Kopiera först, och skriv över den egenskap som ska ändras.',
+          'Att hålla ett tal mellan två gränser går att göra med en Math.min och en Math.max i varandra.',
+        ],
+        solution: `const DEFAULTS = { theme: 'ljust', volume: 50, language: 'sv' };
+
+function withDefaults(settings) {
+  return {
+    ...settings,
+    theme: settings.theme ?? DEFAULTS.theme,
+    volume: settings.volume ?? DEFAULTS.volume,
+    language: settings.language ?? DEFAULTS.language,
+  };
+}
+
+function toggleTheme(settings) {
+  return {
+    ...settings,
+    theme: settings.theme === 'mörkt' ? 'ljust' : 'mörkt',
+  };
+}
+
+function changeVolume(settings, change) {
+  const volume = Math.min(100, Math.max(0, settings.volume + change));
+  return { ...settings, volume };
+}`,
+        tests: [
+          {
+            description: 'toggleTheme byter ljust till mörkt',
+            code: "toggleTheme({ theme: 'ljust', volume: 50 }).theme",
+            expected: 'mörkt',
+          },
+          {
+            description: 'toggleTheme byter mörkt till ljust',
+            code: "toggleTheme({ theme: 'mörkt' }).theme",
+            expected: 'ljust',
+          },
+          {
+            description: 'toggleTheme behåller resten',
+            code: "toggleTheme({ theme: 'ljust', volume: 30 }).volume",
+            expected: 30,
+          },
+          {
+            description: 'changeVolume höjer volymen',
+            code: 'changeVolume({ volume: 50 }, 20).volume',
+            expected: 70,
+          },
+          {
+            description: 'Volymen går inte över 100',
+            code: 'changeVolume({ volume: 90 }, 25).volume',
+            expected: 100,
+          },
+          {
+            description: 'Volymen går inte under 0',
+            code: 'changeVolume({ volume: 10 }, -30).volume',
+            expected: 0,
+          },
+          {
+            description: 'Originalet ändras aldrig',
+            code: "(() => { const s = { theme: 'ljust', volume: 50 }; toggleTheme(s); changeVolume(s, 10); return [s.theme, s.volume]; })()",
+            expected: ['ljust', 50],
+          },
+          {
+            description: 'Funktionerna returnerar ett nytt objekt',
+            code: "(() => { const s = { theme: 'ljust', volume: 50 }; return toggleTheme(s) !== s && changeVolume(s, 0) !== s; })()",
+            expected: true,
+          },
+        ],
+      },
+      {
+        title: 'Sammanfattningen',
+        xp: 40,
+        description:
+          'Överst på inställningssidan står en rad som sammanfattar allt.',
+        task: `Uppgift: Skriv \`describeSettings(settings)\` som returnerar till exempel "Mörkt tema · volym 30 · sv".
+  - Inställningar som saknas får standardvärdena.
+  - Temat skrivs "Ljust tema" eller "Mörkt tema".
+  - Är volymen 0 står det "ljudet av" i stället för "volym 0".`,
+        hints: [
+          'Du har redan en funktion som fyller i det som saknas.',
+          'Plocka ut de tre värdena du behöver på en rad, så blir texten lätt att bygga.',
+        ],
+        solution: `const DEFAULTS = { theme: 'ljust', volume: 50, language: 'sv' };
+
+function withDefaults(settings) {
+  return {
+    ...settings,
+    theme: settings.theme ?? DEFAULTS.theme,
+    volume: settings.volume ?? DEFAULTS.volume,
+    language: settings.language ?? DEFAULTS.language,
+  };
+}
+
+function toggleTheme(settings) {
+  return {
+    ...settings,
+    theme: settings.theme === 'mörkt' ? 'ljust' : 'mörkt',
+  };
+}
+
+function changeVolume(settings, change) {
+  const volume = Math.min(100, Math.max(0, settings.volume + change));
+  return { ...settings, volume };
+}
+
+function describeSettings(settings) {
+  const { theme, volume, language } = withDefaults(settings);
+  const themeText = theme === 'mörkt' ? 'Mörkt tema' : 'Ljust tema';
+  const volumeText = volume === 0 ? 'ljudet av' : \`volym \${volume}\`;
+  return \`\${themeText} · \${volumeText} · \${language}\`;
+}`,
+        tests: [
+          {
+            description: 'Alla inställningar ifyllda',
+            code: "describeSettings({ theme: 'mörkt', volume: 30, language: 'en' })",
+            expected: 'Mörkt tema · volym 30 · en',
+          },
+          {
+            description: 'Standardvärden när inget är sparat',
+            code: 'describeSettings({})',
+            expected: 'Ljust tema · volym 50 · sv',
+          },
+          {
+            description: 'Volym 0 blir "ljudet av"',
+            code: 'describeSettings({ volume: 0 })',
+            expected: 'Ljust tema · ljudet av · sv',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-todos',
+    track: 'modern-js',
+    title: 'Att göra-listan',
+    reward: { emoji: '📌', name: 'Anslagstavla' },
+    summary:
+      'Logiken bakom en att göra-lista, skriven så som React vill ha den.',
+    steps: [
+      {
+        title: 'Lägg till',
+        xp: 25,
+        description:
+          'Du skriver logiken till en att göra-lista. Om några banor blir den en React-app, och React kräver att listan aldrig ändras, utan byts mot en ny. En uppgift är { id, text, done }.',
+        task: 'Uppgift: Skriv `addTodo(todos, text)` som returnerar en ny lista med en ny uppgift sist. Den nya uppgiften får id ett högre än det högsta id som finns (1 i en tom lista), texten utan mellanslag runt och done false. Är texten tom eller bara mellanslag returneras todos som den är.',
+        starterCode: '// Steg 1: lägg till en uppgift\n',
+        hints: [
+          'Hur gör man en ny array med allt från en gammal plus ett värde till?',
+          'Math.max kan ta emot många tal. Hur gör man en array av id:n till många tal?',
+        ],
+        solution: `function addTodo(todos, text) {
+  const clean = text.trim();
+  if (clean === '') {
+    return todos;
+  }
+  const id = Math.max(0, ...todos.map(todo => todo.id)) + 1;
+  return [...todos, { id, text: clean, done: false }];
+}`,
+        tests: [
+          {
+            description: 'Den första uppgiften får id 1',
+            code: "(() => { const todos = addTodo([], ' Handla '); return [todos.length, todos[0].id, todos[0].text, todos[0].done]; })()",
+            expected: [1, 1, 'Handla', false],
+          },
+          {
+            description: 'En ny uppgift får id ett högre än det högsta',
+            code: "addTodo([{ id: 4, text: 'A', done: true }, { id: 2, text: 'B', done: false }], 'C').at(-1).id",
+            expected: 5,
+          },
+          {
+            description: 'En tom text lägger inte till något',
+            code: "(() => { const todos = [{ id: 1, text: 'A', done: false }]; return addTodo(todos, '   ') === todos; })()",
+            expected: true,
+          },
+          {
+            description: 'todos ändras inte',
+            code: "(() => { const todos = [{ id: 1, text: 'A', done: false }]; const next = addTodo(todos, 'B'); return [todos.length, next.length, next !== todos]; })()",
+            expected: [1, 2, true],
+          },
+        ],
+      },
+      {
+        title: 'Bocka av och ta bort',
+        xp: 25,
+        description:
+          'Uppgifter ska kunna bockas av och tas bort. I React jämförs objekt för att se vad som ändrats, så uppgifter som inte ändras ska vara samma objekt som förut, och den som ändras ska bli ett nytt.',
+        task: `Uppgift:
+  - Skriv \`toggleTodo(todos, id)\` som returnerar en ny lista där uppgiften med id har bytt done.
+  - Skriv \`removeTodo(todos, id)\` som returnerar en ny lista utan uppgiften.`,
+        hints: [
+          'En av array-metoderna gör en ny lista med lika många saker, en annan en ny lista med färre.',
+          'För den uppgift som ändras: en kopia av objektet där done skrivs över.',
+        ],
+        solution: `function addTodo(todos, text) {
+  const clean = text.trim();
+  if (clean === '') {
+    return todos;
+  }
+  const id = Math.max(0, ...todos.map(todo => todo.id)) + 1;
+  return [...todos, { id, text: clean, done: false }];
+}
+
+function toggleTodo(todos, id) {
+  return todos.map(todo =>
+    todo.id === id ? { ...todo, done: !todo.done } : todo,
+  );
+}
+
+function removeTodo(todos, id) {
+  return todos.filter(todo => todo.id !== id);
+}`,
+        tests: [
+          {
+            description: 'toggleTodo bockar av rätt uppgift',
+            code: "toggleTodo([{ id: 1, text: 'A', done: false }, { id: 2, text: 'B', done: false }], 2).map(todo => todo.done)",
+            expected: [false, true],
+          },
+          {
+            description: 'toggleTodo kan ångra en avbockning',
+            code: "toggleTodo([{ id: 1, text: 'A', done: true }], 1)[0].done",
+            expected: false,
+          },
+          {
+            description:
+              'Originalet ändras inte, och bara den ändrade uppgiften är ett nytt objekt',
+            code: "(() => { const a = { id: 1, text: 'A', done: false }; const b = { id: 2, text: 'B', done: false }; const next = toggleTodo([a, b], 2); return [b.done, next[0] === a, next[1] !== b]; })()",
+            expected: [false, true, true],
+          },
+          {
+            description: 'removeTodo tar bort rätt uppgift',
+            code: "removeTodo([{ id: 1, text: 'A', done: false }, { id: 2, text: 'B', done: false }], 1).map(todo => todo.id)",
+            expected: [2],
+          },
+          {
+            description: 'removeTodo ändrar inte originalet',
+            code: "(() => { const todos = [{ id: 1, text: 'A', done: false }]; removeTodo(todos, 1); return todos.length; })()",
+            expected: 1,
+          },
+        ],
+      },
+      {
+        title: 'Statusraden',
+        xp: 40,
+        description: 'Under listan står en statusrad som visar hur det går.',
+        task: `Uppgift: Skriv \`statusText(todos)\` som returnerar:
+  - "Inget att göra" för en tom lista.
+  - "Allt klart! 🎉" när alla uppgifter är klara.
+  - Annars till exempel "2 av 5 klara, 3 kvar".`,
+        hints: [
+          'Räkna ut alla tal du behöver först, och välj text sist.',
+          'Det finns tre fall. Vilket fall måste kollas före vilket?',
+        ],
+        solution: `function addTodo(todos, text) {
+  const clean = text.trim();
+  if (clean === '') {
+    return todos;
+  }
+  const id = Math.max(0, ...todos.map(todo => todo.id)) + 1;
+  return [...todos, { id, text: clean, done: false }];
+}
+
+function toggleTodo(todos, id) {
+  return todos.map(todo =>
+    todo.id === id ? { ...todo, done: !todo.done } : todo,
+  );
+}
+
+function removeTodo(todos, id) {
+  return todos.filter(todo => todo.id !== id);
+}
+
+function statusText(todos) {
+  const total = todos.length;
+  const done = todos.filter(todo => todo.done).length;
+  if (total === 0) {
+    return 'Inget att göra';
+  }
+  if (done === total) {
+    return 'Allt klart! 🎉';
+  }
+  return \`\${done} av \${total} klara, \${total - done} kvar\`;
+}`,
+        tests: [
+          {
+            description: 'En tom lista',
+            code: 'statusText([])',
+            expected: 'Inget att göra',
+          },
+          {
+            description: 'Allt klart',
+            code: "statusText([{ id: 1, text: 'A', done: true }, { id: 2, text: 'B', done: true }])",
+            expected: 'Allt klart! 🎉',
+          },
+          {
+            description: 'Några kvar',
+            code: "statusText([{ id: 1, text: 'A', done: true }, { id: 2, text: 'B', done: false }, { id: 3, text: 'C', done: false }])",
+            expected: '1 av 3 klara, 2 kvar',
+          },
+          {
+            description: 'Fungerar ihop med de andra funktionerna',
+            code: "statusText(toggleTodo(addTodo(addTodo([], 'A'), 'B'), 1))",
+            expected: '1 av 2 klara, 1 kvar',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-player',
+    track: 'modern-js',
+    title: 'Spelprofilen',
+    reward: { emoji: '🕹️', name: 'Handkontroll' },
+    summary: 'Skapa spelare, spara matcher och visa en publik profil.',
+    steps: [
+      {
+        title: 'Ny spelare',
+        xp: 25,
+        description:
+          'Du bygger profilerna i ett onlinespel. En spelare är ett objekt med name, scores (poängen från alla matcher) och best (bästa poängen).',
+        task: 'Uppgift: Skriv `createPlayer(name, ...)` som tar emot namnet och sedan hur många matchpoäng som helst, som vanliga argument: createPlayer("Ada", 40, 75, 60). Den returnerar { name, scores, best }. En spelare utan matcher har best 0.',
+        starterCode: '// Steg 1: skapa en spelare\n',
+        hints: [
+          'Det finns ett sätt att samla alla argument som blir över i en array.',
+          'Math.max vill ha talen ett och ett, inte i en array. Vad ger Math.max() utan några tal alls?',
+        ],
+        solution: `function createPlayer(name, ...scores) {
+  return {
+    name,
+    scores,
+    best: Math.max(0, ...scores),
+  };
+}`,
+        tests: [
+          {
+            description:
+              'createPlayer("Ada", 40, 75, 60) får rätt scores och best',
+            code: "(() => { const p = createPlayer('Ada', 40, 75, 60); return [p.name, p.scores, p.best]; })()",
+            expected: ['Ada', [40, 75, 60], 75],
+          },
+          {
+            description: 'En spelare utan matcher',
+            code: "(() => { const p = createPlayer('Bo'); return [p.name, p.scores, p.best]; })()",
+            expected: ['Bo', [], 0],
+          },
+        ],
+      },
+      {
+        title: 'Spara en match',
+        xp: 25,
+        description:
+          'Efter varje match sparas poängen. Profilen får aldrig ändras på plats, utan byts mot en ny.',
+        task: 'Uppgift: Skriv `addScore(player, score)` som returnerar en ny spelare där score har lagts till sist i scores och best är uppdaterat. Andra egenskaper på spelaren, som country, ska följa med.',
+        hints: [
+          'Både spelaren och scores behöver bli nya kopior.',
+          'Den nya bästa poängen är det största av den gamla bästa och den nya.',
+        ],
+        solution: `function createPlayer(name, ...scores) {
+  return {
+    name,
+    scores,
+    best: Math.max(0, ...scores),
+  };
+}
+
+function addScore(player, score) {
+  return {
+    ...player,
+    scores: [...player.scores, score],
+    best: Math.max(player.best, score),
+  };
+}`,
+        tests: [
+          {
+            description: 'Poängen läggs till och best uppdateras',
+            code: "(() => { const p = addScore({ name: 'Ada', scores: [40, 75], best: 75 }, 90); return [p.name, p.scores, p.best]; })()",
+            expected: ['Ada', [40, 75, 90], 90],
+          },
+          {
+            description: 'best behålls när den nya poängen är lägre',
+            code: "addScore({ name: 'Ada', scores: [40, 75], best: 75 }, 10).best",
+            expected: 75,
+          },
+          {
+            description: 'Andra egenskaper följer med',
+            code: "addScore({ name: 'Ada', country: 'SE', scores: [], best: 0 }, 5).country",
+            expected: 'SE',
+          },
+          {
+            description: 'Originalet och dess scores ändras inte',
+            code: "(() => { const p = { name: 'Ada', scores: [40], best: 40 }; addScore(p, 90); return [p.scores.length, p.best]; })()",
+            expected: [1, 40],
+          },
+        ],
+      },
+      {
+        title: 'Den publika profilen',
+        xp: 40,
+        description:
+          'Andra spelare ska kunna se din profil, men inte alla dina enskilda matcher. I stället visas hur många matcher du spelat och ditt snitt.',
+        task: 'Uppgift: Skriv `publicProfile(player)` som returnerar ett nytt objekt med allt från spelaren utom scores, och dessutom games (antalet matcher) och average (snittpoängen avrundad med Math.round, 0 utan matcher). Egenskaper du inte känner till i förväg ska också följa med.',
+        hints: [
+          'Ett sätt att plocka ut en egenskap och samla resten i ett nytt objekt lärde du dig i banan.',
+          'Du kan inte veta vilka andra egenskaper spelaren har, så de kan inte skrivas ut en och en.',
+        ],
+        solution: `function createPlayer(name, ...scores) {
+  return {
+    name,
+    scores,
+    best: Math.max(0, ...scores),
+  };
+}
+
+function addScore(player, score) {
+  return {
+    ...player,
+    scores: [...player.scores, score],
+    best: Math.max(player.best, score),
+  };
+}
+
+function publicProfile(player) {
+  const { scores, ...rest } = player;
+  const sum = scores.reduce((total, score) => total + score, 0);
+  return {
+    ...rest,
+    games: scores.length,
+    average: scores.length === 0 ? 0 : Math.round(sum / scores.length),
+  };
+}`,
+        tests: [
+          {
+            description: 'Profilen har games och average men inte scores',
+            code: "(() => { const p = publicProfile({ name: 'Ada', scores: [40, 75, 60], best: 75 }); return [p.name, p.best, p.games, p.average, 'scores' in p]; })()",
+            expected: ['Ada', 75, 3, 58, false],
+          },
+          {
+            description: 'Okända egenskaper följer med',
+            code: "(() => { const p = publicProfile({ name: 'Bo', clan: 'Vargarna', level: 7, scores: [], best: 0 }); return [p.clan, p.level, 'scores' in p]; })()",
+            expected: ['Vargarna', 7, false],
+          },
+          {
+            description: 'En spelare utan matcher har snittet 0',
+            code: "publicProfile({ name: 'Bo', scores: [], best: 0 }).average",
+            expected: 0,
+          },
+          {
+            description: 'Spelaren ändras inte',
+            code: "(() => { const p = { name: 'Ada', scores: [1], best: 1 }; publicProfile(p); return Object.keys(p); })()",
+            expected: ['name', 'scores', 'best'],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // Stegen som vanliga övningar, så att samma editor och rättning kan
