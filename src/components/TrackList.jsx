@@ -1,3 +1,76 @@
+// Projekten på en klar bana. Det projekt man arbetar med visar sina steg.
+function ProjectPicker({
+  projects,
+  projectSteps,
+  completedIds,
+  activeLessonId,
+  onSelectProject,
+  onSelectLesson,
+}) {
+  if (projects.length === 0) return null;
+  const activeStep = projectSteps.find(step => step.id === activeLessonId);
+
+  return (
+    <div className="project-picker">
+      <p className="project-picker-title">🛠️ Projekt: välj ett och bygg</p>
+      <ul className="lesson-list">
+        {projects.map(project => {
+          const steps = projectSteps.filter(
+            step => step.project === project.id,
+          );
+          const done = steps.filter(step =>
+            completedIds.includes(step.id),
+          ).length;
+          const isActive = activeStep?.project === project.id;
+          return (
+            <li key={project.id}>
+              <button
+                type="button"
+                onClick={() => onSelectProject(project.id)}
+                aria-current={isActive ? 'true' : undefined}
+                title={project.summary}
+              >
+                <span aria-hidden="true">
+                  {done === steps.length ? project.reward.emoji : '○'}
+                </span>{' '}
+                {project.title}{' '}
+                <span className="track-count">
+                  {done}/{steps.length}
+                </span>
+              </button>
+              {isActive && (
+                <ol className="lesson-list project-steps">
+                  {steps.map((step, index) => (
+                    <li key={step.id}>
+                      <button
+                        type="button"
+                        disabled={
+                          index > 0 &&
+                          !completedIds.includes(steps[index - 1].id)
+                        }
+                        onClick={() => onSelectLesson(step.id)}
+                        aria-current={
+                          step.id === activeLessonId ? 'true' : undefined
+                        }
+                      >
+                        <span aria-hidden="true">
+                          {completedIds.includes(step.id) ? '✓' : '○'}
+                        </span>{' '}
+                        Steg {step.stepNumber}:{' '}
+                        {step.title.split(': ').at(-1)}
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 export default function TrackList({
   title,
   tracks,
@@ -11,6 +84,9 @@ export default function TrackList({
   drafts,
   trackStatusById,
   passedTrackIds,
+  projects,
+  projectSteps,
+  onSelectProject,
 }) {
   return (
     <>
@@ -71,6 +147,18 @@ export default function TrackList({
                 >
                   👑 Klara bossen och få {item.reward.emoji} {item.reward.name}
                 </button>
+              )}
+              {status.isComplete && (
+                <ProjectPicker
+                  projects={projects.filter(
+                    project => project.track === item.id,
+                  )}
+                  projectSteps={projectSteps}
+                  completedIds={completedIds}
+                  activeLessonId={activeLessonId}
+                  onSelectProject={onSelectProject}
+                  onSelectLesson={onSelectLesson}
+                />
               )}
               {isActive && (
                 <ol className="lesson-list">

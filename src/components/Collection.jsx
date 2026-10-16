@@ -1,10 +1,24 @@
-// Hyllan med föremål. Varje bana ger ett föremål när den är klar.
+import { isProjectComplete } from '../data/projects';
+
+// Hyllan med föremål. Varje bana ger ett föremål när den är klar, och
+// varje projekt ett pris på en egen hylla.
 // ⚡ visar att banan klarades med quiz och boss, inte alla övningar.
 export default function Collection({
   tracks,
   completedTrackIds,
   testedOutTrackIds,
+  projects,
+  completedIds,
 }) {
+  const doneProjects = projects.filter(project =>
+    isProjectComplete(project, completedIds),
+  );
+  // Projektens platser på hyllan visas när deras bana är klar.
+  const shownProjects = projects.filter(
+    project =>
+      completedTrackIds.includes(project.track) ||
+      doneProjects.includes(project),
+  );
   const count = tracks.filter(track =>
     completedTrackIds.includes(track.id),
   ).length;
@@ -52,6 +66,43 @@ export default function Collection({
           );
         })}
       </ul>
+      {shownProjects.length > 0 && (
+        <>
+          <h3 className="card-title collection-subtitle">
+            Projektpriser{' '}
+            <span className="muted">
+              {doneProjects.length} av {shownProjects.length}
+            </span>
+          </h3>
+          <ul className="collection">
+            {shownProjects.map(project => {
+              const isEarned = doneProjects.includes(project);
+              return (
+                <li
+                  key={project.id}
+                  className={
+                    isEarned ? 'collection-item earned' : 'collection-item'
+                  }
+                  title={
+                    isEarned
+                      ? `${project.reward.name} – från projektet ${project.title}`
+                      : `Bygg projektet ${project.title}`
+                  }
+                >
+                  <span aria-hidden="true">
+                    {isEarned ? project.reward.emoji : '?'}
+                  </span>
+                  <span className="visually-hidden">
+                    {isEarned
+                      ? `${project.reward.name}, från projektet ${project.title}`
+                      : `Låst: bygg projektet ${project.title}`}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
     </section>
   );
 }

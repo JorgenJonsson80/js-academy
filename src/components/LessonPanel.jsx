@@ -21,6 +21,7 @@ function TaskText({ text }) {
 
 export default function LessonPanel({
   lesson,
+  project,
 
   trackTitle,
   docs,
@@ -52,12 +53,25 @@ export default function LessonPanel({
   return (
     <section className="lesson-panel" aria-labelledby="lesson-title">
       <p className="lesson-meta">
-        <span className="chip">
-          {trackTitle} · {completedInTrack}/{trackLessonCount}
-        </span>
-        <span className="chip">
-          Övning {lessonNumber} av {lessonCount}
-        </span>
+        {project ? (
+          <>
+            <span className="chip chip-project">
+              🛠️ Projekt: {project.title}
+            </span>
+            <span className="chip">
+              Steg {lesson.stepNumber} av {project.steps.length}
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="chip">
+              {trackTitle} · {completedInTrack}/{trackLessonCount}
+            </span>
+            <span className="chip">
+              Övning {lessonNumber} av {lessonCount}
+            </span>
+          </>
+        )}
         <span className="chip chip-xp">⭐ {lesson.xp} XP</span>
         {lesson.isBoss && <span className="chip chip-boss">👑 Boss</span>}
         {isCompleted && <span className="chip chip-done">✓ Klar</span>}
@@ -166,10 +180,10 @@ export default function LessonPanel({
       )}
       <div className="lesson-navigation">
         <button type="button" onClick={onPrevious} disabled={!canPrevious}>
-          Föregående övning
+          {project ? 'Föregående steg' : 'Föregående övning'}
         </button>
         <button type="button" onClick={onNext} disabled={!canNext}>
-          Nästa övning
+          {project ? 'Nästa steg' : 'Nästa övning'}
         </button>
       </div>
     </section>

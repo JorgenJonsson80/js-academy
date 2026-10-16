@@ -1,7 +1,7 @@
 // Att tilldela en const igen kastar ett TypeError, det gör inte let.
 // Finns variabeln inte alls blir det ett ReferenceError, och då ska
 // testet inte gå igenom.
-function isConst(name) {
+export function isConst(name) {
   return {
     description: `${name} är skapad med const`,
     code: `(() => { try { ${name} = ${name}; return false; } catch (error) { return error.name === 'TypeError'; } })()`,
@@ -9,7 +9,7 @@ function isConst(name) {
   };
 }
 
-function isLet(name) {
+export function isLet(name) {
   return {
     description: `${name} är skapad med let`,
     code: `(() => { try { ${name} = ${name}; return true; } catch { return false; } })()`,

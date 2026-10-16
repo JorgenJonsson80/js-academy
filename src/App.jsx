@@ -15,21 +15,27 @@ import AccountPanel from './components/AccountPanel';
 import { useCloudProgress } from './lib/useCloudProgress';
 import Quiz from './components/Quiz';
 import { quiz } from './data/quiz';
+import { isProjectComplete, projects, projectSteps } from './data/projects';
+
+// Övningarna först och projektstegen efter, så att en övnings plats
+// i lessons är samma som i exercises.
+const exercises = [...lessons, ...projectSteps];
 
 function App() {
   // Öppna övningen man senast arbetade med.
   const [lessonIndex, setLessonIndex] = useState(() => {
     try {
       const savedId = localStorage.getItem('academy-current-lesson');
-      const index = lessons.findIndex(item => item.id === savedId);
+      const index = exercises.findIndex(item => item.id === savedId);
       return index === -1 ? 0 : index;
     } catch {
       return 0;
     }
   });
 
-  const lesson = lessons[lessonIndex];
+  const lesson = exercises[lessonIndex];
   const track = tracks.find(track => track.id === lesson.track);
+  const project = projects.find(item => item.id === lesson.project) ?? null;
   const [feedback, setFeedback] = useState(null);
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
@@ -120,7 +126,7 @@ function App() {
     setFeedback(null);
   }
 
-  const totalXp = lessons
+  const totalXp = exercises
     .filter(lesson => completedIds.includes(lesson.id))
     .reduce((sum, lesson) => sum + lesson.xp, 0);
 
@@ -148,8 +154,13 @@ function App() {
     );
   }
 
-  function celebrate(doneTracks, newCompletedIds, newPassedTrackIds) {
-    if (doneTracks.length === 0) return;
+  function celebrate(
+    doneTracks,
+    newCompletedIds,
+    newPassedTrackIds,
+    doneProjects = [],
+  ) {
+    if (doneTracks.length === 0 && doneProjects.length === 0) return;
     const newGrowth = getGrowth(
       tracks,
       lessons,
@@ -158,6 +169,10 @@ function App() {
     );
     setCelebration({
       tracks: doneTracks,
+      projects: doneProjects,
+      unlockedProjects: projects.filter(item =>
+        doneTracks.some(done => done.id === item.track),
+      ),
       stage: newGrowth.stage,
       hasGrown: newGrowth.stageIndex > growth.stageIndex,
     });
@@ -192,6 +207,26 @@ function App() {
       previousLessons.length > 0 &&
       previousLessons.every(item => completedIds.includes(item.id))
     );
+  }
+
+  // Projekten på en bana låses upp när banan är klar, och varje steg
+  // när förra steget är klart.
+  function isExerciseUnlocked(item) {
+    if (!isTrackUnlocked(item.track)) return false;
+    if (!item.project) return true;
+    if (!trackStatusById[item.track].isComplete) return false;
+    if (item.stepNumber === 1) return true;
+    return completedIds.includes(`${item.project}-${item.stepNumber - 1}`);
+  }
+
+  // Ett projektsteg man inte påbörjat börjar med koden man skrev i
+  // förra steget, så att man bygger vidare på sitt eget projekt.
+  function startCodeFor(item) {
+    if (drafts[item.id] !== undefined) return drafts[item.id];
+    const previousDraft =
+      item.project && drafts[`${item.project}-${item.stepNumber - 1}`];
+    if (!previousDraft) return item.starterCode;
+    return `${previousDraft.trimEnd()}\n\n// Steg ${item.stepNumber}: ${item.title.split(': ').at(-1).toLowerCase()}\n`;
   }
 
   function handleCodeChange(newCode) {
@@ -261,6 +296,7 @@ function App() {
         newlyCompletedTracks(newIds, passedTrackIds),
         newIds,
         passedTrackIds,
+        project && isProjectComplete(project, newIds) ? [project] : [],
       );
     }
   }
@@ -268,34 +304,44 @@ function App() {
     checkIdRef.current += 1;
     setIsChecking(false);
     setLessonIndex(index);
-    setCode(drafts[lessons[index].id] ?? lessons[index].starterCode);
+    setCode(startCodeFor(exercises[index]));
     setFeedback(null);
     setFailedAttempts(0);
     setShowSolution(false);
     setUndoCode(null);
   }
 
-  function handleNext() {
-    const nextIndex = lessonIndex + 1;
-    if (nextIndex >= lessons.length) return;
-    if (!isTrackUnlocked(lessons[nextIndex].track)) return;
+  // Föregående och nästa håller sig inom övningarna, eller inom
+  // projektet man arbetar med.
+  function neighbour(offset) {
+    const item = exercises[lessonIndex + offset];
+    if (!item || item.project !== lesson.project) return null;
+    return isExerciseUnlocked(item) ? lessonIndex + offset : null;
+  }
 
-    selectLesson(nextIndex);
+  function handleNext() {
+    const nextIndex = neighbour(1);
+    if (nextIndex !== null) selectLesson(nextIndex);
   }
 
   function handlePrevious() {
-    const previousIndex = lessonIndex - 1;
-    if (previousIndex < 0) return;
-
-    selectLesson(previousIndex);
+    const previousIndex = neighbour(-1);
+    if (previousIndex !== null) selectLesson(previousIndex);
   }
 
   function handleSelectLesson(lessonId) {
-    const index = lessons.findIndex(item => item.id === lessonId);
+    const index = exercises.findIndex(item => item.id === lessonId);
     if (index === -1) return;
-    if (!isTrackUnlocked(lessons[index].track)) return;
+    if (!isExerciseUnlocked(exercises[index])) return;
 
     selectLesson(index);
+  }
+
+  // Öppnar första steget i projektet som inte är klart.
+  function handleSelectProject(projectId) {
+    const steps = projectSteps.filter(item => item.project === projectId);
+    const step = steps.find(item => !completedIds.includes(item.id)) ?? steps[0];
+    handleSelectLesson(step.id);
   }
 
   function handleSelectTrack(trackId) {
@@ -402,7 +448,9 @@ function App() {
             <HeroCard
               growth={growth}
               totalXp={totalXp}
-              completedCount={completedIds.length}
+              completedCount={
+                lessons.filter(item => completedIds.includes(item.id)).length
+              }
               lessonCount={lessons.length}
             />
             <button
@@ -424,6 +472,8 @@ function App() {
               tracks={tracks}
               completedTrackIds={completedTrackIds}
               testedOutTrackIds={testedOutTrackIds}
+              projects={projects}
+              completedIds={completedIds}
             />
             <TrackList
               title="Dina banor"
@@ -438,6 +488,9 @@ function App() {
               drafts={drafts}
               trackStatusById={trackStatusById}
               passedTrackIds={passedTrackIds}
+              projects={projects}
+              projectSteps={projectSteps}
+              onSelectProject={handleSelectProject}
             />
             {allCompleted && (
               <p className="feedback-success">
@@ -461,6 +514,7 @@ function App() {
             onShowSolution={() => setShowSolution(true)}
             feedback={feedback}
             lesson={lesson}
+            project={project}
             isCompleted={completedIds.includes(lesson.id)}
             failedAttempts={failedAttempts}
             trackTitle={track.title}
@@ -471,11 +525,8 @@ function App() {
             lessonCount={lessons.length}
             onPrevious={handlePrevious}
             onNext={handleNext}
-            canPrevious={lessonIndex > 0}
-            canNext={
-              lessonIndex < lessons.length - 1 &&
-              isTrackUnlocked(lessons[lessonIndex + 1].track)
-            }
+            canPrevious={neighbour(-1) !== null}
+            canNext={neighbour(1) !== null}
           />
         </div>
       </main>
