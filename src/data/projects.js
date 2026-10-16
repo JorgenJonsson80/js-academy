@@ -2167,6 +2167,631 @@ function formatMessage(message) {
       },
     ],
   },
+  // Array-metoder: samma nivå som Functions, och dessutom inga
+  // for-loopar. Allt görs med map, filter, find och reduce.
+  {
+    id: 'proj-movies',
+    track: 'array-methods',
+    title: 'Filmkvällen',
+    reward: { emoji: '🍿', name: 'Popcorn' },
+    summary: 'Sök bland filmer, hitta den bästa och få tips på vad du ska se.',
+    steps: [
+      {
+        title: 'Välj genre',
+        xp: 25,
+        description:
+          'Du bygger en app för filmkvällen. Varje film är ett objekt: { title, year, rating, genres }, där genres är en array som ["komedi", "drama"]. Inga for-loopar i det här projektet.',
+        task: 'Uppgift: Skriv `titlesByGenre(movies, genre)` som returnerar en array med titlarna på filmerna som har genren, i samma ordning som i movies.',
+        starterCode: '// Steg 1: filmer i en genre\n',
+        hints: [
+          'Det är två jobb: välja ut filmer och sedan göra om dem till titlar.',
+          'genres är en array. Hur frågar man en array om den innehåller något?',
+        ],
+        solution: `function titlesByGenre(movies, genre) {
+  return movies
+    .filter(movie => movie.genres.includes(genre))
+    .map(movie => movie.title);
+}`,
+        tests: [
+          {
+            description: 'Hittar alla komedier i rätt ordning',
+            code: "titlesByGenre([{ title: 'A', genres: ['komedi'] }, { title: 'B', genres: ['skräck'] }, { title: 'C', genres: ['drama', 'komedi'] }], 'komedi')",
+            expected: ['A', 'C'],
+          },
+          {
+            description: 'Ger en tom array när ingen film har genren',
+            code: "titlesByGenre([{ title: 'A', genres: ['komedi'] }], 'western')",
+            expected: [],
+          },
+          {
+            description: 'Ger en tom array för en tom lista',
+            code: "titlesByGenre([], 'drama')",
+            expected: [],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+      {
+        title: 'Betyg',
+        xp: 25,
+        description:
+          'Nu ska appen kunna säga något om betygen, som går från 1 till 10.',
+        task: `Uppgift:
+  - Skriv \`averageRating(movies)\` som returnerar medelbetyget, eller 0 om listan är tom.
+  - Skriv \`bestMovie(movies)\` som returnerar filmobjektet med högst betyg. Vid lika vinner den som kommer först. En tom lista ger undefined.`,
+        hints: [
+          'En av metoderna kan gå igenom en lista och bära med sig ett värde från varv till varv.',
+          'För bestMovie kan det värdet vara den bästa filmen hittills.',
+        ],
+        solution: `function titlesByGenre(movies, genre) {
+  return movies
+    .filter(movie => movie.genres.includes(genre))
+    .map(movie => movie.title);
+}
+
+function averageRating(movies) {
+  if (movies.length === 0) {
+    return 0;
+  }
+  const sum = movies.reduce((total, movie) => total + movie.rating, 0);
+  return sum / movies.length;
+}
+
+function bestMovie(movies) {
+  if (movies.length === 0) {
+    return undefined;
+  }
+  return movies.reduce((best, movie) =>
+    movie.rating > best.rating ? movie : best,
+  );
+}`,
+        tests: [
+          {
+            description: 'averageRating räknar ut medelbetyget',
+            code: "averageRating([{ title: 'A', rating: 6 }, { title: 'B', rating: 9 }, { title: 'C', rating: 9 }])",
+            expected: 8,
+          },
+          {
+            description: 'averageRating([]) ger 0',
+            code: 'averageRating([])',
+            expected: 0,
+          },
+          {
+            description:
+              'bestMovie ger filmen med högst betyg, den första vid lika',
+            code: "bestMovie([{ title: 'A', rating: 6 }, { title: 'B', rating: 9 }, { title: 'C', rating: 9 }]).title",
+            expected: 'B',
+          },
+          {
+            description: 'bestMovie fungerar när den bästa ligger först',
+            code: "bestMovie([{ title: 'A', rating: 10 }, { title: 'B', rating: 2 }]).title",
+            expected: 'A',
+          },
+          {
+            description: 'bestMovie([]) ger undefined',
+            code: 'bestMovie([])',
+            expected: undefined,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+      {
+        title: 'Tips',
+        xp: 40,
+        description:
+          'Sist ska appen tipsa om vad du ska se ikväll. Den vet vilka filmer du redan har sett.',
+        task: 'Uppgift: Skriv `recommend(movies, seen)`, där seen är en array med titlar du redan sett. Den returnerar titlarna på högst 3 filmer som du inte har sett och som har minst betyget 7, i samma ordning som i movies. Titlarna i seen kan vara skrivna med andra stora och små bokstäver.',
+        hints: [
+          'Börja med att göra seen lätt att jämföra med.',
+          'Begränsa till 3 sist, när allt annat är klart.',
+        ],
+        solution: `function titlesByGenre(movies, genre) {
+  return movies
+    .filter(movie => movie.genres.includes(genre))
+    .map(movie => movie.title);
+}
+
+function averageRating(movies) {
+  if (movies.length === 0) {
+    return 0;
+  }
+  const sum = movies.reduce((total, movie) => total + movie.rating, 0);
+  return sum / movies.length;
+}
+
+function bestMovie(movies) {
+  if (movies.length === 0) {
+    return undefined;
+  }
+  return movies.reduce((best, movie) =>
+    movie.rating > best.rating ? movie : best,
+  );
+}
+
+function recommend(movies, seen) {
+  const seenLower = seen.map(title => title.toLowerCase());
+  return movies
+    .filter(movie => movie.rating >= 7)
+    .filter(movie => !seenLower.includes(movie.title.toLowerCase()))
+    .map(movie => movie.title)
+    .slice(0, 3);
+}`,
+        tests: [
+          {
+            description: 'Tipsar om bra filmer du inte sett',
+            code: "recommend([{ title: 'Up', rating: 8 }, { title: 'Cats', rating: 3 }, { title: 'Jaws', rating: 7 }], [])",
+            expected: ['Up', 'Jaws'],
+          },
+          {
+            description:
+              'Hoppar över filmer du sett, oavsett stora och små bokstäver',
+            code: "recommend([{ title: 'Up', rating: 8 }, { title: 'Jaws', rating: 7 }], ['UP'])",
+            expected: ['Jaws'],
+          },
+          {
+            description: 'Ger högst 3 tips',
+            code: "recommend([{ title: 'A', rating: 9 }, { title: 'B', rating: 9 }, { title: 'C', rating: 9 }, { title: 'D', rating: 9 }], ['x'])",
+            expected: ['A', 'B', 'C'],
+          },
+          {
+            description: 'Filmer du sett räknas inte in bland de 3',
+            code: "recommend([{ title: 'A', rating: 9 }, { title: 'B', rating: 9 }, { title: 'C', rating: 9 }, { title: 'D', rating: 9 }], ['a'])",
+            expected: ['B', 'C', 'D'],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-cart',
+    track: 'array-methods',
+    title: 'Varukorgen',
+    reward: { emoji: '🧺', name: 'Korg' },
+    summary: 'Räkna på en varukorg i en webbshop och skriv ut kvittot.',
+    steps: [
+      {
+        title: 'Summan',
+        xp: 25,
+        description:
+          'Du bygger varukorgen i en webbshop. Varje rad i korgen är ett objekt: { id, name, price, qty }, där qty är antalet. Inga for-loopar i det här projektet.',
+        task: `Uppgift:
+  - Skriv \`cartTotal(cart)\` som returnerar vad hela korgen kostar.
+  - Skriv \`itemCount(cart)\` som returnerar hur många varor som ligger i korgen totalt.`,
+        starterCode: '// Steg 1: vad kostar korgen?\n',
+        hints: [
+          'En rad kostar priset gånger antalet.',
+          'Båda funktionerna gör om en lista till ett enda tal.',
+        ],
+        solution: `function cartTotal(cart) {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function itemCount(cart) {
+  return cart.reduce((sum, item) => sum + item.qty, 0);
+}`,
+        tests: [
+          {
+            description: 'cartTotal räknar pris gånger antal för varje rad',
+            code: "cartTotal([{ id: 1, name: 'Mjölk', price: 18, qty: 2 }, { id: 2, name: 'Bröd', price: 35, qty: 1 }])",
+            expected: 71,
+          },
+          {
+            description: 'cartTotal([]) ger 0',
+            code: 'cartTotal([])',
+            expected: 0,
+          },
+          {
+            description: 'itemCount räknar alla varor',
+            code: "itemCount([{ id: 1, name: 'Mjölk', price: 18, qty: 2 }, { id: 2, name: 'Bröd', price: 35, qty: 1 }])",
+            expected: 3,
+          },
+          {
+            description: 'itemCount([]) ger 0',
+            code: 'itemCount([])',
+            expected: 0,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+      {
+        title: 'Sök i korgen',
+        xp: 25,
+        description: 'Kunden vill kunna leta i korgen och se vad som är dyrt.',
+        task: `Uppgift:
+  - Skriv \`findItem(cart, name)\` som returnerar raden med varan, oavsett stora och små bokstäver. Finns den inte returneras null.
+  - Skriv \`expensiveNames(cart, limit)\` som returnerar namnen på varorna som kostar mer än limit styck.`,
+        hints: [
+          'Vad returnerar find när inget hittas? Är det null?',
+          'Det finns en operator som ger ett reservvärde när något saknas.',
+        ],
+        solution: `function cartTotal(cart) {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function itemCount(cart) {
+  return cart.reduce((sum, item) => sum + item.qty, 0);
+}
+
+function findItem(cart, name) {
+  const item = cart.find(
+    item => item.name.toLowerCase() === name.toLowerCase(),
+  );
+  return item ?? null;
+}
+
+function expensiveNames(cart, limit) {
+  return cart.filter(item => item.price > limit).map(item => item.name);
+}`,
+        tests: [
+          {
+            description:
+              'findItem hittar varan oavsett stora och små bokstäver',
+            code: "findItem([{ id: 1, name: 'Mjölk', price: 18, qty: 2 }, { id: 2, name: 'Bröd', price: 35, qty: 1 }], 'BRÖD').id",
+            expected: 2,
+          },
+          {
+            description: 'findItem ger null när varan inte finns',
+            code: "findItem([{ id: 1, name: 'Mjölk', price: 18, qty: 2 }], 'Ost')",
+            expected: null,
+          },
+          {
+            description: 'expensiveNames ger varorna över gränsen',
+            code: "expensiveNames([{ id: 1, name: 'Mjölk', price: 18, qty: 2 }, { id: 2, name: 'Ost', price: 89, qty: 1 }, { id: 3, name: 'Kaffe', price: 50, qty: 1 }], 50)",
+            expected: ['Ost'],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+      {
+        title: 'Kvittot',
+        xp: 40,
+        description:
+          'Dags att betala. Kvittot är en array med rader som visas en och en på skärmen.',
+        task: `Uppgift: Skriv \`receipt(cart)\` som returnerar kvittots rader:
+  - En rad per vara: "2 × Mjölk: 36 kr", med antal, namn och radens summa.
+  - Är summan minst 500 kr får kunden 10 % rabatt, avrundat nedåt till hela kronor. Då kommer en rad "Rabatt: -52 kr".
+  - Sist kommer "Totalt: 468 kr", med rabatten avdragen.`,
+        hints: [
+          'Varje vara blir en textrad: det låter som ett jobb för en av metoderna.',
+          'Räkna ut rabatten med funktionerna du redan har, innan du bygger de sista raderna.',
+        ],
+        solution: `function cartTotal(cart) {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function itemCount(cart) {
+  return cart.reduce((sum, item) => sum + item.qty, 0);
+}
+
+function findItem(cart, name) {
+  const item = cart.find(
+    item => item.name.toLowerCase() === name.toLowerCase(),
+  );
+  return item ?? null;
+}
+
+function expensiveNames(cart, limit) {
+  return cart.filter(item => item.price > limit).map(item => item.name);
+}
+
+function receipt(cart) {
+  const lines = cart.map(
+    item => \`\${item.qty} × \${item.name}: \${item.price * item.qty} kr\`,
+  );
+  const total = cartTotal(cart);
+  const discount = total >= 500 ? Math.floor(total / 10) : 0;
+  if (discount > 0) {
+    lines.push(\`Rabatt: -\${discount} kr\`);
+  }
+  lines.push(\`Totalt: \${total - discount} kr\`);
+  return lines;
+}`,
+        tests: [
+          {
+            description: 'Ett kvitto utan rabatt',
+            code: "receipt([{ id: 1, name: 'Mjölk', price: 18, qty: 2 }, { id: 2, name: 'Bröd', price: 35, qty: 1 }])",
+            expected: ['2 × Mjölk: 36 kr', '1 × Bröd: 35 kr', 'Totalt: 71 kr'],
+          },
+          {
+            description: 'Ett kvitto med rabatt',
+            code: "receipt([{ id: 1, name: 'Hörlurar', price: 499, qty: 1 }, { id: 2, name: 'Kabel', price: 25, qty: 1 }])",
+            expected: [
+              '1 × Hörlurar: 499 kr',
+              '1 × Kabel: 25 kr',
+              'Rabatt: -52 kr',
+              'Totalt: 472 kr',
+            ],
+          },
+          {
+            description: 'Exakt 500 kr ger rabatt',
+            code: "receipt([{ id: 1, name: 'Spel', price: 250, qty: 2 }])",
+            expected: ['2 × Spel: 500 kr', 'Rabatt: -50 kr', 'Totalt: 450 kr'],
+          },
+          {
+            description: 'En tom korg',
+            code: 'receipt([])',
+            expected: ['Totalt: 0 kr'],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'proj-quiz-results',
+    track: 'array-methods',
+    title: 'Quizresultaten',
+    reward: { emoji: '📜', name: 'Diplom' },
+    summary: 'Rätta ett quiz, se vem som klarade det och sammanfatta klassen.',
+    steps: [
+      {
+        title: 'Rätta',
+        xp: 25,
+        description:
+          'Du rättar ett quiz. En elevs svar är en array med true för rätt och false för fel, till exempel [true, false, true, true]. Inga for-loopar i det här projektet.',
+        task: `Uppgift:
+  - Skriv \`scoreOf(answers)\` som returnerar antalet rätt.
+  - Skriv \`percent(answers)\` som returnerar andelen rätt i procent, avrundat till närmaste heltal med Math.round. Inga svar alls ger 0.`,
+        starterCode: '// Steg 1: rätta svaren\n',
+        hints: [
+          'Hur många rätt är lika med hur många true som blir kvar om du bara behåller dem.',
+          'Procent är andelen gånger 100.',
+        ],
+        solution: `function scoreOf(answers) {
+  return answers.filter(answer => answer).length;
+}
+
+function percent(answers) {
+  if (answers.length === 0) {
+    return 0;
+  }
+  return Math.round((scoreOf(answers) / answers.length) * 100);
+}`,
+        tests: [
+          {
+            description: 'scoreOf([true, false, true, true]) ger 3',
+            code: 'scoreOf([true, false, true, true])',
+            expected: 3,
+          },
+          {
+            description: 'scoreOf([false, false]) ger 0',
+            code: 'scoreOf([false, false])',
+            expected: 0,
+          },
+          {
+            description: 'percent([true, false, true, true]) ger 75',
+            code: 'percent([true, false, true, true])',
+            expected: 75,
+          },
+          {
+            description: 'percent([true, false, false]) ger 33',
+            code: 'percent([true, false, false])',
+            expected: 33,
+          },
+          {
+            description: 'percent([true, true, false]) ger 67',
+            code: 'percent([true, true, false])',
+            expected: 67,
+          },
+          {
+            description: 'percent([]) ger 0',
+            code: 'percent([])',
+            expected: 0,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+      {
+        title: 'Godkänd?',
+        xp: 25,
+        description:
+          'Nu rättar du hela klassen. Varje elev är ett objekt: { name, answers }. Man är godkänd med minst 60 %.',
+        task: `Uppgift:
+  - Skriv \`passedNames(students)\` som returnerar namnen på de godkända eleverna.
+  - Skriv \`topStudent(students)\` som returnerar namnet på eleven med högst procent. Vid lika vinner den som kommer först, och en tom klass ger null.`,
+        hints: [
+          'percent kan räkna åt dig, så slipper du göra det igen.',
+          'Hitta den bästa eleven först, och plocka ut namnet sist.',
+        ],
+        solution: `function scoreOf(answers) {
+  return answers.filter(answer => answer).length;
+}
+
+function percent(answers) {
+  if (answers.length === 0) {
+    return 0;
+  }
+  return Math.round((scoreOf(answers) / answers.length) * 100);
+}
+
+function passedNames(students) {
+  return students
+    .filter(student => percent(student.answers) >= 60)
+    .map(student => student.name);
+}
+
+function topStudent(students) {
+  if (students.length === 0) {
+    return null;
+  }
+  const best = students.reduce((top, student) =>
+    percent(student.answers) > percent(top.answers) ? student : top,
+  );
+  return best.name;
+}`,
+        tests: [
+          {
+            description: 'passedNames ger de godkända, 60 % räcker',
+            code: "passedNames([{ name: 'Ada', answers: [true, true, true, false, false] }, { name: 'Bo', answers: [true, false, false] }, { name: 'Cy', answers: [true] }])",
+            expected: ['Ada', 'Cy'],
+          },
+          {
+            description: 'topStudent ger den med högst procent',
+            code: "topStudent([{ name: 'Ada', answers: [true, true, false] }, { name: 'Bo', answers: [true, true, true, false] }])",
+            expected: 'Bo',
+          },
+          {
+            description: 'topStudent låter den första vinna vid lika',
+            code: "topStudent([{ name: 'Ada', answers: [true, false] }, { name: 'Bo', answers: [false, true] }])",
+            expected: 'Ada',
+          },
+          {
+            description: 'topStudent([]) ger null',
+            code: 'topStudent([])',
+            expected: null,
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+      {
+        title: 'Klassens sammanfattning',
+        xp: 40,
+        description:
+          'Läraren vill ha en sammanfattning av hela klassen. Betygen är A från 90 %, B från 60 % och annars C.',
+        task: 'Uppgift: Skriv `summary(students)` som returnerar ett objekt med average (klassens medelprocent, avrundad med Math.round, 0 för en tom klass), passed (antalet godkända) och grades, ett objekt med hur många som fick varje betyg: { A: 1, B: 2, C: 0 }. Alla tre betyg ska finnas med, även när ingen fick det.',
+        hints: [
+          'Gör om eleverna till procent en gång, och räkna på den listan.',
+          'reduce kan bygga upp ett objekt lika gärna som ett tal. Vad är startvärdet då?',
+        ],
+        solution: `function scoreOf(answers) {
+  return answers.filter(answer => answer).length;
+}
+
+function percent(answers) {
+  if (answers.length === 0) {
+    return 0;
+  }
+  return Math.round((scoreOf(answers) / answers.length) * 100);
+}
+
+function passedNames(students) {
+  return students
+    .filter(student => percent(student.answers) >= 60)
+    .map(student => student.name);
+}
+
+function topStudent(students) {
+  if (students.length === 0) {
+    return null;
+  }
+  const best = students.reduce((top, student) =>
+    percent(student.answers) > percent(top.answers) ? student : top,
+  );
+  return best.name;
+}
+
+function gradeOf(value) {
+  if (value >= 90) {
+    return 'A';
+  }
+  if (value >= 60) {
+    return 'B';
+  }
+  return 'C';
+}
+
+function summary(students) {
+  const percents = students.map(student => percent(student.answers));
+  const sum = percents.reduce((total, value) => total + value, 0);
+  const grades = percents.reduce(
+    (counts, value) => {
+      counts[gradeOf(value)] = counts[gradeOf(value)] + 1;
+      return counts;
+    },
+    { A: 0, B: 0, C: 0 },
+  );
+  return {
+    average: students.length === 0 ? 0 : Math.round(sum / students.length),
+    passed: percents.filter(value => value >= 60).length,
+    grades,
+  };
+}`,
+        tests: [
+          {
+            description: 'average är klassens medelprocent',
+            code: "summary([{ name: 'Ada', answers: [true, true, true, true, true, true, true, true, true, false] }, { name: 'Bo', answers: [true, true, false] }, { name: 'Cy', answers: [false, false, true, false] }]).average",
+            expected: 61,
+          },
+          {
+            description: 'passed är antalet godkända',
+            code: "summary([{ name: 'Ada', answers: [true, true, true, true, true, true, true, true, true, false] }, { name: 'Bo', answers: [true, true, false] }, { name: 'Cy', answers: [false, false, true, false] }]).passed",
+            expected: 2,
+          },
+          {
+            description: 'grades räknar varje betyg',
+            code: "(() => { const g = summary([{ name: 'Ada', answers: [true, true, true, true, true, true, true, true, true, false] }, { name: 'Bo', answers: [true, true, false] }, { name: 'Cy', answers: [false, false, true, false] }]).grades; return [g.A, g.B, g.C]; })()",
+            expected: [1, 1, 1],
+          },
+          {
+            description: 'Alla betyg finns med, även när ingen fick dem',
+            code: "(() => { const g = summary([{ name: 'Ada', answers: [true, false] }]).grades; return [g.A, g.B, g.C]; })()",
+            expected: [0, 0, 1],
+          },
+          {
+            description: 'En tom klass',
+            code: '(() => { const s = summary([]); return [s.average, s.passed, s.grades.A, s.grades.B, s.grades.C]; })()',
+            expected: [0, 0, 0, 0, 0],
+          },
+        ],
+        sourceChecks: [
+          {
+            description: 'Inga for-loopar',
+            pattern: /\bfor\s*\(/,
+            forbidden: true,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // Stegen som vanliga övningar, så att samma editor och rättning kan

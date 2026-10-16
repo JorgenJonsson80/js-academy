@@ -148,6 +148,21 @@ const otherAnswers = [
     "function hasDigit(text) {\n  return text.split('').some(c => c >= '0' && c <= '9');\n}\nfunction hasUpper(text) {\n  return text !== text.toLowerCase();\n}",
     true,
   ],
+  [
+    'proj-cart-1',
+    'function cartTotal(cart) {\n  let sum = 0;\n  for (let i = 0; i < cart.length; i++) sum += cart[i].price * cart[i].qty;\n  return sum;\n}\nconst itemCount = cart => cart.reduce((n, item) => n + item.qty, 0);',
+    false,
+  ],
+  [
+    'proj-cart-2',
+    'const cartTotal = cart => cart.reduce((s, i) => s + i.price * i.qty, 0);\nconst itemCount = cart => cart.reduce((n, i) => n + i.qty, 0);\nconst findItem = (cart, name) => cart.find(i => i.name.toLowerCase() === name.toLowerCase());\nconst expensiveNames = (cart, limit) => cart.filter(i => i.price > limit).map(i => i.name);',
+    false,
+  ],
+  [
+    'proj-movies-1',
+    'const titlesByGenre = (movies, genre) =>\n  movies.reduce((titles, movie) => (movie.genres.includes(genre) ? [...titles, movie.title] : titles), []);',
+    true,
+  ],
 ];
 
 describe('andra svar', () => {
