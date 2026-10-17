@@ -575,6 +575,50 @@ fruits.push('päron');`,
     ],
   },
   {
+    id: 'arrays-for-of',
+    xp: 10,
+    title: 'Gå igenom en array med for...of',
+    track: 'arrays',
+    isBoss: false,
+    addedLater: true,
+    description:
+      'for...of går igenom en array ett värde i taget, utan att du behöver hålla reda på i. Använd den när du vill göra något med varje värde. Behöver du veta platsen, till exempel för att numrera, passar den vanliga for-loopen med i bättre.',
+    explain:
+      'for (const fruit of fruits) betyder: för varje värde i fruits, kalla värdet fruit och kör koden i { }. Första varvet är fruit det första värdet, andra varvet det andra, och så vidare tills arrayen är slut.\n\nDu väljer själv namnet efter const. Ett bra namn är ental av arrayens namn: fruits ger fruit, users ger user. const går bra eftersom det är en ny variabel varje varv.',
+    example:
+      'const prices = [20, 35, 15];\nlet sum = 0;\n\nfor (const price of prices) {\n  sum = sum + price;\n}\n// sum är 70',
+    task: 'Uppgift: Skapa `totalLength` med let och värdet 0. Gå igenom words med for...of och lägg till varje ords längd (.length) i totalLength.',
+    starterCode: `const words = ['hej', 'på', 'dig'];
+
+`,
+    solution: `const words = ['hej', 'på', 'dig'];
+
+let totalLength = 0;
+for (const word of words) {
+  totalLength = totalLength + word.length;
+}`,
+    hints: [
+      'Börja med let totalLength = 0; före loopen.',
+      'Loopen skrivs for (const word of words) { ... }.',
+      'Inuti loopen: totalLength = totalLength + word.length;',
+    ],
+    tests: [
+      { description: 'totalLength är 8', code: 'totalLength', expected: 8 },
+      isLet('totalLength'),
+    ],
+    sourceChecks: [
+      {
+        description: 'Orden gås igenom med for...of',
+        pattern: /for\s*\(\s*(const|let)\s+\w+\s+of\s+words\s*\)/,
+      },
+      {
+        description: 'totalLength skrivs inte in som 8 för hand',
+        pattern: /totalLength\s*=\s*8\b/,
+        forbidden: true,
+      },
+    ],
+  },
+  {
     id: 'arrays-boss-01',
     xp: 30,
     title: 'Boss: Undersök en array',
@@ -720,6 +764,50 @@ const secondName = users[1].name;`,
       {
         description: 'Värdet hämtas med users[1].name',
         pattern: /users\s*\[\s*1\s*\]\s*\.\s*name\b/,
+      },
+    ],
+  },
+  {
+    id: 'objects-for-in',
+    xp: 10,
+    title: 'Gå igenom ett objekt med for...in',
+    track: 'arrays',
+    isBoss: false,
+    addedLater: true,
+    description:
+      'for...in går igenom alla nycklar i ett objekt. Använd den när du inte vet i förväg vilka egenskaper som finns, till exempel ett objekt med priser där nya varor kan tillkomma. Värdet hämtar du med hakparenteser: prices[key].',
+    explain:
+      'for (const key in prices) betyder: för varje nyckel i prices, kalla nyckeln key. Nyckeln är text, till exempel "keps".\n\nprices.key fungerar inte här, för då letar JavaScript efter en egenskap som faktiskt heter key. Med hakparenteser, prices[key], används värdet i variabeln key som namn.\n\nBlanda inte ihop dem: of ger värdena i en array, in ger nycklarna i ett objekt. Längre fram lär du dig Object.entries, som ofta används i stället i React-kod.',
+    example:
+      'const ages = { ada: 36, linus: 28 };\n\nfor (const name in ages) {\n  console.log(name, ages[name]);\n}\n// ada 36\n// linus 28',
+    task: 'Uppgift: Skapa `total` med let och värdet 0. Gå igenom cart med for...in och lägg ihop alla priser i total.',
+    starterCode: `const cart = { keps: 199, tröja: 349, strumpor: 49 };
+
+`,
+    solution: `const cart = { keps: 199, tröja: 349, strumpor: 49 };
+
+let total = 0;
+for (const item in cart) {
+  total = total + cart[item];
+}`,
+    hints: [
+      'Börja med let total = 0; före loopen.',
+      'Loopen skrivs for (const item in cart) { ... }, och item blir namnet på varan.',
+      'Priset hämtas med cart[item]: total = total + cart[item];',
+    ],
+    tests: [
+      { description: 'total är 597', code: 'total', expected: 597 },
+      isLet('total'),
+    ],
+    sourceChecks: [
+      {
+        description: 'cart gås igenom med for...in',
+        pattern: /for\s*\(\s*(const|let)\s+\w+\s+in\s+cart\s*\)/,
+      },
+      {
+        description: 'total skrivs inte in som 597 för hand',
+        pattern: /total\s*=\s*597\b/,
+        forbidden: true,
       },
     ],
   },

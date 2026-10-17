@@ -15,6 +15,7 @@ export const projects = [
     steps: [
       {
         title: 'Varorna',
+        why: 'Priserna är const eftersom ett pris inte ändras medan kunden handlar. total är let eftersom summan växer för varje vara. Fråga dig alltid: kommer det här värdet att ändras? Nej ger const, ja ger let.',
         xp: 15,
         description:
           'Du bygger kassan i en affär. Först behöver kassan veta vad varorna kostar och ha en summa som börjar på noll.',
@@ -45,6 +46,7 @@ let total = 0;`,
       },
       {
         title: 'Lägg i korgen',
+        why: 'Du räknade med variablerna och inte med talen 35, 89 och 96. Höjs priset på ost behöver du bara ändra på ett ställe, och summan blir ändå rätt. Ett tal som betyder något ska ha ett namn.',
         xp: 15,
         description:
           'Kunden lägger en av varje vara i korgen. Kassan ska räkna ut summan själv från priserna, så att den blir rätt även när ett pris ändras.',
@@ -75,6 +77,7 @@ total = total + bread + cheese + coffee;`,
       },
       {
         title: 'Rabatten',
+        why: 'if används när koden bara ibland ska göra något. hasDiscount sparar vad som hände, så att resten av programmet kan fråga om det senare utan att räkna om. En boolean är rätt verktyg för en ja/nej-fråga.',
         xp: 15,
         description:
           'Affären har ett erbjudande: handlar man för minst 200 kr får man 10 % rabatt. 10 % av ett belopp är beloppet delat med 10.',
@@ -122,6 +125,7 @@ if (total >= 200) {
       },
       {
         title: 'Kvittot',
+        why: 'console.log är för dig som programmerar, inte för kunden. I en riktig app skulle kvittot visas på skärmen, men logiken är densamma: räkna först, visa sist.',
         xp: 25,
         description:
           'Sist skriver kassan ut kvittot. Kunden ska se vad hen ska betala, och få veta om rabatten räknades in.',
@@ -183,6 +187,7 @@ if (hasDiscount) {
     steps: [
       {
         title: 'Läs av temperaturen',
+        why: 'else if används när det finns fler än två vägar och bara en av dem ska väljas. Med tre separata if hade JavaScript kollat alla tre villkoren, även när det redan visste svaret.',
         xp: 15,
         description:
           'Du programmerar en termostat. Den läser av temperaturen och säger om det är för kallt, för varmt eller lagom. Lagom är från 18 till och med 24 grader.',
@@ -226,6 +231,7 @@ if (temp < 18) {
       },
       {
         title: 'Värm upp',
+        why: 'En for-loop passar när du vet hur många varv det ska bli, här 3 minuter. Utan loop hade du skrivit samma rader tre gånger, och 30 minuter hade blivit 30 kopior.',
         xp: 15,
         description:
           'Termostaten sätter på elementet. Varje minut blir rummet 2 grader varmare, och elementet är på i 3 minuter.',
@@ -276,6 +282,7 @@ for (let i = 0; i < 3; i++) {
       },
       {
         title: 'Blev det lagom?',
+        why: 'En jämförelse som temp >= 18 ger true eller false direkt. Att spara den i isDone gör koden lättläst: if (isDone) läses nästan som vanlig svenska.',
         xp: 25,
         description:
           'Nu ska termostaten kolla om det räckte. Termostaten bara värmer, så det räcker att kolla att temp är minst 18.',
@@ -339,6 +346,7 @@ if (isDone) {
     steps: [
       {
         title: 'Veckans minuter',
+        why: 'När värdena följer ett mönster, 20, 25, 30 och så vidare, kan loopen räkna ut dem i stället för att du skriver in dem. day blir både räknare och en del av uträkningen.',
         xp: 15,
         description:
           'Du tränar varje dag i en vecka. Första dagen tränar du 20 minuter, och sedan 5 minuter mer för varje dag. Dag 1 blir 20, dag 2 blir 25 och så vidare. Dagens minuter kan räknas ut som 15 + day * 5.',
@@ -380,6 +388,7 @@ for (let day = 1; day <= 7; day++) {
       },
       {
         title: 'Långa pass',
+        why: 'En räknare, let longDays = 0, som ökas i en loop är ett av de vanligaste mönstren i programmering. Den måste skapas före loopen, annars börjar den om på 0 varje varv.',
         xp: 15,
         description:
           'Ett pass som är längre än 30 minuter räknas som ett långt pass. Hur många sådana hade du i veckan?',
@@ -422,6 +431,7 @@ for (let day = 1; day <= 7; day++) {
       },
       {
         title: 'Nådde du målet?',
+        why: 'Det som kan räknas ut ska räknas ut i stället för att skrivas in. Ändrar du träningen i steg 1 blir hela sammanfattningen rätt av sig själv.',
         xp: 25,
         description:
           'Målet är att träna minst 150 minuter i veckan. Avsluta med en sammanfattning av veckan.',
@@ -490,6 +500,7 @@ if (goalReached) {
     steps: [
       {
         title: 'Packa väskan',
+        why: 'En array passar när du har flera saker av samma sort och ordningen spelar roll: packlistor, köer, topplistor. push lägger till sist, precis som att skriva på nästa rad på en lapp.',
         xp: 20,
         description:
           'Du ska ut och resa och gör en packlista i kod. Några saker har du redan skrivit upp, och sedan kommer du på två till.',
@@ -521,6 +532,7 @@ packList.push('badbyxor');`,
       },
       {
         title: 'Skriv ut listan',
+        why: 'Här behövde du numret, alltså platsen i listan, och därför passar den vanliga for-loopen med i. Behöver du bara värdena, och inte platsen, är for...of enklare: for (const thing of packList).',
         xp: 20,
         description:
           'Nu vill du se hela listan, med nummer framför varje sak. Koden ska fungera hur lång listan än är, så du kan inte skriva en console.log per sak.',
@@ -568,6 +580,7 @@ console.log('Antal saker:', packList.length);`,
       },
       {
         title: 'Har du passet?',
+        why: 'Att leta i en lista med en loop och en boolean är ett grundmönster. Senare lär du dig packList.includes("pass"), som gör samma sak på en rad. Men nu vet du vad includes gör inuti.',
         xp: 30,
         description:
           'Det värsta som kan hända är att glömma passet. Koden ska själv leta igenom listan, så att den fungerar även när du ändrar i listan.',
@@ -635,6 +648,7 @@ if (hasPassport) {
     steps: [
       {
         title: 'Din låt',
+        why: 'En låt har flera egenskaper som hör ihop: titel, artist och längd. Då är ett objekt rätt, för du kommer åt dem med namn: song.title. Många låtar blir en array av objekt, den vanligaste formen på data i React-appar.',
         xp: 20,
         description:
           'Spellistan är en array med låtar. Varje låt är ett objekt med title, artist och seconds, alltså låtens längd i sekunder. Nu ska din favoritlåt in.',
@@ -689,6 +703,7 @@ songs.push({ title: 'Hey Jude', artist: 'The Beatles', seconds: 431 });`,
       },
       {
         title: 'Hur länge spelar den?',
+        why: 'Här behövde du bara varje låts sekunder, inte platsen i listan. Då hade for (const song of songs) varit ännu tydligare än for med i. Prova gärna att skriva om loopen.',
         xp: 20,
         description:
           'Hur lång tid tar hela spellistan? Summera sekunderna och gör om dem till minuter och sekunder. Två nya verktyg: Math.floor(x) avrundar nedåt till ett heltal, och x % 60 ger det som blir över när x delas med 60.',
@@ -737,6 +752,7 @@ console.log('Speltid:', minutes, 'min', rest, 's');`,
       },
       {
         title: 'Den längsta låten',
+        why: 'longest sparar hela objektet, inte bara antalet sekunder. Då har du titel och artist kvar när loopen är klar. Spara det du behöver senare, inte bara det du jämför med.',
         xp: 30,
         description:
           'Vilken låt i spellistan är längst? Koden ska hitta den själv, så att svaret blir rätt vilken låt du än lade till.',
@@ -803,6 +819,7 @@ console.log('Längst:', longest.title, 'av', longest.artist);`,
     steps: [
       {
         title: 'Ställ upp',
+        why: 'En array av objekt: arrayen för att det finns många spelare i en ordning, och objektet för att varje spelare har namngivna egenskaper. Tumregel: många av samma sort ger en array, en sak med egenskaper ger ett objekt.',
         xp: 20,
         description:
           'Fyra spelare har redan tävlat, och nu är det din tur. Varje spelare är ett objekt med name och score.',
@@ -859,6 +876,7 @@ players.push({ name: 'Kim', score: 47 });`,
       },
       {
         title: 'Snittet',
+        why: 'Du använde players.length och inte talet 5. Lägger någon till en spelare blir snittet ändå rätt. Räkna alltid antalet från listan.',
         xp: 20,
         description:
           'Hur bra gick det i snitt? Snittet är summan av alla poäng delat med antalet spelare.',
@@ -910,6 +928,7 @@ console.log('Snitt:', average);`,
       },
       {
         title: 'Vinnaren',
+        why: 'Två saker räknades ut i samma loop. Det fungerar bra när de hör ihop, men två loopar som gör en sak var är ofta lättare att läsa. Båda sätten är rätt.',
         xp: 30,
         description:
           'Dags för prisutdelning. Vem vann, och hur många spelade bättre än snittet?',
@@ -987,6 +1006,7 @@ console.log('Över snittet:', aboveAverage);`,
     steps: [
       {
         title: 'Hur många mynt?',
+        why: 'En funktion löser ett litet problem och får ett namn. coinsOf(37, 10) säger vad som händer, Math.floor(37 / 10) säger hur. Bra namn gör att man kan läsa koden utan att räkna.',
         xp: 25,
         description:
           'Du bygger en automat som ger växel i mynt på 20, 10, 5 och 1 kr. Först behöver den veta hur många hela mynt av en sort som ryms i ett belopp. Math.floor(x) avrundar ett tal nedåt.',
@@ -1024,6 +1044,7 @@ console.log('Över snittet:', aboveAverage);`,
       },
       {
         title: 'Växla',
+        why: 'makeChange returnerar ett objekt eftersom svaret har fyra delar som hör ihop. Ett objekt med namn är tydligare än en array som [1, 1, 1, 2], där man måste komma ihåg vilken plats som är vad.',
         xp: 25,
         description:
           'Nu ska automaten dela upp ett helt belopp i mynt. Den tar alltid så många stora mynt som möjligt först, så att det blir så få mynt som möjligt. Det som blir över efter en sort går vidare till nästa.',
@@ -1078,6 +1099,7 @@ function makeChange(amount) {
       },
       {
         title: 'Betala',
+        why: 'pay bygger på makeChange, som bygger på coinsOf. Små funktioner som används av större är så nästan all kod är byggd, också React-komponenter.',
         xp: 40,
         description:
           'Sist kopplar du ihop allt till själva betalningen. Kunden lägger i pengar, och automaten svarar på tre olika sätt beroende på hur mycket som kom in.',
@@ -1154,6 +1176,7 @@ function pay(price, paid) {
     steps: [
       {
         title: 'Medeltemperaturen',
+        why: 'Det tomma fallet kollas först, innan något räknas. Att hantera konstiga indata direkt i början av en funktion kallas en guard, och det gör resten av funktionen enklare.',
         xp: 25,
         description:
           'Väderstationen mäter temperaturen varje dag och sparar mätningarna i en array. Första verktyget räknar ut medelvärdet.',
@@ -1198,6 +1221,7 @@ function pay(price, paid) {
       },
       {
         title: 'Varmast och känsla',
+        why: 'warmest börjar med temps[0] och inte 0, eftersom 0 är en gissning som kan vara fel. Börja med ett riktigt värde ur listan, så blir svaret alltid ett av värdena.',
         xp: 25,
         description:
           'Två verktyg till: ett som hittar den varmaste dagen och ett som beskriver hur en temperatur känns.',
@@ -1273,6 +1297,7 @@ function describe(temp) {
       },
       {
         title: 'Veckorapporten',
+        why: 'weekReport räknar ingenting själv, den frågar de andra funktionerna. Hittar du ett fel i medelvärdet rättar du det på ett ställe, och rapporten blir rätt.',
         xp: 40,
         description:
           'Nu sätter du ihop verktygen. Bra funktioner gör en sak var, och större funktioner bygger på de små.',
@@ -1357,6 +1382,7 @@ function weekReport(temps) {
     steps: [
       {
         title: 'Räkna ögon',
+        why: 'value är en parameter i stället för att du skriver en funktion per tärningsvärde. En parameter gör att samma funktion kan svara på många frågor.',
         xp: 25,
         description:
           'Du bygger poängräkningen till ett tärningsspel med fem tärningar. Ett kast är en array, till exempel [3, 1, 3, 6, 3].',
@@ -1400,6 +1426,7 @@ function weekReport(temps) {
       },
       {
         title: 'Summa och yatzy',
+        why: 'hasYatzy återanvände countValue. När du märker att du ska skriva något du redan har skrivit, fråga dig om det finns en funktion som redan kan det.',
         xp: 25,
         description:
           'Två regler till spelet: summan av alla tärningar, och yatzy, som är när alla fem visar samma.',
@@ -1461,6 +1488,7 @@ function hasYatzy(dice) {
       },
       {
         title: 'Poängen',
+        why: 'return avbryter funktionen direkt. Därför kan reglerna kollas i ordning, den som ger mest poäng först, utan else. Tidig return gör långa if-kedjor kortare.',
         xp: 40,
         description: 'Nu ska ett kast få sin poäng enligt spelets regler.',
         task: `Uppgift: Skriv \`score(dice)\` som returnerar poängen för ett kast:
@@ -1543,6 +1571,7 @@ function score(dice) {
     steps: [
       {
         title: 'Siffror och stora bokstäver',
+        why: 'En sträng kan gås igenom som en array, tecken för tecken. Två små funktioner som svarar på en ja/nej-fråga var är lättare att testa än en stor som kollar allt.',
         xp: 25,
         description:
           'Du bygger lösenordskollen till ett registreringsformulär. Först behövs två små verktyg som letar efter olika sorters tecken. En sträng kan gås igenom tecken för tecken precis som en array: text[i] och text.length.',
@@ -1612,6 +1641,7 @@ function hasUpper(text) {
       },
       {
         title: 'Vad är fel?',
+        why: 'Varje regel är en egen if, inte else if, eftersom flera problem kan gälla samtidigt. else if används bara när svaren utesluter varandra.',
         xp: 25,
         description:
           'Formuläret ska kunna säga exakt vad som är fel med ett lösenord, så att användaren vet vad hen ska ändra.',
@@ -1694,6 +1724,7 @@ function passwordProblems(password) {
       },
       {
         title: 'Omdömet',
+        why: 'trim görs en gång, i början, på det användaren skrev. Städa indata så tidigt som möjligt, så behöver resten av koden inte tänka på det.',
         xp: 40,
         description:
           'Sist ska användaren få ett omdöme om lösenordet i klartext, precis under rutan i formuläret.',
@@ -1783,6 +1814,7 @@ function feedback(password) {
     steps: [
       {
         title: 'Stor första bokstav',
+        why: 'Text från användare är nästan alltid slarvig. Att städa den, med trim och små eller stora bokstäver, är något du kommer göra i varje formulär du bygger.',
         xp: 25,
         description:
           'Till en konferens skriver deltagarna in sina namn själva, och de gör det slarvigt: "aDA", " linus ", "GRACE". Namnbrickorna ska ändå bli snygga. Ett nytt verktyg: text.slice(1) ger hela texten utom första tecknet.',
@@ -1834,6 +1866,7 @@ function feedback(password) {
       },
       {
         title: 'Hela namnet',
+        why: 'split, ändra delarna och join igen är ett mönster för all text som består av delar: namn, taggar, adresser i en webbläsare.',
         xp: 25,
         description:
           'Många skriver både för- och efternamn, ibland med flera mellanslag emellan. Också dubbelnamn som "anna maria" ska bli rätt.',
@@ -1886,6 +1919,7 @@ function formatName(fullName) {
       },
       {
         title: 'Brickan',
+        why: '?? och ?. finns för data som kanske saknas. Det är vanligt när data kommer från ett formulär eller ett API, där man aldrig kan lita på att allt är ifyllt.',
         xp: 40,
         description:
           'Nu ska brickorna skrivas ut. Varje deltagare är ett objekt, men alla har inte fyllt i allt, och ibland saknas deltagaren helt.',
@@ -1973,6 +2007,7 @@ function badge(person) {
     steps: [
       {
         title: 'Räkna ord',
+        why: 'split(" ").length ser rätt ut men räknar tomma delar som ord. Testa alltid med konstiga indata, som en tom text eller extra mellanslag. Det är där felen gömmer sig.',
         xp: 25,
         description:
           'Du bygger filtret till en chatt. Först ska den kunna räkna orden i ett meddelande, till exempel för att stoppa meddelanden som är för långa. Folk skriver ofta med extra mellanslag.',
@@ -2022,6 +2057,7 @@ function badge(person) {
       },
       {
         title: 'Censur',
+        why: 'Du jämförde hela ord, inte om texten innehåller ordet. Annars hade "Fånerier" blivit censurerat. Fundera alltid på om du vill ha en exakt jämförelse, ===, eller en sökning, includes.',
         xp: 25,
         description:
           'Chatten ska vara snäll. Fula ord byts ut mot stjärnor, en stjärna per bokstav, så att man ser att något stod där. Orden i ett meddelande skiljs åt med ett mellanslag.',
@@ -2084,6 +2120,7 @@ function censor(text, badWords) {
       },
       {
         title: 'Visa meddelandet',
+        why: 'BAD_WORDS skrivs med stora bokstäver eftersom det är en konstant som hela programmet delar. Det är en vanlig namnvana för värden som aldrig ändras.',
         xp: 40,
         description:
           'Sist ska meddelandena visas i chatten. Ett meddelande är ett objekt med text, och ibland user och time. Ordlistan med fula ord är ["fåne", "dumbom"].',
@@ -2289,6 +2326,7 @@ function bestMovie(movies) {
       },
       {
         title: 'Tips',
+        why: 'Varje steg i kedjan gör en sak: filter, filter, map och slice. Kedjor av array-metoder läses uppifrån och ner, som ett recept, och det är så listor tas fram i React.',
         xp: 40,
         description:
           'Sist ska appen tipsa om vad du ska se ikväll. Den vet vilka filmer du redan har sett.',
@@ -2475,6 +2513,7 @@ function expensiveNames(cart, limit) {
       },
       {
         title: 'Kvittot',
+        why: 'map gör om data till det som ska visas, här en textrad per vara. I React gör du exakt samma sak, fast varje rad blir ett element på skärmen i stället för text.',
         xp: 40,
         description:
           'Dags att betala. Kvittot är en array med rader som visas en och en på skärmen.',
@@ -2694,6 +2733,7 @@ function topStudent(students) {
       },
       {
         title: 'Klassens sammanfattning',
+        why: 'reduce kan bygga vad som helst, inte bara summor. Med ett objekt som startvärde räknar du flera saker på en gång. Ett objekt passar när du vill slå upp något med namn, som grades.A.',
         xp: 40,
         description:
           'Läraren vill ha en sammanfattning av hela klassen. Betygen är A från 90 %, B från 60 % och annars C.',
@@ -2853,6 +2893,7 @@ function withDefaults(settings) {
       },
       {
         title: 'Ändra',
+        why: 'Funktionerna returnerar en kopia i stället för att ändra originalet. React jämför det gamla och det nya objektet för att se om något har ändrats. Ändrar du originalet ser React ingen skillnad, och skärmen uppdateras inte.',
         xp: 25,
         description:
           'Nu ska användaren kunna ändra inställningarna. Funktionerna får aldrig ändra objektet de får in, utan returnerar en ny kopia. Math.min(a, b) ger det minsta av två tal och Math.max(a, b) det största.',
@@ -3042,6 +3083,7 @@ function describeSettings(settings) {
       },
       {
         title: 'Bocka av och ta bort',
+        why: 'map när listan ska vara lika lång, filter när något ska bort och spread när något ska till. De tre är nästan allt du behöver för att uppdatera listor i state.',
         xp: 25,
         description:
           'Uppgifter ska kunna bockas av och tas bort. I React jämförs objekt för att se vad som ändrats, så uppgifter som inte ändras ska vara samma objekt som förut, och den som ändras ska bli ett nytt.',
@@ -3255,6 +3297,7 @@ function addScore(player, score) {
       },
       {
         title: 'Den publika profilen',
+        why: 'Rest i destructuring plockar bort det du inte vill skicka vidare och behåller resten, även egenskaper du inte känner till. I React används det för att skicka vidare props.',
         xp: 40,
         description:
           'Andra spelare ska kunna se din profil, men inte alla dina enskilda matcher. I stället visas hur många matcher du spelat och ditt snitt.',
@@ -3322,6 +3365,7 @@ function publicProfile(player) {
     steps: [
       {
         title: 'Rösta',
+        why: 'Ett objekt passar när du slår upp saker med namn: votes.tacos. Hade rösterna legat i en array hade du fått leta igenom den varje gång. Fråga dig: letar jag med ett namn? Då är ett objekt ofta bättre än en array.',
         xp: 25,
         description:
           'Klassen röstar om vad det ska bli på fredagsfikat. Rösterna sparas i ett objekt där varje alternativ är en nyckel: { pizza: 3, tacos: 5 }.',
@@ -3528,6 +3572,7 @@ function winner(votes) {
       },
       {
         title: 'Låna och lämna',
+        why: 'Utlånen ligger i ett objekt med bokens id som nyckel, så att du direkt kan se om en bok är utlånad: loans[3]. Böckerna ligger i en array, eftersom de visas i en ordning. Samma data kan förtjäna olika former beroende på vad du ska göra med den.',
         xp: 25,
         description:
           'Utlånen sparas i ett objekt där nyckeln är bokens id och värdet är namnet på den som lånat: { 2: "Ada" }. Object.fromEntries(entries) gör om en array med [nyckel, värde]-par till ett objekt, alltså motsatsen till Object.entries.',
@@ -3785,6 +3830,7 @@ function loanReport(books, loans) {
       },
       {
         title: 'Ritprogrammet',
+        why: 'Ångra fungerar bara om gamla värden aldrig ändras. Därför skapar addShape alltid en ny teckning. Det är samma skäl som gör att React vill ha nya objekt i state.',
         xp: 40,
         description:
           'Nu kopplar du historiken till själva ritprogrammet. En teckning är ett objekt: { color, shapes }, där shapes är en array. Det är samma idé som när React får en funktion till setState.',

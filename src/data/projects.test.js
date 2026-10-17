@@ -54,6 +54,16 @@ describe('projektdata', () => {
     expect(noHintsBonusXp(project)).toBe(35);
   });
 
+  // I början är det svårast att veta när man ska använda vad, så alla
+  // steg i de första banornas projekt förklarar sina val.
+  it.each(
+    projectSteps.filter(step =>
+      ['js-basics', 'arrays', 'functions', 'strings'].includes(step.track),
+    ),
+  )('$id förklarar varför', step => {
+    expect(step.why).toBeTruthy();
+  });
+
   it('räknar ett projekt som klart först när alla steg är klara', () => {
     const [project] = projects;
     const ids = projectSteps

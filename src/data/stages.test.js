@@ -28,6 +28,13 @@ describe('getGrowth', () => {
     expect(growth.rewards).toEqual([tracks[0].reward]);
   });
 
+  it('kräver inte övningar som lagts till i efterhand', () => {
+    const withExtra = [...lessons, { id: 'a3', track: 'a', addedLater: true }];
+    expect(
+      trackProgress(tracks[0], withExtra, ['a1', 'a2'], []).isComplete,
+    ).toBe(true);
+  });
+
   it('har ingen aktuell bana när allt är klart', () => {
     const growth = getGrowth(tracks, lessons, ['a1', 'a2', 'b1']);
     expect(growth.currentTrack).toBeNull();

@@ -122,7 +122,12 @@ export const stages = [
 export function trackProgress(track, lessons, completedIds, passedTrackIds) {
   const items = lessons.filter(lesson => lesson.track === track.id);
   const done = items.filter(lesson => completedIds.includes(lesson.id));
-  const allDone = items.length > 0 && done.length === items.length;
+  // Övningar som lagts till i efterhand krävs inte, så att den som redan
+  // klarat banan inte förlorar den.
+  const required = items.filter(lesson => !lesson.addedLater);
+  const allDone =
+    required.length > 0 &&
+    required.every(lesson => completedIds.includes(lesson.id));
   const bossesLeft = items.filter(
     lesson => lesson.isBoss && !completedIds.includes(lesson.id),
   );

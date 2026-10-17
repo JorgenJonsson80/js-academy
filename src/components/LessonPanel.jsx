@@ -183,6 +183,11 @@ export default function LessonPanel({
         )}
       </div>
       <FeedbackPanel feedback={feedback} />
+      {lesson.why && (feedback?.isCorrect || isCompleted) && (
+        <aside className="lesson-why">
+          <strong>💭 Varför så här?</strong> {lesson.why}
+        </aside>
+      )}
       {feedback?.isCorrect && !showSolution && (
         <SolutionCompare code={code} solution={lesson.solution} />
       )}

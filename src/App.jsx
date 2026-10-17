@@ -248,7 +248,7 @@ function App() {
     const previousTrack = tracks[index - 1];
     if (passedTrackIds.includes(previousTrack.id)) return true;
     const previousLessons = lessons.filter(
-      item => item.track === previousTrack.id,
+      item => item.track === previousTrack.id && !item.addedLater,
     );
 
     return (

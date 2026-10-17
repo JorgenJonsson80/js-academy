@@ -810,3 +810,12 @@
   flex-basis: 100%;
   margin: 0;
 }
+
+.lesson-why {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-soft);
+  line-height: 1.5;
+}
