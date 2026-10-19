@@ -249,8 +249,18 @@ export default function CodeEditor({ code, onCodeChange, fileName }) {
           syntaxHighlighting(highlightStyle),
           editorTheme,
           EditorView.contentAttributes.of({ 'aria-labelledby': 'code-label' }),
+          // ⌥⇧F ger ett specialtecken på Mac, så vi tittar på den fysiska
+          // tangenten (event.code) i stället för vilket tecken som skrivs.
+          EditorView.domEventHandlers({
+            keydown(event, view) {
+              if (event.code !== 'KeyF' || !event.altKey || !event.shiftKey) {
+                return false;
+              }
+              event.preventDefault();
+              return runFormat(view);
+            },
+          }),
           keymap.of([
-            { key: 'Shift-Alt-f', run: runFormat, preventDefault: true },
             { key: 'Mod-s', run: runFormat, preventDefault: true },
             ...closeBracketsKeymap,
             ...completionKeymap,

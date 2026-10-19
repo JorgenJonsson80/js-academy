@@ -16,6 +16,70 @@ const GLOBALS = {
   window: 'webbläsarfönstret',
   localStorage: 'att spara data i webbläsaren',
   React: 'React',
+  Map: 'nyckel–värde-par där nyckeln kan vara vad som helst',
+  Set: 'samlingar utan dubbletter',
+  Error: 'att skapa fel som kan kastas med `throw`',
+  setTimeout: 'att köra kod efter en stund',
+  fetch: 'att hämta data från nätet',
+  parseInt: 'att göra om text till ett heltal',
+};
+
+// Nyckelord och värden, med fokus på när man använder dem.
+const WORDS = {
+  const:
+    'Skapar en variabel som inte kan tilldelas om. Använd den som standard.',
+  let: 'Skapar en variabel som kan få ett nytt värde senare, t.ex. en räknare.',
+  var: 'Det gamla sättet att skapa variabler. Använd `const` eller `let` i stället.',
+  function:
+    'Skapar en funktion – kod med ett namn som du kan köra många gånger.',
+  return: 'Skickar tillbaka ett värde från funktionen och avslutar den.',
+  if: 'Kör koden bara om villkoret är sant.',
+  else: 'Körs när villkoret i `if` inte är sant.',
+  for: 'En loop som upprepar kod, t.ex. en gång per element.',
+  of: '`for...of` går igenom värdena i en array eller sträng.',
+  in: '`for...in` går igenom nycklarna i ett objekt.',
+  while: 'Upprepar koden så länge villkoret är sant.',
+  break: 'Avbryter loopen direkt.',
+  continue: 'Hoppar till nästa varv i loopen.',
+  new: 'Skapar ett nytt objekt från en klass, t.ex. `new Map()`.',
+  async: 'Gör funktionen asynkron, så att du kan använda `await` i den.',
+  await: 'Väntar på att ett Promise blir klart och ger dig resultatet.',
+  typeof: "Ger typen som text, t.ex. `'string'` eller `'number'`.",
+  import: 'Hämtar kod från en annan fil eller ett paket.',
+  export: 'Gör koden tillgänglig för andra filer som importerar den.',
+  default: 'Det som importeras när man inte skriver `{ }` runt namnet.',
+  class: 'En mall för att skapa objekt med samma egenskaper och metoder.',
+  throw: 'Kastar ett fel som stoppar koden, om det inte fångas med `try`.',
+  try: 'Kör kod som kan kasta fel – felet hamnar i `catch`.',
+  catch: 'Fångar felet från `try` så att programmet inte kraschar.',
+  null: 'Betyder "inget värde" – sätts med flit.',
+  BooleanLiteral: 'Ett sant/falskt-värde. Används i villkor som `if`.',
+  String: 'En sträng – text inom citattecken.',
+  TemplateString:
+    'En template literal. Med `${ }` stoppar du in värden i texten.',
+  Number: 'Ett tal.',
+  Arrow:
+    'En arrow-funktion. Kort sätt att skriva en funktion, t.ex. i `.map()`.',
+  LineComment: 'En kommentar. Den körs inte – den är till för människor.',
+  BlockComment: 'En kommentar. Den körs inte – den är till för människor.',
+  '?.': 'Optional chaining – ger `undefined` i stället för fel om det till vänster saknas.',
+};
+
+const OPERATORS = {
+  '===': 'Är lika med – både värde och typ måste stämma.',
+  '!==': 'Är inte lika med – värde eller typ skiljer sig.',
+  '==': 'Lös jämförelse som gör om typer. Använd hellre `===`.',
+  '!=': 'Lös jämförelse som gör om typer. Använd hellre `!==`.',
+  '&&': 'Och – sant bara om båda sidor är sanna. I JSX: visa något bara om villkoret är sant.',
+  '||': 'Eller – sant om minst en sida är sann.',
+  '??': 'Ger högra sidan bara om vänstra är `null` eller `undefined`.',
+  '!': 'Inte – vänder sant till falskt och tvärtom.',
+  '?': 'Villkorsoperatorn: `villkor ? omSant : omFalskt`.',
+  '+': 'Plus – adderar tal eller sätter ihop strängar.',
+  '%': 'Rest vid division, t.ex. `7 % 2` blir 1. Bra för att hitta jämna tal.',
+  '++': 'Ökar variabeln med 1.',
+  '--': 'Minskar variabeln med 1.',
+  '+=': 'Lägger till på variabeln: `x += 2` är samma som `x = x + 2`.',
 };
 
 const KIND_LABELS = {
@@ -372,10 +436,42 @@ function describeNode(tree, src, node) {
         body: `Inbyggt i JavaScript – används till ${GLOBALS[name]}.`,
       };
     }
+    if (name === 'undefined') {
+      return {
+        title: name,
+        body: 'Betyder att ett värde saknas, t.ex. en egenskap som inte finns.',
+      };
+    }
     return {
       title: name,
       body: `Hittar ingen deklaration av ${code(name)} i din kod.`,
     };
+  }
+
+  if (node.name === 'Spread') {
+    const inPattern = ['ParamList', 'ObjectPattern', 'ArrayPattern'].includes(
+      node.parent?.name,
+    );
+    return {
+      title: '...',
+      body: inPattern
+        ? 'Rest – samlar resten av värdena i en egen variabel.'
+        : 'Spread – kopierar in alla värden, t.ex. för att göra en ny array eller ett nytt objekt.',
+    };
+  }
+
+  const tokenText = text(src, node);
+  if (/Op$/.test(node.name) && OPERATORS[tokenText]) {
+    return { title: tokenText, body: OPERATORS[tokenText] };
+  }
+
+  const word = WORDS[node.name];
+  if (word) {
+    const title =
+      tokenText.length <= 24 && !tokenText.includes('\n')
+        ? tokenText
+        : node.name;
+    return { title, body: word };
   }
 
   return null;
