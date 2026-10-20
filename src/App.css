@@ -1003,3 +1003,96 @@
   margin: 6px 0 0;
   font-size: 0.85rem;
 }
+
+/* Kör rad för rad */
+
+.step-panel {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 14px 16px;
+  border: 1px solid var(--xp);
+  border-radius: 12px;
+  background: var(--surface-sunken);
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.step-header button {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+}
+
+.step-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-count {
+  min-width: 7.5em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.step-panel input[type='range'] {
+  width: 100%;
+  accent-color: var(--xp);
+}
+
+.step-status {
+  margin: 0;
+}
+
+.step-vars {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.9rem;
+}
+
+.step-vars th,
+.step-vars td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.step-vars thead th {
+  color: var(--muted);
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.step-vars tbody th {
+  width: 30%;
+  color: var(--task-code-text);
+  font-weight: 600;
+}
+
+.step-changed td,
+.step-changed th {
+  background: rgb(251 191 36 / 0.12);
+}
+
+.step-changed-label {
+  margin-left: 6px;
+  color: var(--xp);
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.step-tip {
+  margin: 0;
+  font-size: 0.8rem;
+}

@@ -96,6 +96,11 @@ export default function HelpDialog({ onClose }) {
           namn är felstavat.
         </li>
         <li>
+          <strong>Kör rad för rad.</strong> Knappen 👣 stegar igenom koden en
+          rad i taget och visar vad varje variabel innehåller. Perfekt för
+          loopar, <code>map</code> och <code>reduce</code>.
+        </li>
+        <li>
           <strong>Använd console.log.</strong> Skriv ut värden mitt i koden för
           att se vad som faktiskt händer. Det gör proffs också.
         </li>

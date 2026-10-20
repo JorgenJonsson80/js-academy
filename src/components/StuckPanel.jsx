@@ -26,6 +26,11 @@ export default function StuckPanel({ resources, failedAttempts, onBreakDown }) {
       <h3>Bryt ner koden</h3>
       <ul>
         <li>
+          <strong>Kör rad för rad.</strong> Tryck på <em>👣 Kör rad för rad</em>{' '}
+          och stega igenom koden. Du ser vilken rad som körs och vad varje
+          variabel innehåller just då.
+        </li>
+        <li>
           <strong>Se vad som händer.</strong> Lägg in{' '}
           <code>console.log(…)</code> efter raderna du är osäker på och tryck på
           Kolla lösning. Då ser du värdena i konsolen.

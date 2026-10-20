@@ -22,8 +22,9 @@ import {
   syntaxHighlighting,
   syntaxTree,
 } from '@codemirror/language';
-import { EditorState } from '@codemirror/state';
+import { EditorState, StateEffect, StateField } from '@codemirror/state';
 import {
+  Decoration,
   drawSelection,
   EditorView,
   highlightActiveLine,
@@ -126,6 +127,28 @@ const codeHover = hoverTooltip((view, pos, side) => {
   };
 });
 
+// Raden som körs härnäst i Kör rad för rad.
+const setStepLine = StateEffect.define();
+const stepLineField = StateField.define({
+  create: () => Decoration.none,
+  update(decorations, transaction) {
+    let result = decorations.map(transaction.changes);
+    for (const effect of transaction.effects) {
+      if (!effect.is(setStepLine)) continue;
+      result =
+        effect.value === null
+          ? Decoration.none
+          : Decoration.set([
+              Decoration.line({ class: 'cm-step-line' }).range(
+                transaction.state.doc.line(effect.value).from,
+              ),
+            ]);
+    }
+    return result;
+  },
+  provide: field => EditorView.decorations.from(field),
+});
+
 const highlightStyle = HighlightStyle.define([
   { tag: [tags.keyword, tags.operatorKeyword], color: '#c4b5fd' },
   { tag: [tags.string, tags.special(tags.string)], color: '#86efac' },
@@ -175,6 +198,10 @@ const editorTheme = EditorView.theme(
       background: 'var(--accent-soft) !important',
     },
     '.cm-matchingBracket': { background: 'rgba(167, 139, 250, 0.25)' },
+    '.cm-step-line': {
+      background: 'rgba(251, 191, 36, 0.18)',
+      boxShadow: 'inset 3px 0 0 var(--xp)',
+    },
     '.cm-tooltip': {
       border: '1px solid var(--border-strong)',
       borderRadius: '8px',
@@ -207,7 +234,13 @@ const editorTheme = EditorView.theme(
   { dark: true },
 );
 
-export default function CodeEditor({ code, onCodeChange, fileName }) {
+// activeLine: raden som markeras i Kör rad för rad, eller null.
+export default function CodeEditor({
+  code,
+  onCodeChange,
+  fileName,
+  activeLine = null,
+}) {
   const hostRef = useRef(null);
   const viewRef = useRef(null);
   const onCodeChangeRef = useRef(onCodeChange);
@@ -247,6 +280,7 @@ export default function CodeEditor({ code, onCodeChange, fileName }) {
           }),
           autocompletion(),
           codeHover,
+          stepLineField,
           syntaxHighlighting(highlightStyle),
           editorTheme,
           EditorView.contentAttributes.of({ 'aria-labelledby': 'code-label' }),
@@ -295,6 +329,24 @@ export default function CodeEditor({ code, onCodeChange, fileName }) {
       });
     }
   }, [code]);
+
+  useEffect(() => {
+    const view = viewRef.current;
+    if (!view) return;
+    const line =
+      activeLine !== null && activeLine <= view.state.doc.lines
+        ? activeLine
+        : null;
+    const effects = [setStepLine.of(line)];
+    if (line !== null) {
+      effects.push(
+        EditorView.scrollIntoView(view.state.doc.line(line).from, {
+          y: 'nearest',
+        }),
+      );
+    }
+    view.dispatch({ effects });
+  }, [activeLine]);
 
   return (
     <>

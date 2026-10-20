@@ -7,6 +7,7 @@ import { createModuleSystem } from './modules';
 import { styleNotes } from './style';
 import { createClock, createFetch, createStorage } from './fakes';
 import { createMount } from './mount';
+import { instrument } from './instrument';
 
 // React 19 lägger till <link rel="preload"> för bilder när den
 // renderar till HTML. Det har inget med elevens kod att göra.
@@ -215,4 +216,77 @@ export async function evaluate(code, tests, sourceChecks = [], options = {}) {
       ...sourceChecks.map(check => runSourceCheck(code, check)),
     ],
   };
+}
+
+const MAX_STEPS = 300;
+const MAX_VALUE_LENGTH = 80;
+
+class StepLimitError extends Error {}
+
+// Sparar ett steg för varje __trace som den instrumenterade koden gör:
+// raden som ska köras, variablernas värden just då och hur mycket som
+// skrivits ut i konsolen. Värdena görs om till text direkt, så att ett
+// objekt som ändras senare inte ändrar gamla steg.
+function createTracer(logs) {
+  const steps = [];
+  function trace(line, getters) {
+    const vars = [];
+    for (const [name, read] of getters) {
+      let value;
+      try {
+        value = read();
+      } catch {
+        continue; // Variabeln är inte skapad än.
+      }
+      if (typeof value === 'function') continue;
+      const text = format(value);
+      vars.push([
+        name,
+        text.length > MAX_VALUE_LENGTH
+          ? `${text.slice(0, MAX_VALUE_LENGTH)}…`
+          : text,
+      ]);
+    }
+    steps.push({ line, vars, logCount: logs.length });
+    if (steps.length >= MAX_STEPS) throw new StepLimitError();
+  }
+  return { steps, trace };
+}
+
+// Kör koden och sparar ett steg före varje rad, för Kör rad för rad.
+// Det sista steget har line: null och visar läget när koden är klar.
+export async function stepThrough(
+  code,
+  { fileName = 'main.js', files = {} } = {},
+) {
+  try {
+    checkSyntax(code);
+  } catch (error) {
+    return {
+      error: `Koden går inte att tolka. Kontrollera stavningen och att alla ( ) och { } är parade.\n${error.name}: ${error.message}`,
+      steps: [],
+      logs: [],
+    };
+  }
+
+  const logs = [];
+  const tracer = createTracer(logs);
+  const runtime = createRuntime(logs);
+  runtime.globals.__trace = tracer.trace;
+  const instrumented = instrument(code);
+  let error = null;
+  try {
+    createModuleSystem({ ...files, [fileName]: instrumented }, runtime).runFile(
+      fileName,
+      instrumented,
+      '',
+    );
+    await new Promise(resolve => setTimeout(resolve, 0));
+  } catch (caught) {
+    error =
+      caught instanceof StepLimitError
+        ? `Stoppade efter ${MAX_STEPS} steg. Har du en oändlig loop, eller väldigt många varv?`
+        : `${caught.name}: ${caught.message}`;
+  }
+  return { steps: tracer.steps, logs, error };
 }

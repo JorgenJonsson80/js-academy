@@ -640,6 +640,10 @@ function App() {
               }
               onOpenIdea={openPlayground}
               resources={resources[lesson.track] ?? []}
+              canStep={
+                tracks.indexOf(track) <=
+                tracks.findIndex(item => item.id === 'debug-js')
+              }
               onBreakDown={() => {
                 copyToPlayground(code, lesson.title);
                 openPlayground(PLAYGROUND_COPY);

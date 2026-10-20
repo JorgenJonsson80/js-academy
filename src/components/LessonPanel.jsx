@@ -1,9 +1,11 @@
+import { useStepper } from '../lib/useStepper';
 import CodeEditor from './CodeEditor';
 import FeedbackPanel from './FeedbackPanel';
 import FileView from './FileView';
 import HintPanel from './HintPanel';
 import Preview from './Preview';
 import SolutionCompare from './SolutionCompare';
+import StepPanel from './StepPanel';
 import StuckPanel from './StuckPanel';
 
 // Text inom `backticks` i uppgiften visas som kod, så att det syns
@@ -30,6 +32,7 @@ export default function LessonPanel({
   onOpenIdea,
   resources,
   onBreakDown,
+  canStep,
 
   trackTitle,
   docs,
@@ -58,6 +61,10 @@ export default function LessonPanel({
   canNext,
   isCompleted,
 }) {
+  const stepper = useStepper(code, {
+    fileName: lesson.fileName,
+    files: lesson.files,
+  });
   return (
     <section className="lesson-panel" aria-labelledby="lesson-title">
       <p className="lesson-meta">
@@ -167,6 +174,7 @@ export default function LessonPanel({
         code={code}
         onCodeChange={onCodeChange}
         fileName={lesson.fileName}
+        activeLine={stepper.activeLine}
       />
       {feedback?.previewSource && <Preview source={feedback.previewSource} />}
       <div className="editor-actions">
@@ -178,6 +186,16 @@ export default function LessonPanel({
         >
           {isChecking ? 'Kör koden…' : 'Kolla lösning'}
         </button>
+        {canStep && stepper.frames === null && (
+          <button
+            type="button"
+            onClick={stepper.start}
+            disabled={stepper.isRunning}
+            title="Se koden köras en rad i taget, med variablernas värden"
+          >
+            {stepper.isRunning ? 'Kör…' : '👣 Kör rad för rad'}
+          </button>
+        )}
         <button type="button" onClick={onResetCode}>
           Återställ kod
         </button>
@@ -187,6 +205,7 @@ export default function LessonPanel({
           </button>
         )}
       </div>
+      {stepper.frames && <StepPanel stepper={stepper} />}
       <FeedbackPanel feedback={feedback} />
       {lesson.why && (feedback?.isCorrect || isCompleted) && (
         <aside className="lesson-why">

@@ -1,7 +1,11 @@
 // Körs i en egen tråd så att elevens kod inte kan frysa sidan.
-import { evaluate } from './evaluate';
+import { evaluate, stepThrough } from './evaluate';
 
 self.onmessage = async event => {
-  const { code, tests, sourceChecks, options } = event.data;
-  self.postMessage(await evaluate(code, tests, sourceChecks, options));
+  const { mode, code, tests, sourceChecks, options } = event.data;
+  self.postMessage(
+    mode === 'step'
+      ? await stepThrough(code, options)
+      : await evaluate(code, tests, sourceChecks, options),
+  );
 };

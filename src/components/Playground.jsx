@@ -8,6 +8,8 @@ import {
 } from '../lib/playgroundStorage';
 import { runTests } from '../runner/runTests';
 import CodeEditor from './CodeEditor';
+import StepPanel from './StepPanel';
+import { useStepper } from '../lib/useStepper';
 
 // Text inom `backticks` visas som kod, precis som i uppgifterna.
 function WithCode({ text }) {
@@ -34,6 +36,7 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
   const [run, setRun] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const code = codes[key] ?? ideaStarterCode(idea);
+  const stepper = useStepper(code);
 
   useEffect(() => {
     savePlaygroundCodes(codes);
@@ -127,7 +130,11 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
         </aside>
       )}
 
-      <CodeEditor code={code} onCodeChange={handleCodeChange} />
+      <CodeEditor
+        code={code}
+        onCodeChange={handleCodeChange}
+        activeLine={stepper.activeLine}
+      />
       <div className="editor-actions">
         <button
           className="primary-button"
@@ -137,10 +144,21 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
         >
           {isRunning ? 'Kör koden…' : '▶ Kör koden'}
         </button>
+        {stepper.frames === null && (
+          <button
+            type="button"
+            onClick={stepper.start}
+            disabled={stepper.isRunning}
+            title="Se koden köras en rad i taget, med variablernas värden"
+          >
+            {stepper.isRunning ? 'Kör…' : '👣 Kör rad för rad'}
+          </button>
+        )}
         <button type="button" onClick={handleReset}>
           Börja om
         </button>
       </div>
+      {stepper.frames && <StepPanel stepper={stepper} />}
 
       <div aria-live="polite">
         {run?.error && <pre className="feedback-error">{run.error}</pre>}
