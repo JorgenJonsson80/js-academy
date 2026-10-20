@@ -101,6 +101,11 @@ export default function HelpDialog({ onClose }) {
             loopar, <code>map</code> och <code>reduce</code>.
           </li>
           <li>
+            <strong>Varför renderade den?</strong> Under förhandsvisningen i
+            React-övningarna, och på Lekplatsen med ⚛️ React-komponent, visar en
+            logg vad som får varje komponent att rendera om.
+          </li>
+          <li>
             <strong>Använd console.log.</strong> Skriv ut värden mitt i koden
             för att se vad som faktiskt händer. Det gör proffs också.
           </li>

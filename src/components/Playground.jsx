@@ -4,11 +4,15 @@ import {
   loadPlaygroundCodes,
   PLAYGROUND_COPY as COPY,
   PLAYGROUND_FREE as FREE,
+  PLAYGROUND_REACT as REACT,
+  REACT_STARTER,
   savePlaygroundCodes,
 } from '../lib/playgroundStorage';
+import { previewTarget } from '../lib/previewTarget';
 import { runTests } from '../runner/runTests';
 import CodeEditor from './CodeEditor';
 import ErrorHint from './ErrorHint';
+import Preview from './Preview';
 import StepPanel from './StepPanel';
 import { useStepper } from '../lib/useStepper';
 
@@ -28,15 +32,20 @@ function WithCode({ text }) {
 // En fri editor utan tester. Man kör koden och ser konsolen, och
 // bestämmer själv när den är klar. Koden sparas per idé.
 // ideas: alla idéer, med unlocked och trackTitle. ideaId kan också vara
-// COPY för kod som kopierats från en övning.
+// COPY för kod som kopierats från en övning, eller REACT för en egen
+// komponent. Innehåller koden en komponent visas den i en förhandsvisning.
 export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
   const [codes, setCodes] = useState(loadPlaygroundCodes);
   const idea = ideas.find(item => item.id === ideaId && item.unlocked) ?? null;
   const hasCopy = codes[COPY] !== undefined;
-  const key = idea?.id ?? (ideaId === COPY && hasCopy ? COPY : FREE);
+  const key =
+    idea?.id ??
+    (ideaId === COPY && hasCopy ? COPY : ideaId === REACT ? REACT : FREE);
   const [run, setRun] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
-  const code = codes[key] ?? ideaStarterCode(idea);
+  const code =
+    codes[key] ?? (key === REACT ? REACT_STARTER : ideaStarterCode(idea));
+  const preview = previewTarget(code);
   const stepper = useStepper(code);
 
   useEffect(() => {
@@ -54,9 +63,15 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
 
   async function handleRun() {
     setIsRunning(true);
-    const result = await runTests(code, [], [], {});
+    const result = await runTests(code, [], [], preview ? { preview } : {});
     setIsRunning(false);
-    setRun(result);
+    // Förhandsvisningen kör koden på riktigt, så bara om den klarade sig
+    // i workern först. Annars kan en oändlig loop frysa sidan.
+    const canPreview = preview && !result.error && !result.previewError;
+    setRun({
+      ...result,
+      previewSource: canPreview ? { code, preview } : null,
+    });
   }
 
   function handleReset() {
@@ -89,6 +104,7 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
         Bygg
         <select value={key} onChange={handleSelect}>
           <option value={FREE}>Fritt – ingen idé</option>
+          <option value={REACT}>⚛️ React-komponent</option>
           {hasCopy && <option value={COPY}>📋 Kopia från övningen</option>}
           {tracksWithIdeas.map(trackTitle => (
             <optgroup key={trackTitle} label={trackTitle}>
@@ -145,7 +161,7 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
         >
           {isRunning ? 'Kör koden…' : '▶ Kör koden'}
         </button>
-        {stepper.frames === null && (
+        {!preview && stepper.frames === null && (
           <button
             type="button"
             onClick={stepper.start}
@@ -164,16 +180,25 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
       <div aria-live="polite">
         {run?.error && <pre className="feedback-error">{run.error}</pre>}
         <ErrorHint message={run?.error ?? run?.output?.at(-1)} code={code} />
-        {run && !run.error && (
-          <figure className="console-output">
-            <figcaption>Konsol</figcaption>
-            <pre>
-              {run.output?.length > 0
-                ? run.output.join('\n')
-                : 'Inget skrevs ut. Använd console.log för att se vad koden gör.'}
-            </pre>
-          </figure>
+        {run &&
+          !run.error &&
+          (run.output?.length > 0 || !run.previewSource) && (
+            <figure className="console-output">
+              <figcaption>Konsol</figcaption>
+              <pre>
+                {run.output?.length > 0
+                  ? run.output.join('\n')
+                  : 'Inget skrevs ut. Använd console.log för att se vad koden gör.'}
+              </pre>
+            </figure>
+          )}
+        {run?.previewError && (
+          <>
+            <pre className="feedback-error">{run.previewError}</pre>
+            <ErrorHint message={run.previewError} code={code} />
+          </>
         )}
+        {run?.previewSource && <Preview source={run.previewSource} />}
         {run?.notes?.map(note => (
           <p key={note} className="style-note">
             <span aria-hidden="true">💡</span> Tips: {note}

@@ -9,6 +9,7 @@ import { createRoot } from 'react-dom/client';
 import { createFetch, createStorage } from './fakes';
 import { transformJsx } from './jsx';
 import { createModuleSystem } from './modules';
+import { createRenderTracker } from './renderTracker';
 
 class ErrorCatcher extends React.Component {
   state = { error: null };
@@ -36,15 +37,20 @@ function showError(container, error) {
 
 // Startar förhandsvisningen i container och returnerar en funktion som
 // stänger den: komponenten tas bort och elevens timers stoppas.
+// onRenderEvent får veta varför komponenterna renderar, se renderTracker.
 export function startLivePreview(
   container,
   { code, fileName, files, preview },
+  onRenderEvent,
 ) {
   const timers = new Set();
+  const StudentReact = onRenderEvent
+    ? createRenderTracker(onRenderEvent).React
+    : { ...React, default: React };
   const runtime = {
-    packages: { react: { ...React, default: React } },
+    packages: { react: StudentReact },
     globals: {
-      __React: React,
+      __React: StudentReact,
       localStorage: createStorage(),
       document: { title: '' },
       fetch: createFetch({ delay: 600 }),

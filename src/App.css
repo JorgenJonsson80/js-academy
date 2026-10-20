@@ -1156,3 +1156,70 @@
   border-radius: 5px;
   background: var(--task-code-bg);
 }
+
+/* Varför renderade den? */
+
+.render-log {
+  margin: 12px 0;
+  padding: 10px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface-sunken);
+}
+
+.render-log summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.render-log-intro {
+  margin: 6px 0;
+  font-size: 0.85rem;
+}
+
+.render-log-list {
+  display: grid;
+  gap: 4px;
+  max-height: 260px;
+  margin: 0 0 8px;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.render-log-list li {
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.render-log-new-burst {
+  margin-top: 6px;
+  border-top: 1px dashed var(--border-strong);
+  padding-top: 8px !important;
+}
+
+.render-log-render {
+  background: rgb(167 139 250 / 0.1);
+}
+
+.render-log-same {
+  color: var(--muted);
+}
+
+.render-log-effect {
+  background: rgb(251 191 36 / 0.08);
+}
+
+.render-log code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--task-code-bg);
+  color: var(--task-code-text);
+  font-size: 0.85em;
+}
+
+.render-log-clear {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+}
