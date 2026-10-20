@@ -3,7 +3,7 @@
 export const tracks = [
   {
     id: 'js-basics',
-    title: 'JavaScript Basics',
+    title: 'Grunderna i JavaScript',
     reward: { emoji: '🧸', name: 'Nalle' },
     docs: [
       {
@@ -26,7 +26,7 @@ export const tracks = [
   },
   {
     id: 'arrays',
-    title: 'Arrays & Objects',
+    title: 'Arrayer & objekt',
     reward: { emoji: '🎒', name: 'Ryggsäck' },
     docs: [
       {
@@ -41,7 +41,7 @@ export const tracks = [
   },
   {
     id: 'functions',
-    title: 'Functions',
+    title: 'Funktioner',
     reward: { emoji: '🛹', name: 'Skateboard' },
     docs: [
       {

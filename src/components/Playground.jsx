@@ -8,6 +8,7 @@ import {
 } from '../lib/playgroundStorage';
 import { runTests } from '../runner/runTests';
 import CodeEditor from './CodeEditor';
+import ErrorHint from './ErrorHint';
 import StepPanel from './StepPanel';
 import { useStepper } from '../lib/useStepper';
 
@@ -162,6 +163,7 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
 
       <div aria-live="polite">
         {run?.error && <pre className="feedback-error">{run.error}</pre>}
+        <ErrorHint message={run?.error ?? run?.output?.at(-1)} code={code} />
         {run && !run.error && (
           <figure className="console-output">
             <figcaption>Konsol</figcaption>

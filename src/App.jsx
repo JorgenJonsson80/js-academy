@@ -18,6 +18,7 @@ import HelpDialog from './components/HelpDialog';
 import Playground from './components/Playground';
 import { ideas } from './data/ideas';
 import { resources } from './data/resources';
+import { encouragement } from './data/encouragement';
 import { copyToPlayground, PLAYGROUND_COPY } from './lib/playgroundStorage';
 import { quiz } from './data/quiz';
 import {
@@ -375,12 +376,14 @@ function App() {
     const isFirstTime = isCorrect && !completedIds.includes(lesson.id);
 
     setFeedback({
-      message: isCorrect ? 'Rätt svar!' : 'Försök igen.',
+      message: isCorrect ? 'Rätt svar!' : encouragement(failedAttempts, error),
       xpGained: isFirstTime ? lesson.xp : 0,
       isCorrect,
       error,
       results,
-      notes,
+      // Stiltips som semikolon väntar till efter första banan, så att
+      // man kan fokusera på att få koden att fungera.
+      notes: lesson.track === tracks[0].id ? [] : notes,
       output,
       previewSource,
     });
@@ -640,6 +643,7 @@ function App() {
               }
               onOpenIdea={openPlayground}
               resources={resources[lesson.track] ?? []}
+              stage={growth.stage}
               canStep={
                 tracks.indexOf(track) <=
                 tracks.findIndex(item => item.id === 'debug-js')

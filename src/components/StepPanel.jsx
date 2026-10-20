@@ -1,3 +1,5 @@
+import ErrorHint from './ErrorHint';
+
 // Visar ett steg i taget från Kör rad för rad: vilken rad som körs
 // härnäst, variablernas värden just då och vad konsolen skrivit hittills.
 // Värden som ändrats sedan förra steget markeras.
@@ -89,6 +91,7 @@ export default function StepPanel({ stepper }) {
           </>
         )}
       </p>
+      {frame.error && <ErrorHint message={frame.error} />}
 
       {frame.vars.length > 0 ? (
         <table className="step-vars">

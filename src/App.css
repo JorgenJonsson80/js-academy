@@ -1096,3 +1096,63 @@
   margin: 0;
   font-size: 0.8rem;
 }
+
+/* Nybörjarvänlig feedback */
+
+.help-steps {
+  font-size: 1.05rem;
+}
+
+.help-more {
+  margin-top: 12px;
+}
+
+.help-more summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.feedback-try-again {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.feedback-try-again .avatar {
+  flex: none;
+  height: 52px;
+  width: auto;
+}
+
+.feedback-bubble {
+  position: relative;
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px 14px 14px 4px;
+  background: var(--surface);
+}
+
+.error-hint {
+  margin: 8px 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-soft);
+}
+
+.error-hint code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--task-code-bg);
+  color: var(--task-code-text);
+  font-size: 0.9em;
+}
+
+.test-results code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--task-code-bg);
+}

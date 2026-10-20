@@ -147,12 +147,18 @@ async function runTest(code, test, options) {
   try {
     const actual = await runExpression(code, test.code, options);
 
-    return {
+    const result = {
       description: test.description,
       passed: isEqual(actual, test.expected),
       actual: format(actual),
       expected: format(test.expected),
     };
+    // Konsoltester visas som raderna i konsolen, inte som en array.
+    if (test.code === '__logs' && Array.isArray(test.expected)) {
+      result.consoleActual = actual;
+      result.consoleExpected = test.expected;
+    }
+    return result;
   } catch (error) {
     return {
       description: test.description,

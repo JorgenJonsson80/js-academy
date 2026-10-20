@@ -33,6 +33,7 @@ export default function LessonPanel({
   resources,
   onBreakDown,
   canStep,
+  stage,
 
   trackTitle,
   docs,
@@ -114,7 +115,13 @@ export default function LessonPanel({
       </h2>
       <p className="lesson-description">{lesson.description}</p>
       {lesson.explain && (
-        <details className="lesson-explain">
+        // I de allra första övningarna är förklaringen öppen från början,
+        // så att den som aldrig kodat hittar den.
+        <details
+          key={`explain-${lesson.id}`}
+          className="lesson-explain"
+          open={!project && lessonNumber <= 3}
+        >
           <summary>📖 Ny på det här? Läs mer och se ett exempel</summary>
           {lesson.explain.split('\n\n').map(paragraph => (
             <p key={paragraph}>{paragraph}</p>
@@ -206,7 +213,7 @@ export default function LessonPanel({
         )}
       </div>
       {stepper.frames && <StepPanel stepper={stepper} />}
-      <FeedbackPanel feedback={feedback} />
+      <FeedbackPanel feedback={feedback} code={code} stage={stage} />
       {lesson.why && (feedback?.isCorrect || isCompleted) && (
         <aside className="lesson-why">
           <strong>💭 Varför så här?</strong> {lesson.why}

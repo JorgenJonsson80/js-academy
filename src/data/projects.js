@@ -489,7 +489,7 @@ if (goalReached) {
       },
     ],
   },
-  // Från och med Arrays & Objects säger uppgifterna mest vad som ska
+  // Från och med Arrayer & objekt säger uppgifterna mest vad som ska
   // bli resultatet, och ledtrådarna pekar åt rätt håll utan färdig kod.
   {
     id: 'proj-packing',
