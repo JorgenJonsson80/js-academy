@@ -1223,3 +1223,18 @@
   padding: 4px 10px;
   font-size: 0.85rem;
 }
+
+.step-example {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.step-example code,
+.step-status code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--task-code-bg);
+  color: var(--task-code-text);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.9em;
+}

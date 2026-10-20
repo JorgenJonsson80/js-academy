@@ -82,3 +82,23 @@ describe('instrument', () => {
     expect(code).toContain('__trace(3,');
   });
 });
+
+describe('stepThrough med exempel', () => {
+  it('anropar funktionerna med exemplet när koden bara definierar dem', async () => {
+    const run = await stepThrough(
+      'function addBonus(points) {\n  return points + 5;\n}',
+      { example: 'addBonus(10)' },
+    );
+    expect(run.example).toBe('addBonus(10)');
+    expect(run.result).toBe('15');
+    expect(run.steps.map(step => step.line)).toEqual([2, null]);
+    expect(Object.fromEntries(run.steps[0].vars)).toEqual({ points: '10' });
+  });
+
+  it('använder inte exemplet när koden har egna steg', async () => {
+    const run = await stepThrough('const a = 1;\nconsole.log(a);', {
+      example: 'a',
+    });
+    expect(run.example).toBeUndefined();
+  });
+});

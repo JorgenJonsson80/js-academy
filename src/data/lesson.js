@@ -98,13 +98,13 @@ console.log('Ålder:', age);`,
     isBoss: false,
     track: 'js-basics',
     description:
-      ' Med const skapar du en variabel som inte kan tilldelas ett nytt värde.',
+      'Med const skapar du en variabel som inte kan tilldelas ett nytt värde.',
     explain:
       'En variabel är ett namn på ett värde, så att du kan använda värdet igen senare. Du skapar den med const, ett namn, ett likhetstecken och värdet.\n\nLikhetstecknet = betyder här "får värdet", inte "är lika med" som i matte. Variabelnamn skrivs oftast med liten bokstav först och utan mellanslag, till exempel firstName.',
     example: "const city = 'Göteborg';\nconst favoriteColor = 'grön';",
     task: 'Uppgift: Skapa en variabel som heter `language` med värdet "JavaScript".',
     starterCode: '// Skriv din kod här',
-    solution: 'const language = "JavaScript";',
+    solution: "const language = 'JavaScript';",
     hints: [
       'Börja med nyckelordet const följt av variabelns namn.',
       'Använd likhetstecknet = för att tilldela variabeln ett värde.',
@@ -156,7 +156,7 @@ console.log('Ålder:', age);`,
     task: 'Uppgift: Skapa `score` med let och startvärdet 0. Tilldela sedan score värdet 10.',
     starterCode: '// Skriv din kod här',
     solution: `let score = 0;
-    score = 10;`,
+score = 10;`,
     hints: [
       'Börja med nyckelordet let följt av variabelns namn.',
       'Ge score startvärdet 0 när du deklarerar variabeln.',
@@ -187,7 +187,7 @@ console.log('Ålder:', age);`,
     task: 'Skapa `score` med let och värdet 10. Öka sedan värdet med 5 genom att skriva score = score + 5.',
     starterCode: '// Skriv din kod här',
     solution: `let score = 10;
-    score = score + 5;`,
+score = score + 5;`,
     hints: [
       'Börja med nyckelordet let följt av variabelns namn.',
       'Ge score startvärdet 10 när du deklarerar variabeln.',
@@ -261,7 +261,6 @@ if (points >= 5) {
   points = points + 10;
 } else {
   points = points + 2;
-
 }`,
     hints: [
       'Börja med nyckelordet let följt av variabelns namn.',
@@ -631,8 +630,8 @@ for (const word of words) {
   Använd const i alla tre deklarationer.`,
     starterCode: '// Skriv din kod här',
     solution: `const numbers = [10, 20, 30];
-  const count = numbers.length;
-  const first = numbers[0];`,
+const count = numbers.length;
+const first = numbers[0];`,
     hints: [],
     tests: [
       {
@@ -894,10 +893,10 @@ const secondAge = users[1].age;`,
     task: 'Skriv funktionen `addBonus` med parametern points. Använd function och returnera points + 5. Du ska bara definiera funktionen, inte anropa den.',
     starterCode: '// Skriv din kod här',
     solution: `function addBonus(points) {
-    return points + 5;
-    }`,
+  return points + 5;
+}`,
     hints: [
-      'Börja med function följt av funktiones namn',
+      'Börja med function följt av funktionens namn',
       'Glöm inte (points) efter namnet',
       'Använd return följt av points + 5',
     ],
@@ -944,11 +943,11 @@ const secondAge = users[1].age;`,
 
 `,
     solution: `function addBonus(points) {
-    return points + 5;
-    }
-    const result = addBonus(10);`,
+  return points + 5;
+}
+const result = addBonus(10);`,
     hints: [
-      'Börja const result = ',
+      'Börja med const result = och anropa funktionen.',
       'Anropa funktionen med dess namn och parenteser.',
       'Skriv argumentet 10 mellan parenteserna och avsluta med semikolon.',
     ],
@@ -1024,10 +1023,12 @@ const result = multiply(3, 4);`,
       'function getShipping(total) {\n  if (total >= 500) {\n    return 0;\n  }\n  return 49;\n}',
     task: 'Skriv funktionen `getDiscount` med parametern price. Om price >= 100 ska den returnera 20. Efter if-blocket ska den returnera 0. Använd inte else.',
     starterCode: '// Skriv din kod här',
-    solution: `function getDiscount(price){
-    if(price >= 100){
-    return 20;}
-    return 0;}`,
+    solution: `function getDiscount(price) {
+  if (price >= 100) {
+    return 20;
+  }
+  return 0;
+}`,
     hints: [
       'Deklarera getDiscount med parametern price.',
       'Kontrollera price >= 100 i ett if-block och returnera 20 där.',
@@ -1968,10 +1969,13 @@ const quantity = 3;
 
 function searchUsers(users, query) {
   const cleanQuery = query.trim().toLowerCase();
-  const found = users.filter(user =>
-    user.name.toLowerCase().includes(cleanQuery),
-  );
-  return found.map(user => user.nickname ?? user.name);
+  const found = [];
+  for (const user of users) {
+    if (user.name.toLowerCase().includes(cleanQuery)) {
+      found.push(user.nickname ?? user.name);
+    }
+  }
+  return found;
 }`,
     hints: [],
     tests: [
@@ -3042,7 +3046,9 @@ const topScores = [...scores].sort((a, b) => b - a);`,
     task: 'Uppgift: Skriv funktionen `toggleTodo(todos, id)` som returnerar en ny array där done är omvänd för todon med det id:t. Inget får ändras.',
     starterCode: '// Skriv din kod här',
     solution: `function toggleTodo(todos, id) {
-  return todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo));
+  return todos.map(todo =>
+    todo.id === id ? { ...todo, done: !todo.done } : todo,
+  );
 }`,
     hints: [
       'Börja med return todos.map(todo => …);',
@@ -3197,7 +3203,9 @@ function updateField(form, field, value) {
 `,
     solution: `const prices = { keps: 199, mössa: 149 };
 
-const lines = Object.entries(prices).map(([item, price]) => \`\${item}: \${price} kr\`);`,
+const lines = Object.entries(prices).map(
+  ([item, price]) => \`\${item}: \${price} kr\`,
+);`,
     hints: [
       'Object.entries(prices) ger [["keps", 199], ["mössa", 149]].',
       'Plocka ut paret med destructuring: ([item, price]) => …',
@@ -3277,7 +3285,13 @@ const lines = Object.entries(prices).map(([item, price]) => \`\${item}: \${price
     solution: `const board = {
   title: 'Veckans plan',
   columns: [
-    { id: 'todo', cards: [{ id: 1, text: 'Handla' }, { id: 2, text: 'Träna' }] },
+    {
+      id: 'todo',
+      cards: [
+        { id: 1, text: 'Handla' },
+        { id: 2, text: 'Träna' },
+      ],
+    },
     { id: 'done', cards: [] },
   ],
 };
@@ -3288,7 +3302,10 @@ function moveCard(board, cardId, fromId, toId) {
 
   const columns = board.columns.map(column => {
     if (column.id === fromId) {
-      return { ...column, cards: column.cards.filter(item => item.id !== cardId) };
+      return {
+        ...column,
+        cards: column.cards.filter(item => item.id !== cardId),
+      };
     }
     if (column.id === toId) {
       return { ...column, cards: [...column.cards, card] };
@@ -4904,7 +4921,12 @@ function App() {
   if (typeof amount !== 'number') {
     return <p>amount ska vara ett tal, inte text</p>;
   }
-  return <p>{onSale ? 'REA ' : ''}{amount} kr</p>;
+  return (
+    <p>
+      {onSale ? 'REA ' : ''}
+      {amount} kr
+    </p>
+  );
 }
 
 function App() {
@@ -5459,7 +5481,11 @@ function ProductList({ products }) {
       <h2>{inStock.length} i lager</h2>
       <ul>
         {inStock.map(product => (
-          <ProductRow key={product.id} name={product.name} price={product.price} />
+          <ProductRow
+            key={product.id}
+            name={product.name}
+            price={product.price}
+          />
         ))}
       </ul>
     </section>
@@ -6311,7 +6337,8 @@ function TodoList() {
     <ul>
       {todos.map(todo => (
         <li key={todo.id}>
-          {todo.text} <button onClick={() => handleRemove(todo.id)}>Ta bort</button>
+          {todo.text}{' '}
+          <button onClick={() => handleRemove(todo.id)}>Ta bort</button>
         </li>
       ))}
     </ul>
@@ -6531,7 +6558,9 @@ function TodoApp() {
 
   function toggle(id) {
     setTodos(
-      todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo)),
+      todos.map(todo =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo,
+      ),
     );
   }
 
@@ -6766,7 +6795,10 @@ const fruits = ['Äpple', 'Banan', 'Päron', 'Ananas'];
 
 function SearchBar({ query, onQueryChange }) {
   return (
-    <input value={query} onChange={event => onQueryChange(event.target.value)} />
+    <input
+      value={query}
+      onChange={event => onQueryChange(event.target.value)}
+    />
   );
 }
 
@@ -6953,7 +6985,9 @@ function App() {
 
   function handleToggle(id) {
     setTodos(
-      todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo)),
+      todos.map(todo =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo,
+      ),
     );
   }
 
@@ -7060,7 +7094,8 @@ function App() {
       <ul>
         {todos.map(todo => (
           <li key={todo.id}>
-            {todo.text} <button onClick={() => handleRemove(todo.id)}>Ta bort</button>
+            {todo.text}{' '}
+            <button onClick={() => handleRemove(todo.id)}>Ta bort</button>
           </li>
         ))}
       </ul>
@@ -7162,7 +7197,8 @@ function Cart({ items, onRemove }) {
         <ul>
           {items.map(item => (
             <li key={item.cartId}>
-              {item.name} <button onClick={() => onRemove(item.cartId)}>Ta bort</button>
+              {item.name}{' '}
+              <button onClick={() => onRemove(item.cartId)}>Ta bort</button>
             </li>
           ))}
         </ul>
@@ -7447,7 +7483,9 @@ function TodoApp() {
 
   return (
     <div>
-      <button onClick={() => setTodos([...todos, 'Ny uppgift'])}>Lägg till</button>
+      <button onClick={() => setTodos([...todos, 'Ny uppgift'])}>
+        Lägg till
+      </button>
       <p>{todos.length} uppgifter</p>
     </div>
   );

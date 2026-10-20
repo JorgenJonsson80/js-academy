@@ -1775,7 +1775,10 @@ function feedback(password) {
   if (problems.length === 0) {
     return 'Lösenordet är starkt!';
   }
-  const level = problems.length === 1 ? 'okej' : 'svagt';
+  let level = 'svagt';
+  if (problems.length === 1) {
+    level = 'okej';
+  }
   return \`Lösenordet är \${level}: \${problems.join(', ')}\`;
 }`,
         tests: [
@@ -2169,7 +2172,10 @@ function formatMessage(message) {
   if (text === '') {
     return null;
   }
-  const time = message.time ? \`[\${message.time}] \` : '';
+  let time = '';
+  if (message.time) {
+    time = \`[\${message.time}] \`;
+  }
   const user = message.user ?? 'Anonym';
   return \`\${time}\${user}: \${censor(text, BAD_WORDS)}\`;
 }`,
@@ -2284,9 +2290,12 @@ function bestMovie(movies) {
   if (movies.length === 0) {
     return undefined;
   }
-  return movies.reduce((best, movie) =>
-    movie.rating > best.rating ? movie : best,
-  );
+  return movies.reduce((best, movie) => {
+    if (movie.rating > best.rating) {
+      return movie;
+    }
+    return best;
+  });
 }`,
         tests: [
           {
@@ -2353,9 +2362,12 @@ function bestMovie(movies) {
   if (movies.length === 0) {
     return undefined;
   }
-  return movies.reduce((best, movie) =>
-    movie.rating > best.rating ? movie : best,
-  );
+  return movies.reduce((best, movie) => {
+    if (movie.rating > best.rating) {
+      return movie;
+    }
+    return best;
+  });
 }
 
 function recommend(movies, seen) {
@@ -2549,7 +2561,10 @@ function receipt(cart) {
     item => \`\${item.qty} × \${item.name}: \${item.price * item.qty} kr\`,
   );
   const total = cartTotal(cart);
-  const discount = total >= 500 ? Math.floor(total / 10) : 0;
+  let discount = 0;
+  if (total >= 500) {
+    discount = Math.floor(total / 10);
+  }
   if (discount > 0) {
     lines.push(\`Rabatt: -\${discount} kr\`);
   }
@@ -2696,9 +2711,12 @@ function topStudent(students) {
   if (students.length === 0) {
     return null;
   }
-  const best = students.reduce((top, student) =>
-    percent(student.answers) > percent(top.answers) ? student : top,
-  );
+  const best = students.reduce((top, student) => {
+    if (percent(student.answers) > percent(top.answers)) {
+      return student;
+    }
+    return top;
+  });
   return best.name;
 }`,
         tests: [
@@ -2763,9 +2781,12 @@ function topStudent(students) {
   if (students.length === 0) {
     return null;
   }
-  const best = students.reduce((top, student) =>
-    percent(student.answers) > percent(top.answers) ? student : top,
-  );
+  const best = students.reduce((top, student) => {
+    if (percent(student.answers) > percent(top.answers)) {
+      return student;
+    }
+    return top;
+  });
   return best.name;
 }
 
@@ -2789,8 +2810,12 @@ function summary(students) {
     },
     { A: 0, B: 0, C: 0 },
   );
+  let average = 0;
+  if (students.length > 0) {
+    average = Math.round(sum / students.length);
+  }
   return {
-    average: students.length === 0 ? 0 : Math.round(sum / students.length),
+    average,
     passed: percents.filter(value => value >= 60).length,
     grades,
   };

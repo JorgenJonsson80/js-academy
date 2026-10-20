@@ -73,7 +73,9 @@ function declaredNames(node) {
   return node.declarations.flatMap(declaration => patternNames(declaration.id));
 }
 
-export function instrument(code) {
+// after: kod som körs sist, före sista steget, utan egna steg. Används
+// för att anropa elevens funktioner med ett exempel.
+export function instrument(code, { after = '' } = {}) {
   const ast = parse(code, { sourceType: 'module', plugins: ['jsx'] });
   const edits = [];
   // Namnen i varje scope, från det yttersta till det innersta.
@@ -181,7 +183,7 @@ export function instrument(code) {
 
   visitStatements(ast.program.body);
   // Sista steget: läget när all kod har körts.
-  insert(code.length, `\n__trace(null,${getters()});`);
+  insert(code.length, `\n${after}\n__trace(null,${getters()});`);
   scopes.pop();
 
   // Flera tillägg på samma plats sätts in i den ordning de skapades.

@@ -4,7 +4,7 @@ import ErrorHint from './ErrorHint';
 // härnäst, variablernas värden just då och vad konsolen skrivit hittills.
 // Värden som ändrats sedan förra steget markeras.
 export default function StepPanel({ stepper }) {
-  const { frames, logs, index, setIndex, stop } = stepper;
+  const { frames, logs, index, setIndex, stop, example, result } = stepper;
   const frame = frames[index];
   const previous = Object.fromEntries(frames[index - 1]?.vars ?? []);
   const last = frames.length - 1;
@@ -29,6 +29,12 @@ export default function StepPanel({ stepper }) {
         </button>
       </div>
 
+      {example && (
+        <p className="muted step-example">
+          Koden består av funktioner, så vi kör dem som testet gör:{' '}
+          <code>{example}</code>
+        </p>
+      )}
       <div className="step-controls">
         <button
           type="button"
@@ -83,7 +89,13 @@ export default function StepPanel({ stepper }) {
             {frame.error}
           </span>
         ) : frame.line === null ? (
-          '✅ Koden har körts klart. Så här ser variablerna ut till sist.'
+          example ? (
+            <>
+              ✅ Klart! <code>{example}</code> gav <code>{result}</code>.
+            </>
+          ) : (
+            '✅ Koden har körts klart. Så här ser variablerna ut till sist.'
+          )
         ) : (
           <>
             Rad <strong>{frame.line}</strong> körs härnäst – den är markerad i

@@ -261,9 +261,24 @@ function createTracer(logs) {
 
 // Kör koden och sparar ett steg före varje rad, för Kör rad för rad.
 // Det sista steget har line: null och visar läget när koden är klar.
-export async function stepThrough(
+// Består koden bara av funktioner blir det inget att stega igenom. Då
+// anropas de med example, t.ex. 'addBonus(10)' från lektionens test,
+// och svaret kommer med som result.
+export async function stepThrough(code, options = {}) {
+  const firstRun = await stepOnce(code, options);
+  if (firstRun.steps.length > 1 || firstRun.error || !options.example) {
+    return firstRun;
+  }
+  return {
+    ...(await stepOnce(code, options, options.example)),
+    example: options.example,
+  };
+}
+
+async function stepOnce(
   code,
-  { fileName = 'main.js', files = {} } = {},
+  { fileName = 'main.js', files = {} },
+  example = null,
 ) {
   try {
     checkSyntax(code);
@@ -279,7 +294,13 @@ export async function stepThrough(
   const tracer = createTracer(logs);
   const runtime = createRuntime(logs);
   runtime.globals.__trace = tracer.trace;
-  const instrumented = instrument(code);
+  let result;
+  runtime.globals.__traceResult = value => {
+    result = format(value);
+  };
+  const instrumented = instrument(code, {
+    after: example ? `__traceResult(${example});` : '',
+  });
   let error = null;
   try {
     createModuleSystem({ ...files, [fileName]: instrumented }, runtime).runFile(
@@ -294,5 +315,5 @@ export async function stepThrough(
         ? `Stoppade efter ${MAX_STEPS} steg. Har du en oändlig loop, eller väldigt många varv?`
         : `${caught.name}: ${caught.message}`;
   }
-  return { steps: tracer.steps, logs, error };
+  return { steps: tracer.steps, logs, error, result };
 }

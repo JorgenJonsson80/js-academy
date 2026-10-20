@@ -1,4 +1,4 @@
-import { useStepper } from '../lib/useStepper';
+import { exampleCall, useStepper } from '../lib/useStepper';
 import CodeEditor from './CodeEditor';
 import FeedbackPanel from './FeedbackPanel';
 import FileView from './FileView';
@@ -65,6 +65,7 @@ export default function LessonPanel({
   const stepper = useStepper(code, {
     fileName: lesson.fileName,
     files: lesson.files,
+    example: exampleCall(lesson.tests),
   });
   return (
     <section className="lesson-panel" aria-labelledby="lesson-title">

@@ -1,6 +1,18 @@
 import { useState } from 'react';
 import { stepCode } from '../runner/runTests';
 
+// Ett anrop från lektionens tester, t.ex. 'addBonus(10)', att köra
+// koden med om den bara består av funktioner.
+export function exampleCall(tests = []) {
+  return (
+    tests
+      .map(test => test.code)
+      .find(
+        code => /^[A-Za-z_$][\w$]*\(/.test(code) && !code.startsWith('__'),
+      ) ?? null
+  );
+}
+
 // Stegen som visas. Gick koden sönder läggs ett sista steg till som
 // visar felet på raden där det hände.
 export function buildFrames({ steps, logs, error }) {
@@ -38,6 +50,8 @@ export function useStepper(code, options) {
     stop: () => setState(null),
     frames: active?.frames ?? null,
     logs: active?.run.logs ?? [],
+    example: active?.run.example ?? null,
+    result: active?.run.result,
     index: active?.index ?? 0,
     setIndex: index => setState(previous => ({ ...previous, index })),
     activeLine: frame?.line ?? null,
