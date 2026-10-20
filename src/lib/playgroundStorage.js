@@ -1,0 +1,32 @@
+// Koden på Lekplatsen sparas i webbläsaren, en kod per idé.
+const STORAGE_KEY = 'academy-playground';
+// Platsen för fri kod, och platsen för kod som kopierats från en övning.
+export const PLAYGROUND_FREE = 'fritt';
+export const PLAYGROUND_COPY = 'kopia';
+
+export function loadPlaygroundCodes() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}');
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? parsed
+      : {};
+  } catch {
+    return {};
+  }
+}
+
+export function savePlaygroundCodes(codes) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(codes));
+  } catch {
+    // Utan localStorage sparas koden bara tills sidan laddas om.
+  }
+}
+
+// Kopian får en egen plats, så att den fria koden inte skrivs över.
+export function copyToPlayground(code, lessonTitle) {
+  savePlaygroundCodes({
+    ...loadPlaygroundCodes(),
+    [PLAYGROUND_COPY]: `// Kopia från övningen: ${lessonTitle}\n// Bryt ner den: kör en bit i taget och lägg in console.log.\n\n${code}`,
+  });
+}

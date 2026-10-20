@@ -104,6 +104,11 @@ export default function HelpDialog({ onClose }) {
           är lättare att hitta felet i tre nya rader än i trettio.
         </li>
         <li>
+          <strong>Fastnat?</strong> Under varje övning finns{' '}
+          <em>🆘 Fastnat?</em> med tips på hur du bryter ner koden, och länkar
+          till texter och videor som förklarar ämnet på ett annat sätt.
+        </li>
+        <li>
           <strong>Kolla facit efteråt.</strong> När du klarat en uppgift kan du
           jämföra med facit. Det finns ofta flera bra lösningar.
         </li>

@@ -1,21 +1,13 @@
 import { useEffect, useState } from 'react';
 import { ideaStarterCode } from '../data/ideas';
+import {
+  loadPlaygroundCodes,
+  PLAYGROUND_COPY as COPY,
+  PLAYGROUND_FREE as FREE,
+  savePlaygroundCodes,
+} from '../lib/playgroundStorage';
 import { runTests } from '../runner/runTests';
 import CodeEditor from './CodeEditor';
-
-const STORAGE_KEY = 'academy-playground';
-const FREE = 'fritt';
-
-function loadCodes() {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}');
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
-      ? parsed
-      : {};
-  } catch {
-    return {};
-  }
-}
 
 // Text inom `backticks` visas som kod, precis som i uppgifterna.
 function WithCode({ text }) {
@@ -32,21 +24,19 @@ function WithCode({ text }) {
 
 // En fri editor utan tester. Man kör koden och ser konsolen, och
 // bestämmer själv när den är klar. Koden sparas per idé.
-// ideas: alla idéer, med unlocked och trackTitle.
+// ideas: alla idéer, med unlocked och trackTitle. ideaId kan också vara
+// COPY för kod som kopierats från en övning.
 export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
+  const [codes, setCodes] = useState(loadPlaygroundCodes);
   const idea = ideas.find(item => item.id === ideaId && item.unlocked) ?? null;
-  const key = idea?.id ?? FREE;
-  const [codes, setCodes] = useState(loadCodes);
+  const hasCopy = codes[COPY] !== undefined;
+  const key = idea?.id ?? (ideaId === COPY && hasCopy ? COPY : FREE);
   const [run, setRun] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const code = codes[key] ?? ideaStarterCode(idea);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(codes));
-    } catch {
-      // Utan localStorage sparas koden bara tills sidan laddas om.
-    }
+    savePlaygroundCodes(codes);
   }, [codes]);
 
   function handleCodeChange(newCode) {
@@ -95,6 +85,7 @@ export default function Playground({ ideas, ideaId, onSelectIdea, onBack }) {
         Bygg
         <select value={key} onChange={handleSelect}>
           <option value={FREE}>Fritt – ingen idé</option>
+          {hasCopy && <option value={COPY}>📋 Kopia från övningen</option>}
           {tracksWithIdeas.map(trackTitle => (
             <optgroup key={trackTitle} label={trackTitle}>
               {ideas

@@ -4,6 +4,7 @@ import FileView from './FileView';
 import HintPanel from './HintPanel';
 import Preview from './Preview';
 import SolutionCompare from './SolutionCompare';
+import StuckPanel from './StuckPanel';
 
 // Text inom `backticks` i uppgiften visas som kod, så att det syns
 // vilka funktioner och variabler eleven ska skapa.
@@ -27,6 +28,8 @@ export default function LessonPanel({
   noHintsBonusXp,
   freeBuildIdeas,
   onOpenIdea,
+  resources,
+  onBreakDown,
 
   trackTitle,
   docs,
@@ -238,6 +241,14 @@ export default function LessonPanel({
         <pre>
           <code>{lesson.solution}</code>
         </pre>
+      )}
+      {!isCompleted && (
+        <StuckPanel
+          key={`stuck-${lesson.id}`}
+          resources={resources}
+          failedAttempts={failedAttempts}
+          onBreakDown={onBreakDown}
+        />
       )}
       <div className="lesson-navigation">
         <button type="button" onClick={onPrevious} disabled={!canPrevious}>

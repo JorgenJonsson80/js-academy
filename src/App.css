@@ -947,3 +947,59 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+/* Fastnat? */
+
+.stuck-panel {
+  margin: 12px 0;
+  padding: 10px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface-sunken);
+}
+
+.stuck-panel summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.stuck-panel h3 {
+  margin: 14px 0 6px;
+  font-size: 1rem;
+}
+
+.stuck-panel ul {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding-left: 22px;
+}
+
+.stuck-panel code,
+.stuck-panel kbd {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--task-code-bg);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.85em;
+}
+
+.stuck-panel kbd {
+  border: 1px solid var(--border-strong);
+}
+
+.stuck-resources li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+
+.stuck-panel a {
+  color: var(--accent);
+}
+
+.stuck-note {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+}

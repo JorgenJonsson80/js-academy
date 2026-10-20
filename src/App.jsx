@@ -17,6 +17,8 @@ import Quiz from './components/Quiz';
 import HelpDialog from './components/HelpDialog';
 import Playground from './components/Playground';
 import { ideas } from './data/ideas';
+import { resources } from './data/resources';
+import { copyToPlayground, PLAYGROUND_COPY } from './lib/playgroundStorage';
 import { quiz } from './data/quiz';
 import {
   isProjectComplete,
@@ -637,6 +639,11 @@ function App() {
                   : []
               }
               onOpenIdea={openPlayground}
+              resources={resources[lesson.track] ?? []}
+              onBreakDown={() => {
+                copyToPlayground(code, lesson.title);
+                openPlayground(PLAYGROUND_COPY);
+              }}
               code={code}
               onCodeChange={handleEditCode}
               onCheck={handleCheck}
