@@ -1,3 +1,4 @@
+import { buildAiPrompt } from '../lib/aiPrompt';
 import { exampleCall, useStepper } from '../lib/useStepper';
 import CodeEditor from './CodeEditor';
 import FeedbackPanel from './FeedbackPanel';
@@ -34,6 +35,7 @@ export default function LessonPanel({
   onBreakDown,
   canStep,
   stage,
+  learnedTracks,
 
   trackTitle,
   docs,
@@ -275,6 +277,7 @@ export default function LessonPanel({
           resources={resources}
           failedAttempts={failedAttempts}
           onBreakDown={onBreakDown}
+          aiPrompt={buildAiPrompt({ lesson, code, feedback, learnedTracks })}
         />
       )}
       <div className="lesson-navigation">

@@ -116,7 +116,9 @@ export default function HelpDialog({ onClose }) {
           <li>
             <strong>Fastnat?</strong> Under varje övning finns{' '}
             <em>🆘 Fastnat?</em> med tips på hur du bryter ner koden, och länkar
-            till texter och videor som förklarar ämnet på ett annat sätt.
+            till texter och videor som förklarar ämnet på ett annat sätt. Där
+            kan du också kopiera en färdig fråga till en AI, som ber den hjälpa
+            dig förstå i stället för att ge dig svaret.
           </li>
           <li>
             <strong>Kolla facit efteråt.</strong> När du klarat en uppgift kan

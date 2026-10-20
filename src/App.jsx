@@ -644,6 +644,9 @@ function App() {
               onOpenIdea={openPlayground}
               resources={resources[lesson.track] ?? []}
               stage={growth.stage}
+              learnedTracks={tracks
+                .slice(0, tracks.indexOf(track) + 1)
+                .map(item => item.title)}
               canStep={
                 tracks.indexOf(track) <=
                 tracks.findIndex(item => item.id === 'debug-js')

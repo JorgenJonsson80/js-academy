@@ -9,10 +9,30 @@ const OPEN_AFTER = 3;
 // Andra sätt att förstå när ledtrådarna inte räcker: bryt ner koden i
 // mindre delar, eller lär dig ämnet från en annan källa.
 // resources: banans ämnen från data/resources.js.
-export default function StuckPanel({ resources, failedAttempts, onBreakDown }) {
+// aiPrompt: en färdig fråga att klistra in hos en AI, se lib/aiPrompt.js.
+export default function StuckPanel({
+  resources,
+  failedAttempts,
+  onBreakDown,
+  aiPrompt,
+}) {
   // null tills man själv öppnat eller stängt panelen.
   const [chosenOpen, setChosenOpen] = useState(null);
   const isOpen = chosenOpen ?? failedAttempts >= OPEN_AFTER;
+  // null, 'copied' eller 'failed'.
+  const [copyStatus, setCopyStatus] = useState(null);
+  const [showPrompt, setShowPrompt] = useState(false);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(aiPrompt);
+      setCopyStatus('copied');
+    } catch {
+      // Utan tillgång till urklipp visas frågan, så att man kan kopiera själv.
+      setCopyStatus('failed');
+      setShowPrompt(true);
+    }
+  }
   const isReact = resources.length > 0 && resources.every(item => !item.read);
 
   return (
@@ -56,6 +76,35 @@ export default function StuckPanel({ resources, failedAttempts, onBreakDown }) {
         Din kod kopieras till Lekplatsen, där du kan köra bitar av den fritt
         utan tester.
       </p>
+
+      {aiPrompt && (
+        <>
+          <h3>Fråga en AI</h3>
+          <p className="stuck-ai-intro">
+            Kopiera en färdig fråga och klistra in den hos ChatGPT, Claude,
+            Gemini eller Copilot. Frågan innehåller uppgiften och din kod, och
+            ber AI:n hjälpa dig att förstå – inte ge dig svaret.
+          </p>
+          <div className="stuck-ai-actions">
+            <button type="button" onClick={handleCopy}>
+              🤖 Kopiera frågan till din AI
+            </button>
+            <span aria-live="polite" className="stuck-ai-status">
+              {copyStatus === 'copied' && '✅ Kopierad! Klistra in hos din AI.'}
+              {copyStatus === 'failed' &&
+                'Kunde inte kopiera automatiskt – markera texten nedan och kopiera den.'}
+            </span>
+          </div>
+          <details
+            className="stuck-ai-prompt"
+            open={showPrompt}
+            onToggle={event => setShowPrompt(event.currentTarget.open)}
+          >
+            <summary>Visa frågan</summary>
+            <pre>{aiPrompt}</pre>
+          </details>
+        </>
+      )}
 
       {resources.length > 0 && (
         <>

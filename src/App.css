@@ -1238,3 +1238,42 @@
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.9em;
 }
+
+/* Fråga en AI */
+
+.stuck-ai-intro {
+  margin: 0 0 8px;
+}
+
+.stuck-ai-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.stuck-ai-status {
+  color: var(--success);
+  font-size: 0.9rem;
+}
+
+.stuck-ai-prompt {
+  margin: 8px 0 4px;
+}
+
+.stuck-ai-prompt summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.stuck-ai-prompt pre {
+  max-height: 260px;
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  overflow: auto;
+  border-radius: 8px;
+  background: var(--task-code-bg);
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
