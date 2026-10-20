@@ -36,7 +36,7 @@ import { useEffect, useRef, useState } from 'react';
 import { describeAt, memberOptionsFor } from '../editor/codeInfo';
 
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
-const FORMAT_KEYS = isMac ? '⌥⇧F' : 'Shift+Alt+F';
+const FORMAT_KEYS = isMac ? 'Cmd+Shift+F' : 'Ctrl+Shift+F';
 const SUGGEST_KEYS = 'Ctrl+Mellanslag';
 
 // Inbyggda objekt som får förslag, t.ex. console. → log, error, table …
@@ -232,6 +232,7 @@ export default function CodeEditor({ code, onCodeChange, fileName }) {
         doc: code,
         extensions: [
           lineNumbers(),
+          EditorView.lineWrapping,
           history(),
           drawSelection(),
           highlightActiveLine(),
@@ -249,11 +250,13 @@ export default function CodeEditor({ code, onCodeChange, fileName }) {
           syntaxHighlighting(highlightStyle),
           editorTheme,
           EditorView.contentAttributes.of({ 'aria-labelledby': 'code-label' }),
-          // ⌥⇧F ger ett specialtecken på Mac, så vi tittar på den fysiska
-          // tangenten (event.code) i stället för vilket tecken som skrivs.
+          // Cmd/Ctrl+Shift+F, eller Shift+Alt+F som i VS Code. ⌥⇧F ger ett
+          // specialtecken på Mac, så vi tittar på den fysiska tangenten
+          // (event.code) i stället för vilket tecken som skrivs.
           EditorView.domEventHandlers({
             keydown(event, view) {
-              if (event.code !== 'KeyF' || !event.altKey || !event.shiftKey) {
+              const modifier = event.metaKey || event.ctrlKey || event.altKey;
+              if (event.code !== 'KeyF' || !event.shiftKey || !modifier) {
                 return false;
               }
               event.preventDefault();

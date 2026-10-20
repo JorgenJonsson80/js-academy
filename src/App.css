@@ -837,3 +837,113 @@
 .editor-tips-error {
   color: var(--error);
 }
+
+/* Hjälp och Lekplats */
+
+.header-nav {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.header-nav button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.header-nav button[aria-current='page'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.help-dialog {
+  width: min(640px, calc(100% - 32px));
+}
+
+.help-dialog h3 {
+  margin: 20px 0 6px;
+  font-size: 1.05rem;
+}
+
+.help-dialog ol,
+.help-dialog ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.help-dialog form {
+  margin-top: 20px;
+}
+
+.help-dialog kbd,
+.help-dialog code {
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--surface-sunken);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.85em;
+}
+
+.help-dialog kbd {
+  border: 1px solid var(--border-strong);
+}
+
+.playground-back {
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+}
+
+.playground-pick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.playground-pick select {
+  max-width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  color: var(--text);
+  font: inherit;
+}
+
+.playground-locked-note {
+  margin: 4px 0 12px;
+  font-size: 0.85rem;
+}
+
+.idea-card {
+  margin: 12px 0;
+  padding: 12px 16px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+
+.idea-card h3 {
+  margin: 0 0 4px;
+}
+
+.idea-card p {
+  margin: 6px 0;
+}
+
+.idea-card ol {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.idea-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

@@ -6,6 +6,7 @@ function ProjectPicker({
   activeLessonId,
   onSelectProject,
   onSelectLesson,
+  onOpenIdeas,
 }) {
   if (projects.length === 0) return null;
   const activeStep = projectSteps.find(step => step.id === activeLessonId);
@@ -66,6 +67,11 @@ function ProjectPicker({
           );
         })}
       </ul>
+      {onOpenIdeas && (
+        <button type="button" className="test-out-button" onClick={onOpenIdeas}>
+          🧪 Bygg helt själv på Lekplatsen
+        </button>
+      )}
     </div>
   );
 }
@@ -86,6 +92,8 @@ export default function TrackList({
   projects,
   projectSteps,
   onSelectProject,
+  canBuildFreely,
+  onOpenIdeas,
 }) {
   return (
     <>
@@ -157,6 +165,9 @@ export default function TrackList({
                   activeLessonId={activeLessonId}
                   onSelectProject={onSelectProject}
                   onSelectLesson={onSelectLesson}
+                  onOpenIdeas={
+                    canBuildFreely(item.id) ? () => onOpenIdeas(item.id) : null
+                  }
                 />
               )}
               {isActive && (

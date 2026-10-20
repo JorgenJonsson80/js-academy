@@ -14,6 +14,9 @@ import { runTests } from './runner/runTests';
 import AccountPanel from './components/AccountPanel';
 import { useCloudProgress } from './lib/useCloudProgress';
 import Quiz from './components/Quiz';
+import HelpDialog from './components/HelpDialog';
+import Playground from './components/Playground';
+import { ideas } from './data/ideas';
 import { quiz } from './data/quiz';
 import {
   isProjectComplete,
@@ -149,6 +152,27 @@ function App() {
   const [activeQuiz, setActiveQuiz] = useState(null);
   // Koden innan man tryckte på Återställ kod, så att det går att ångra.
   const [undoCode, setUndoCode] = useState(null);
+  // Lekplatsen visas i stället för övningen. Idén man bygger finns kvar
+  // när man går tillbaka, null betyder fri kod.
+  const [showPlayground, setShowPlayground] = useState(false);
+  const [playgroundIdeaId, setPlaygroundIdeaId] = useState(null);
+  // Hjälpen öppnas av sig själv första gången man besöker sidan.
+  const [showHelp, setShowHelp] = useState(() => {
+    try {
+      return !localStorage.getItem('academy-help-seen');
+    } catch {
+      return false;
+    }
+  });
+
+  function handleCloseHelp() {
+    setShowHelp(false);
+    try {
+      localStorage.setItem('academy-help-seen', 'true');
+    } catch {
+      // Då visas hjälpen igen nästa gång, vilket inte gör något.
+    }
+  }
 
   const account = useCloudProgress({
     completedIds,
@@ -224,6 +248,32 @@ function App() {
       stage: newGrowth.stage,
       hasGrown: newGrowth.stageIndex > growth.stageIndex,
     });
+  }
+
+  // Egna idéer låses upp när alla tre projekt på banan är byggda.
+  function canBuildFreely(trackId) {
+    const trackProjects = projects.filter(item => item.track === trackId);
+    return (
+      trackProjects.length > 0 &&
+      trackProjects.every(item => isProjectComplete(item, completedIds))
+    );
+  }
+  const ideasWithStatus = ideas.map(idea => ({
+    ...idea,
+    trackTitle: tracks.find(item => item.id === idea.track).title,
+    unlocked: canBuildFreely(idea.track),
+  }));
+
+  // Utan ideaId öppnas idén man byggde senast.
+  function openPlayground(ideaId) {
+    if (ideaId !== undefined) setPlaygroundIdeaId(ideaId);
+    setShowPlayground(true);
+    window.scrollTo({ top: 0 });
+  }
+
+  // Från banlistan öppnas första idén på banan.
+  function handleOpenIdeas(trackId) {
+    openPlayground(ideas.find(idea => idea.track === trackId)?.id ?? null);
   }
 
   const trackLessons = lessons.filter(item => item.track === track.id);
@@ -359,6 +409,7 @@ function App() {
     }
   }
   function selectLesson(index) {
+    setShowPlayground(false);
     checkIdRef.current += 1;
     setIsChecking(false);
     setLessonIndex(index);
@@ -494,6 +545,18 @@ function App() {
         <h1>
           <span aria-hidden="true">⚛️</span> JS / React Academy
         </h1>
+        <nav className="header-nav" aria-label="Verktyg">
+          <button
+            type="button"
+            onClick={() => openPlayground()}
+            aria-current={showPlayground ? 'page' : undefined}
+          >
+            🧪 Lekplats
+          </button>
+          <button type="button" onClick={() => setShowHelp(true)}>
+            ❓ Hjälp
+          </button>
+        </nav>
         <p className="header-stats">
           <Avatar stage={growth.stage} size={28} />
           <span>{growth.stage.title}</span>
@@ -550,6 +613,8 @@ function App() {
               projects={projects}
               projectSteps={projectSteps}
               onSelectProject={handleSelectProject}
+              canBuildFreely={canBuildFreely}
+              onOpenIdeas={handleOpenIdeas}
             />
             {allCompleted && (
               <p className="feedback-success">
@@ -557,39 +622,54 @@ function App() {
               </p>
             )}
           </aside>
-          <LessonPanel
-            code={code}
-            onCodeChange={handleEditCode}
-            onCheck={handleCheck}
-            isChecking={isChecking}
-            onResetCode={handleResetCode}
-            canTestOut={canTestOut(lesson.track)}
-            onTestOut={() => setActiveQuiz({ trackId: lesson.track })}
-            bossLeft={bossLeftIn(lesson.track)}
-            onGoToBoss={boss => handleSelectLesson(boss.id)}
-            canUndoReset={undoCode !== null}
-            onUndoReset={handleUndoReset}
-            showSolution={showSolution}
-            onShowSolution={handleShowSolution}
-            feedback={feedback}
-            lesson={lesson}
-            project={project}
-            projectMode={projectMode}
-            onChooseProjectMode={handleChooseProjectMode}
-            noHintsBonusXp={project ? noHintsBonusXp(project) : 0}
-            isCompleted={completedIds.includes(lesson.id)}
-            failedAttempts={failedAttempts}
-            trackTitle={track.title}
-            docs={track.docs}
-            completedInTrack={completedInTrack}
-            trackLessonCount={trackLessons.length}
-            lessonNumber={lessonIndex + 1}
-            lessonCount={lessons.length}
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            canPrevious={neighbour(-1) !== null}
-            canNext={neighbour(1) !== null}
-          />
+          {showPlayground ? (
+            <Playground
+              ideas={ideasWithStatus}
+              ideaId={playgroundIdeaId}
+              onSelectIdea={setPlaygroundIdeaId}
+              onBack={() => setShowPlayground(false)}
+            />
+          ) : (
+            <LessonPanel
+              freeBuildIdeas={
+                project && canBuildFreely(project.track)
+                  ? ideas.filter(idea => idea.track === project.track)
+                  : []
+              }
+              onOpenIdea={openPlayground}
+              code={code}
+              onCodeChange={handleEditCode}
+              onCheck={handleCheck}
+              isChecking={isChecking}
+              onResetCode={handleResetCode}
+              canTestOut={canTestOut(lesson.track)}
+              onTestOut={() => setActiveQuiz({ trackId: lesson.track })}
+              bossLeft={bossLeftIn(lesson.track)}
+              onGoToBoss={boss => handleSelectLesson(boss.id)}
+              canUndoReset={undoCode !== null}
+              onUndoReset={handleUndoReset}
+              showSolution={showSolution}
+              onShowSolution={handleShowSolution}
+              feedback={feedback}
+              lesson={lesson}
+              project={project}
+              projectMode={projectMode}
+              onChooseProjectMode={handleChooseProjectMode}
+              noHintsBonusXp={project ? noHintsBonusXp(project) : 0}
+              isCompleted={completedIds.includes(lesson.id)}
+              failedAttempts={failedAttempts}
+              trackTitle={track.title}
+              docs={track.docs}
+              completedInTrack={completedInTrack}
+              trackLessonCount={trackLessons.length}
+              lessonNumber={lessonIndex + 1}
+              lessonCount={lessons.length}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+              canPrevious={neighbour(-1) !== null}
+              canNext={neighbour(1) !== null}
+            />
+          )}
         </div>
       </main>
       {activeQuiz && (
@@ -604,6 +684,7 @@ function App() {
           onClose={handleQuizClose}
         />
       )}
+      {showHelp && <HelpDialog onClose={handleCloseHelp} />}
       {celebration && !activeQuiz && (
         <LevelUp
           celebration={celebration}

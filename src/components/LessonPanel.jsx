@@ -25,6 +25,8 @@ export default function LessonPanel({
   projectMode,
   onChooseProjectMode,
   noHintsBonusXp,
+  freeBuildIdeas,
+  onOpenIdea,
 
   trackTitle,
   docs,
@@ -188,6 +190,30 @@ export default function LessonPanel({
           <strong>💭 Varför så här?</strong> {lesson.why}
         </aside>
       )}
+      {project &&
+        isCompleted &&
+        lesson.stepNumber === project.steps.length &&
+        freeBuildIdeas.length > 0 && (
+          <aside className="idea-card">
+            <strong>🧪 Bygg helt själv</strong>
+            <p>
+              Nu när du byggt alla tre projekt på banan, testa gärna att bygga
+              något helt själv – utan tester och utan facit. Till exempel:
+            </p>
+            <div className="idea-buttons">
+              {freeBuildIdeas.map(idea => (
+                <button
+                  key={idea.id}
+                  type="button"
+                  onClick={() => onOpenIdea(idea.id)}
+                  title={idea.summary}
+                >
+                  {idea.emoji} {idea.title}
+                </button>
+              ))}
+            </div>
+          </aside>
+        )}
       {feedback?.isCorrect && !showSolution && (
         <SolutionCompare code={code} solution={lesson.solution} />
       )}
