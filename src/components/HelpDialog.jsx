@@ -41,7 +41,9 @@ export default function HelpDialog({ onClose }) {
         </li>
         <li>
           <strong>Tryck på Kolla lösning.</strong> Du ser direkt vad som blev
-          rätt, och under <em>Konsol</em> det din kod skrev ut.
+          rätt, och under <em>Konsol</em> det din kod skrev ut. Ser det likadant
+          ut men blir ändå fel? Tryck på <em>🔍 Visa skillnaden</em> så markeras
+          tecknen som skiljer, till exempel ett mellanslag.
         </li>
       </ol>
       <p className="muted">

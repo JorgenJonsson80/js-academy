@@ -1,9 +1,26 @@
 import Avatar from './Avatar';
+import DiffView from './DiffView';
 import ErrorHint from './ErrorHint';
 
 // Konsolens rader som text, t.ex. Hej · Då, eller ingenting.
 function consoleText(lines) {
   return lines.length > 0 ? lines.join(' · ') : 'ingenting';
+}
+
+// Skillnaden hjälper för konsolen, text, listor och objekt. 20 mot 25 ser
+// man ändå, och ett fel har ingen rätt version att jämföra med.
+function diffFor(result) {
+  if (result.consoleActual) {
+    return (
+      <DiffView
+        actual={result.consoleActual}
+        expected={result.consoleExpected.map(String)}
+      />
+    );
+  }
+  if (/^[A-Z]\w*Error: /.test(result.actual ?? '')) return null;
+  if (!/^["[{]/.test(result.expected ?? '')) return null;
+  return <DiffView actual={[result.actual]} expected={[result.expected]} />;
 }
 
 function FeedbackPanel({ feedback, code, stage }) {
@@ -80,6 +97,7 @@ function FeedbackPanel({ feedback, code, stage }) {
                         </span>
                       )
                     ))}
+                  {!result.passed && diffFor(result)}
                 </li>
               ))}
             </ul>

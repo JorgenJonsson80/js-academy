@@ -1157,6 +1157,72 @@
   background: var(--task-code-bg);
 }
 
+/* Visa skillnaden */
+
+.diff-button {
+  display: block;
+  margin: 6px 0 2px;
+  min-height: 32px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  border-style: dashed;
+}
+
+.diff-rows {
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  color: var(--text);
+  overflow-x: auto;
+}
+
+.diff-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  padding: 4px 0;
+}
+
+.diff-row + .diff-row {
+  border-top: 1px solid var(--border);
+}
+
+.diff-row dt {
+  color: var(--muted);
+}
+
+.diff-row dd {
+  margin: 0;
+  white-space: pre;
+}
+
+.diff-row dd:nth-of-type(1) .diff-mark {
+  background: rgb(248 113 113 / 0.35);
+}
+
+.diff-row dd:nth-of-type(2) .diff-mark {
+  background: rgb(74 222 128 / 0.3);
+}
+
+.diff-mark {
+  color: var(--text);
+  border-radius: 3px;
+  outline: 1px solid currentColor;
+}
+
+.diff-missing {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.diff-legend {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 0.8rem;
+}
+
 /* Varför renderade den? */
 
 .render-log {
