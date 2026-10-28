@@ -19,6 +19,7 @@ som `SPEC.md` och låt Claude bygga i etapper enligt slutet av dokumentet.
 |---|---|---|
 | Skal | Vite + React 19, JavaScript | Samma som JS Academy, så komponenter kan återanvändas |
 | Python | **Pyodide** (CPython i WebAssembly) i en Web Worker | Laddas från jsDelivr. Cirka 10 MB första gången, sedan cachat |
+| Data | **pandas** via `pyodide.loadPackage` | Laddas först när en övning i databanan behöver det, inte vid start |
 | Editor | CodeMirror 6 + `@codemirror/lang-python` | |
 | Formatering | Ruff kompilerat till WebAssembly, eller Black i Pyodide | Undersök vad som är minst och snabbast |
 | Konton | Supabase (valfritt), annars localStorage | Samma tabeller som JS Academy |
@@ -67,6 +68,8 @@ Samma upplägg som JS Academy:
 - `__output` är raderna som `print` skrev ut.
 - Visa testraderna i klartext: *"utskriften blev `Hej` men skulle vara
   `Hej!`"*, inte som Python-listor.
+- Jämför aldrig hela objekt eller DataFrames i testerna. Testa ett värde
+  som går att läsa, t.ex. `df['volym'].sum()` eller `len(df)`.
 
 ## Funktioner att ta med från start
 
@@ -99,12 +102,37 @@ Det här tog många omgångar att få till i JS Academy. Bygg in det direkt.
    Lekplatsen, och länkar per ämne (svenska källor om de finns, annars
    docs.python.org/3/tutorial och YouTube-*sökningar* – aldrig enskilda
    videor, de försvinner).
-6. **Lekplats:** fri editor med `input()`-ruta och konsol, och tre egna
+   - **Fråga en AI:** en knapp som kopierar en färdig fråga att klistra in
+     hos valfri AI. Frågan innehåller övningen, uppgiften, elevens kod och
+     vad som hände (fel, underkända tester, utskrift). AI:n ombeds vara
+     handledare: förklara på enkel svenska, ge en ledtråd i taget, **inte**
+     ge lösningen, och bara använda banorna eleven klarat hittills. Bygg
+     frågan i en egen funktion med tester (`aiPrompt.js` i JS Academy).
+6. **Visa skillnaden:** under varje underkänt test med utskrift, text,
+   lista eller dict finns knappen *🔍 Visa skillnaden*. Den är stängd från
+   början (att hitta felet själv är också träning). Öppnad visar den
+   *Du fick* och *Rätt* under varandra med det som skiljer markerat: rött
+   hos eleven, grönt i det rätta. Ett mellanslag som skiljer visas som ␣.
+   Utskriften jämförs rad för rad med längsta gemensamma delföljd, så att
+   en saknad rad i mitten bara markerar den raden och inte alla efter.
+   Rader som blir över jämförs tecken för tecken. Visas inte för rena tal
+   (20 mot 25 syns ändå) eller när koden kraschade.
+7. **Lekplats:** fri editor med `input()`-ruta och konsol, och tre egna
    idéer per bana som låses upp när banans projekt är klara.
-7. **Projekt** efter varje bana: välj ett av tre, 3–4 steg där koden följer
+8. **Projekt** efter varje bana: välj ett av tre, 3–4 steg där koden följer
    med, med eller utan ledtrådar (+50 % XP utan). Svårare för varje bana.
-8. **Kort välkomst** (tre steg, resten bakom "Fler tips"), figur som växer
-   och peppar, nivåtest för att hoppa fram.
+9. **Kort välkomst** (tre steg, resten bakom "Fler tips"), figur som växer
+   en ålder per klar bana och peppar, nivåtest för att hoppa fram.
+10. **Boss och Testa dig förbi:** varje bana slutar med en boss, en större
+    uppgift utan ledtrådar. *Testa dig på banan* (quiz + boss) låter den
+    som redan kan hoppa över banan.
+11. **Hylla med belöningar:** varje klar bana ger ett föremål, varje
+    projekt ett pris. ⚡ visar att banan klarades genom att testa sig förbi.
+12. **Jämför med facit:** när svaret är rätt men märkbart längre än facit
+    (mer än 30 % och minst 15 tecken, utan blanksteg och kommentarer) visas
+    facit med *"Din lösning fungerar! Den går att skriva kortare."*
+13. **Konton:** inloggning med Supabase så att framstegen följer med till
+    andra enheter. Utan nycklar sparas allt i localStorage.
 
 ## Banor (förslag)
 
@@ -121,7 +149,33 @@ Det här tog många omgångar att få till i JS Academy. Bygg in det direkt.
 | 9 | Moduler | import, random, math, datetime | `import` |
 | 10 | Klasser | class, \_\_init\_\_, metoder, self | `class` |
 | 11 | Felsökning | läsa tracebacks, hitta buggar i andras kod | – |
-| 12 | Slutprojekt | textäventyr, frågesport eller enkel dataanalys | allt |
+| 12 | Data med pandas | läsa CSV/Excel, välja kolumner, filtrera, gruppera, summera, sortera | `pandas`, `DataFrame`, `groupby` |
+| 13 | Slutprojekt | textäventyr, frågesport eller en egen dataanalys | allt |
+
+### Varför pandas och inte Django
+
+Python har ingen motsvarighet till React. React bygger det man ser i
+webbläsaren, och där körs JavaScript. Django och Flask motsvarar snarare
+en Node/Express-server. De kräver en server som är igång och går inte att
+köra och rätta i webbläsaren som övningarna här. pandas fungerar i Pyodide
+och är det man faktiskt använder Python till i vardagen: läsa en
+Excel-fil, räkna och jämföra. Därför blir pandas Python-versionens
+"React-bana", alltså det verkliga verktyget i slutet.
+
+Bana 12 i korthet:
+
+- Varför en tabell (DataFrame) och inte listor med dictionaries, och när
+  listor räcker.
+- Exempeldata från vardagen, t.ex. lagerdata med varunummer, lagerplats
+  och plock per månad. Rättningen testar enstaka värden.
+- Sista övningarna: ABC-klassning (kumulativ andel) och variation per
+  vara, så att eleven bygger en riktig analys med det banan lärt ut.
+- Projekt: läs in en egen fil på Lekplatsen (filuppladdning som skickas
+  till workern) och gör en egen sammanställning.
+- **Streamlit** (en enkel app med knappar och diagram i Python) är ett
+  möjligt sista projekt. Undersök stlite, som kör Streamlit i Pyodide,
+  innan det byggs. Fungerar det inte så får projektet köras på datorn och
+  rättas inte.
 
 Kolumnen *Lärs ut här* används av kvalitetstestet nedan: facit får inte
 använda något före sin bana.
@@ -137,6 +191,11 @@ Gör dem till automatiska tester, som `quality.test.js` i JS Academy:
 - Facit går att köra rad för rad utan fel.
 - Varje projektsteg har `why`. Varje bana med projekt har tre idéer och
   resurser.
+- Tre ledtrådar per övning, från vag till nästan lösningen.
+- Testerna har ett vanligt anrop som `summa([1, 2, 3])`, så att Kör rad
+  för rad kan visa funktioner som bara definieras.
+- Nya övningar i en bana som redan finns får `addedLater: true`, så att
+  den som redan klarat banan inte förlorar den.
 - Tester kontrollerar resultatet, inte exakt hur koden är skriven.
 
 ## Lärdomar från JS Academy
@@ -153,6 +212,15 @@ Gör dem till automatiska tester, som `quality.test.js` i JS Academy:
 - Facit med slarvig indentering förvirrar – i Python är indrag dessutom
   syntax, så det är ännu viktigare här.
 - Föreslå nytt innehåll och låt användaren reagera innan det byggs.
+- Ett missat mellanslag eller en felaktig bokstav i utskriften är det som
+  frustrerar mest. Därför finns *Visa skillnaden* (se ovan).
+- Elevens kod får aldrig röra appens riktiga data. Låtsasversioner av
+  filer och nätverk, så som `fakes.js` gör för localStorage och fetch.
+- localStorage-läsningar ligger i try/catch och tål skräpdata.
+- Playwright-selektorer som `text=Kolla lösning` kan träffa
+  uppgiftstexten. Använd `button:has-text(…)`.
+- Hjälpdialogen öppnas vid första besöket. Stäng den i testerna och håll
+  den uppdaterad när funktioner läggs till.
 
 ## Etapper
 
@@ -163,6 +231,9 @@ Bygg i den här ordningen och låt användaren testa efter varje etapp:
 2. **Bana 1–2** med övningar, ledtrådar, XP, progress i localStorage,
    välkomst och svenska felförklaringar.
 3. **Kör rad för rad** och hover.
-4. **Bana 3–6** med projekt, Lekplats, idéer och Fastnat?-panel.
+4. **Bana 3–6** med projekt, Lekplats, idéer, Fastnat?-panel med
+   AI-fråga och Visa skillnaden.
 5. **Kvalitetstester** körs på allt innehåll.
-6. **Bana 7–12**, nivåtest, konton med Supabase.
+6. **Bana 7–11**, boss, Testa dig förbi, hyllan, nivåtest och konton med
+   Supabase.
+7. **Bana 12 (pandas)** och slutprojektet. Undersök stlite för Streamlit.
