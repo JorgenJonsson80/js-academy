@@ -1,5 +1,8 @@
 # JS / React Academy
 
+**Har flyttat till Kodskolan** (`../kodskolan`). Bygg vidare där. Sajten
+här skickar bara vidare (`redirect/`, se `deploy.yml`).
+
 En interaktiv kodskola på svenska för den som aldrig kodat. Eleven skriver
 riktig kod i webbläsaren, koden rättas med tester och eleven går från
 JavaScript-grunder till React. Publiceras på GitHub Pages:

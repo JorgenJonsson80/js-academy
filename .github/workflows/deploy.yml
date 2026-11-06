@@ -1,4 +1,5 @@
-# Bygger appen och publicerar den på GitHub Pages vid varje push till main.
+# Akademin har flyttat till Kodskolan. Sajten är bara en sida som skickar
+# vidare dit (redirect/). Appen ligger kvar här men publiceras inte.
 name: Publicera på GitHub Pages
 
 on:
@@ -20,19 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npx vitest run
-      - run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: redirect
 
   deploy:
     needs: build
